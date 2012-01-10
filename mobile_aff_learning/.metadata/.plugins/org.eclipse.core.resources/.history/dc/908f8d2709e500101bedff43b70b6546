@@ -1,0 +1,12 @@
+#include "iostream"
+
+//#include "gazebo_plugins/gaze"
+#include "gazebo/XMLConfig.hh"
+#include "gazebo/SpawnModel.h"
+
+
+
+int main()
+{
+	return 0;
+}

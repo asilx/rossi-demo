@@ -1,0 +1,17 @@
+<package>
+  <description brief="aff_msgs">
+
+     aff_msgs
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/aff_msgs</url>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="tabletop_object_detector"/>
+
+</package>
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<model:physical name="sphere_model">
+  <xyz>0.0 0.0 0.0</xyz>
+  <rpy>0 0 0</rpy>
+  <enableGravity>1</enableGravity>
+  <enableFriction>1</enableFriction>
+  <collide>all</collide>
+  <static>0</static>
+  
+  <body:sphere name="sphere_body">         <!-- a model can one or multiple bodies -->
+    <xyz>0 0 0</xyz>                       <!-- position of the body ***relative to its parent*** -->
+    <rpy>0 0 0</rpy>
+    
+    <geom:sphere name="sphere_geom">       <!-- each body can have one or multiple geoms -->
+      <xyz>0 0 0</xyz>
+      <rpy>0 0 0</rpy>
+      <size>0.1</size>		           <!-- size of the geom. here: radius of sphere -->
+      <mass>0.2</mass>
+      <laserFiducialId>-1</laserFiducialId>
+      <laserRetro>-1</laserRetro>                       
+      <visual>                             <!-- each geom can have visuals attached -->
+        <xyz>0 0 0</xyz>
+        <rpy>0 0 0</rpy>
+        <mesh>unit_sphere</mesh>           <!-- the mesh used for the visual -->
+        <material>Gazebo/Grey</material>  <!-- material (color, texture) of the visual -->
+        <castShadows>1</castShadows>
+        <scale>0.1 0.1 0.1</size>           <!-- size of the visual per axes XYZ -->
+      </visual>
+    </geom:sphere>
+  </body:sphere>
+</model:physical>

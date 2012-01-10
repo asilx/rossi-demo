@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/src
+END
+model.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/src/model.cpp
+END
+check_urdf.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/src/check_urdf.cpp
+END

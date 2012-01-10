@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/joint_states_listener/srv_gen/lisp
+END
+_package.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/joint_states_listener/srv_gen/lisp/_package.lisp
+END
+_package_ReturnJointStates.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/joint_states_listener/srv_gen/lisp/_package_ReturnJointStates.lisp
+END
+joint_states_listener-srv.asd
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/joint_states_listener/srv_gen/lisp/joint_states_listener-srv.asd
+END
+ReturnJointStates.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/joint_states_listener/srv_gen/lisp/ReturnJointStates.lisp
+END

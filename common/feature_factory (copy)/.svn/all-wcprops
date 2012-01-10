@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/kadir/!svn/ver/35/metu-ros-pkg/stacks/aff_learning/common/feature_factory
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/kadir/!svn/ver/18/metu-ros-pkg/stacks/aff_learning/common/feature_factory/.project
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_factory/manifest.xml
+END
+.cproject
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/kadir/!svn/ver/35/metu-ros-pkg/stacks/aff_learning/common/feature_factory/.cproject
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_factory/mainpage.dox
+END
+.pydevproject
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/kadir/!svn/ver/18/metu-ros-pkg/stacks/aff_learning/common/feature_factory/.pydevproject
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/kadir/!svn/ver/35/metu-ros-pkg/stacks/aff_learning/common/feature_factory/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_factory/Makefile
+END

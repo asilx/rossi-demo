@@ -1,0 +1,21 @@
+<package>
+  <description brief="experiment_manager">
+
+     experiment_manager
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/experiment_manager</url>
+  <depend package="roscpp"/>
+  <depend package="aff_msgs"/>
+  <depend package="feature_manager"/>
+  <depend package="tabletop_2D_segmentation"/>
+  <depend package="behavior_manager"/>
+  <depend package="sound_play"/>
+  <depend package="cv_bridge"/>
+  <depend package="sensor_msgs"/>
+</package>
+
+

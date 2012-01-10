@@ -1,0 +1,15 @@
+<launch>
+
+  <param name="p2os/port" value="/dev/ttyUSB0" />
+  <node name="p2os_driver" pkg= "p2os_driver" type= "p2os"/>
+  
+  <param name="/use_sim_time" value="false" />
+	<include file="$(find pioneer3dxplus_model)/launch/upload_pioneer3dxplus.xml"/>
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+    <remap from="joint_state" to="joint_state"/>
+    <param name="publish_frequency" type="double" value="15.0"/>
+    <param name="tf_prefix" type="string" value=""/>
+  </node>
+	<node name="publisher" pkg="pioneer3dxplus_model" type="publisher"/>
+  <include file="$(find swissranger_camera)/launch/sr_eth.launch"/>
+</launch>

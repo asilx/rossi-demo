@@ -1,0 +1,19 @@
+<package>
+  <description brief="PR2 Keyboard Teleoperator">
+     Keyboard teleoperator for the PR2 Simulator
+
+  </description>
+  <author>Gal Peleg, Sarah Osentoski, Jesse Butterfield</author>
+  <email> sosentos@cs.brown.edu</email>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+
+  <depend package="rospy"/>
+  <depend package="geometry_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="pr2_mechanism_msgs"/>
+  <depend package="pr2_controllers_msgs"/>
+
+</package>
+
+

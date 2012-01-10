@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;tabletop_2D_segmentation/srv_gen&apos;" deleteContents="false" description="Delete resource &apos;tabletop_2D_segmentation/srv_gen&apos;" element1="/tabletop_2D_segmentation/srv_gen" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1320952172628"/>&#x0A;<refactoring comment="Delete resource &apos;behavior_manager/srv_gen&apos;" deleteContents="false" description="Delete resource &apos;behavior_manager/srv_gen&apos;" element1="/behavior_manager/srv_gen" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1321023088387"/>
+</session>

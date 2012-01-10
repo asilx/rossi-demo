@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf
+END
+link.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf/link.h
+END
+color.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf/color.h
+END
+model.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf/model.h
+END
+joint.h
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf/joint.h
+END
+pose.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/urdf/include/urdf/pose.h
+END

@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/experiment_test/src/main.cpp
+iostream
+/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/experiment_test/src/iostream
+

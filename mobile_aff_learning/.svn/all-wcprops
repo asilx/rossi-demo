@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/kadir/!svn/ver/18/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning
+END
+mobile_aff_learning_installation.txt
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/kadir/!svn/ver/12/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/mobile_aff_learning_installation.txt
+END
+base_launch.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/base_launch.xml
+END
+base_launch.launch
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/kadir/!svn/ver/13/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/base_launch.launch
+END

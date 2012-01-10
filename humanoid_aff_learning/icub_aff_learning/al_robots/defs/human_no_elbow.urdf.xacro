@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	 xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	 xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+   xmlns:xacro="http://ros.org/wiki/xacro" 
+	 name="human">
+
+  <xacro:property name="M_PI" value="3.14159"/>
+
+	<xacro:macro name="black">
+		<material name="black">
+			<color rgba="0.1 0.1 0.1 0.9"/>
+		</material>
+	</xacro:macro>
+	
+	<xacro:macro name="white">
+		<material name="white">
+			<color rgba="0.8 0.8 0.8 0.9"/>
+		</material>
+	</xacro:macro>
+
+  <xacro:macro name="default_gazebo" params="name material">
+ 		<gazebo reference="${name}">
+			<material>${material}</material>
+			<selfCollide>false</selfCollide>
+			<turnGravityOff>True</turnGravityOff>
+		</gazebo>
+  </xacro:macro>
+  
+  <xacro:macro name="default_inertial" params="mass">
+  	<inertial>
+	  	<mass value="${mass}" />
+		  <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                   iyy="0.001" iyz="0.0"
+                   izz="0.001" />                     
+		</inertial>
+  </xacro:macro>
+
+	<xacro:macro name="shape_cylinder" params="name l r xyz rpy mass material *rviz_color">
+		<link name="${name}">
+			<visual>	
+				<origin xyz="${xyz}" rpy="${rpy}" />
+				<geometry>
+					<cylinder length="${l}" radius="${r}" />
+				</geometry>
+			  <xacro:insert_block name="rviz_color" />				
+      </visual>
+      <collision>
+				<origin xyz="${xyz}" rpy="${rpy}" />
+				<geometry>
+					<cylinder length="${l}" radius="${r}" />
+				</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+	</xacro:macro>
+	
+	<xacro:macro name="shape_sphere" params="name r xyz rpy mass material *rviz_color">
+		<link name="${name}">
+			<visual>	
+				<origin xyz="${xyz}" rpy="${rpy}" />
+				<geometry>
+					<sphere radius="${r}" />
+				</geometry>
+			  <xacro:insert_block name="rviz_color" />				
+      </visual>
+      <collision>
+				<origin xyz="${xyz}" rpy="${rpy}" />
+				<geometry>
+					<sphere radius="${r}" />
+				</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+	</xacro:macro>	
+	
+	<xacro:macro name="shape_box" params="name lwh xyz rpy mass material *rviz_color">
+		<link name="${name}">
+			<visual>
+				<origin xyz="${xyz}" rpy="${rpy}" />
+				<geometry>
+					<box size="${lwh}" />
+				</geometry>
+			  <xacro:insert_block name="rviz_color" />
+      <!--material name="red">
+        <color rgba="0.8 0 0 1"/>
+      </material-->
+      </visual>
+      <collision>
+				<origin xyz="${xyz}" rpy="${rpy}" />
+					<geometry>
+						<box size="${lwh}" />
+					</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />   
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+	</xacro:macro>
+
+  <xacro:shape_box name="base_footprint" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+  
+  <xacro:shape_box name="torso_1" lwh="0.30 0.60 0.13" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_box>
+	
+  <xacro:shape_sphere name="head_1" r="0.10" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>
+	
+  <xacro:shape_cylinder name="neck_1" l="0.28" r="0.05" xyz="0 0 0" rpy="${M_PI/2} 0 0" mass="5" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_cylinder>
+	
+  <xacro:shape_sphere name="left_shoulder_1" r="0.05" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>
+	
+  <xacro:shape_sphere name="right_shoulder_1" r="0.05" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>
+	
+  <xacro:shape_cylinder name="right_upper_arm" l="0.28" r="0.05" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_cylinder>
+
+  <xacro:shape_cylinder name="left_upper_arm" l="0.28" r="0.05" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_cylinder>
+	
+  <!--xacro:shape_sphere name="left_elbow_1" r="0.04" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>
+	
+  <xacro:shape_sphere name="right_elbow_1" r="0.04" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere-->
+
+	<link name="left_elbow_1">
+	  <visual>	
+				<origin xyz="0.14 0 0" rpy="0 ${M_PI/2} 0" />
+				<geometry>
+					<cylinder length="0.28" radius="0.04" />
+				</geometry>
+				<xacro:black />	
+      </visual>
+      <collision>
+				<origin xyz="0.14 0 0" rpy="0 ${M_PI/2} 0" />
+				<geometry>
+					<cylinder length="0.28" radius="0.04" />
+				</geometry>
+      </collision>
+	  <inertial>
+		<mass value="0.001" />
+		<inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                   iyy="0.001" iyz="0.0"
+                   izz="0.001" />                     
+	  </inertial>
+    </link>  
+     <gazebo reference="left_elbow_1">
+      <mu1 value="100.0" />
+      <mu2 value="100.0" />
+      <kp  value="1000000.0" />
+      <kd  value="1.0" />
+      <material>Gazebo/FlatBlack</material>
+	  <selfCollide>false</selfCollide>
+	  <turnGravityOff>True</turnGravityOff>
+    </gazebo>
+    
+	<link name="right_elbow_1">
+	  <visual>	
+				<origin xyz="-0.14 0 0" rpy="0 ${-M_PI/2} 0" />
+				<geometry>
+					<cylinder length="0.28" radius="0.04" />
+				</geometry>
+				<xacro:black />		
+      </visual>
+      <collision>
+				<origin xyz="-0.14 0 0" rpy="0 ${-M_PI/2} 0" />
+				<geometry>
+					<cylinder length="0.28" radius="0.04" />
+				</geometry>
+      </collision>
+	  <inertial>
+		<mass value="0.001" />
+		<inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                   iyy="0.001" iyz="0.0"
+                   izz="0.001" />                     
+	  </inertial>
+    </link>
+    <gazebo reference="right_elbow_1">
+      <mu1 value="100.0" />
+      <mu2 value="100.0" />
+      <kp  value="1000000.0" />
+      <kd  value="1.0" />
+      <material>Gazebo/FlatBlack</material>
+	  <selfCollide>false</selfCollide>
+	  <turnGravityOff>True</turnGravityOff>
+    </gazebo>
+	
+  <!--xacro:shape_cylinder name="left_elbow_1" l="0.28" r="0.04" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_cylinder>
+	
+  <xacro:shape_cylinder name="right_elbow_1" l="0.28" r="0.04" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+		<xacro:black />
+	</xacro:shape_cylinder-->
+	
+  <xacro:shape_sphere name="left_hand_1" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="1" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>
+	
+  <xacro:shape_sphere name="right_hand_1" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="1" material="Gazebo/FlatWhite">
+		<xacro:white />
+	</xacro:shape_sphere>	
+	
+	<!-- when "fixed" type joint is used, transformation isn't shown in gazebo, use continuous instead' -->
+  <joint name="base_footprint_torso_1" type="floating">
+    <parent link="base_footprint"/>
+    <child link="torso_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+	
+  <joint name="torso_1_head_1" type="floating">
+    <parent link="torso_1"/>
+    <child link="head_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="torso_1_neck_1" type="floating">
+    <parent link="torso_1"/>
+    <child link="neck_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <joint name="torso_left_shoulder_1" type="floating">
+    <parent link="torso_1"/>
+    <child link="left_shoulder_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="torso_right_shoulder_1" type="floating">
+    <parent link="torso_1"/>
+    <child link="right_shoulder_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <joint name="right_shoulder_1_right_upper_arm" type="floating">
+    <parent link="right_shoulder_1"/>
+    <child link="right_upper_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="left_shoulder_1_left_upper_arm" type="floating">
+    <parent link="left_shoulder_1"/>
+    <child link="left_upper_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="right_upper_arm_right_elbow_1" type="floating">
+    <parent link="right_upper_arm"/>
+    <child link="right_elbow_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="left_upper_arm_left_elbow_1" type="floating">
+    <parent link="left_upper_arm"/>
+    <child link="left_elbow_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <!--joint name="right_elbow_1_right_lower_arm" type="floating">
+    <parent link="right_elbow_1"/>
+    <child link="right_lower_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="left_elbow_1_left_lower_arm" type="floating">
+    <parent link="left_elbow_1"/>
+    <child link="left_lower_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint-->
+
+  <joint name="right_elbow_1_right_hand_1" type="floating">
+    <parent link="right_elbow_1"/>
+    <child link="right_hand_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="left_elbow_1_left_hand_1" type="floating">
+    <parent link="left_elbow_1"/>
+    <child link="left_hand_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+	
+</robot>

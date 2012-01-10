@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/srv_gen/lisp
+END
+_package.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/srv_gen/lisp/_package.lisp
+END
+_package_ExecuteCartesianIKTrajectory.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/srv_gen/lisp/_package_ExecuteCartesianIKTrajectory.lisp
+END
+pr2_learning_affordances-srv.asd
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/srv_gen/lisp/pr2_learning_affordances-srv.asd
+END
+ExecuteCartesianIKTrajectory.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/srv_gen/lisp/ExecuteCartesianIKTrajectory.lisp
+END

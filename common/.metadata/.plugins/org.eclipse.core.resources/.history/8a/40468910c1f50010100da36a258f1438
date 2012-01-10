@@ -1,0 +1,83 @@
+//ros includes
+#include <ros/ros.h>
+#include <sensor_msgs/JointState.h>
+
+//read led information from yarp network and update joint values
+
+// yarp includes
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/Bottle.h>
+#include <yarp/os/BufferedPort.h>
+#include <yarp/sig/Vector.h>
+#include <yarp/math/Math.h>
+
+// standard includes
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+
+using namespace std;
+using namespace yarp::os;
+using namespace yarp::sig;
+using namespace yarp::dev;
+using namespace yarp::math;
+
+typedef struct ledVector
+{
+	ConstString channelName;
+	Vector coordinates;
+
+	ledVector()
+	{
+		coordinates.resize(3);
+	}
+}LEDVector;
+
+LEDVector vectorList[3];
+
+Vector getCoordinatesByChannelName(const char* channelOfInterest)
+{
+
+	for(int i = 0; i < 3; i++)
+	{
+		if(vectorList[i].channelName == channelOfInterest)
+			return vectorList[i].coordinates;
+	}
+	// could not find the vector. there is an error
+	cerr << "Dude wtf" << endl;
+}
+
+
+
+int main(int argc, char* argv[]) {
+	ros::init(argc, argv, "test_setup_state_publisher");
+	ros::NodeHandle n;
+
+	ros::Publisher joint_state_publisher =
+			n.advertise<sensor_msgs::JointState> ("joint_states", 1000);
+	ros::Rate loop_rate(15);
+	sensor_msgs::JointState js;
+
+	js.name.push_back(std::string("/swissranger_link"));
+	js.position.resize(6);
+
+	while (n.ok()) {
+
+
+
+
+		js.header.frame_id = "/base_link";
+		js.header.stamp = ros::Time::now();
+		js.position[0] = 0;//x
+		js.position[0] = 0;//y
+		js.position[0] = 0;//z
+		js.position[0] = 0;//r
+		js.position[0] = 0;//p
+		js.position[0] = 0;//y
+		joint_state_publisher.publish(js);
+		ros::spinOnce();
+		loop_rate.sleep();
+	}
+}

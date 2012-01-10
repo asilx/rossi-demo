@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/include/feature_extractor
+END
+FeaturePoint.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/include/feature_extractor/FeaturePoint.h
+END
+FeatureExtractor.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/include/feature_extractor/FeatureExtractor.h
+END

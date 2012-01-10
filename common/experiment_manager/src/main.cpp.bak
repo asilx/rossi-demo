@@ -1,0 +1,474 @@
+//ros includes
+#include <ros/ros.h>
+
+#include "aff_msgs/ExperimentState.h"
+#include "aff_msgs/ModuleStates.h"
+#include "aff_msgs/Speech.h"
+#include "feature_manager/Perception.h"
+#include "behavior_manager/Action.h"
+
+#include "sound_play/SoundRequest.h"
+
+// yarp includes
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/Bottle.h>
+#include <yarp/os/BufferedPort.h>
+#include <yarp/sig/Vector.h>
+#include <yarp/math/Math.h>
+#include <pthread.h>
+
+// standard includes
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+
+#include "iostream"
+
+using namespace std;
+using namespace yarp::os;
+using namespace yarp::sig;
+using namespace yarp::math;
+
+const string port_in_ext_motion_det_name = "/ext_motion_detection:i";
+const string port_out_ext_motion_det_name = "/ext_motion_detection:o";
+
+const string port_in_int_motion_det_name = "/int_motion_detection:i";
+const string port_out_int_motion_det_name = "/int_motion_detection:o";
+
+const string ask_for_action = "Now, what?";
+const string ask_for_effect = "What has just happened?";
+const string ask_for_action_persistent = "Please, tell me what to do";
+const string ask_for_effect_persistent = "Please, tell me what happened";
+
+const bool USE_EXT_MOTION_DETECTION = false;
+const bool USE_INT_MOTION_DETECTION = false;
+
+bool workspace_detection_active = false;
+uint exp_state_;
+uint prev_exp_state_ = aff_msgs::ExperimentState::STANDBY;
+
+ros::NodeHandle* n;
+ros::Publisher pub_exp_state_;
+ros::Subscriber sub_speech_cmd_;
+ros::Publisher pub_say_;
+
+feature_manager::Perception perception;
+behavior_manager::Action srv_action;
+sound_play::SoundRequest msg_speech_out;
+aff_msgs::Speech msg_speech_in;
+
+class DataPort : public BufferedPort<Bottle>
+{
+  virtual void
+  onRead (Bottle& b)
+  {
+    //external motion detection port received data
+    if (this->getName () == port_in_ext_motion_det_name.c_str ())
+    {
+      int data = b.get (0).asInt ();
+      std::cout << "*********  " << data << "  *********" << std::endl;
+      if (data == 0)//no external motion, workspace detection is active
+      {
+        workspace_detection_active = true;
+      }
+      else
+      {
+        workspace_detection_active = false;
+      }
+    }
+    else if (this->getName () == port_in_int_motion_det_name.c_str ())
+    {
+      int data = b.get (0).asInt ();
+      if (data == 0)//no internal motion, workspace detection is active
+      {
+        workspace_detection_active = true;
+      }
+      else
+      {
+        workspace_detection_active = false;
+      }
+    }
+  }
+};
+
+DataPort port_in_ext_motion_det;
+DataPort port_in_int_motion_det;
+
+bool new_speech_cmd_rcvd_ = false;
+void
+speechCmdCallback (aff_msgs::SpeechConstPtr speech_cmd)
+{
+  if (!new_speech_cmd_rcvd_)
+    new_speech_cmd_rcvd_ = true;
+  msg_speech_in = *speech_cmd;
+}
+
+void
+init ()
+{
+  //ros initializations
+  n = new ros::NodeHandle ();
+  pub_exp_state_ = n->advertise<aff_msgs::ExperimentState> ("/experiment_state", 10);
+  pub_say_ = n->advertise<sound_play::SoundRequest> ("/robotsound", 1);
+  sub_speech_cmd_ = n->subscribe<aff_msgs::Speech> ("/speech_command", 1, &speechCmdCallback);
+
+  exp_state_ = aff_msgs::ExperimentState::ASK_FOR_ACTION;
+
+  //yarp initializations
+  Network::init ();
+
+  if (USE_EXT_MOTION_DETECTION)
+  {
+    port_in_ext_motion_det.useCallback ();
+    port_in_ext_motion_det.open (port_in_ext_motion_det_name.c_str ());
+    Network::connect (port_out_ext_motion_det_name.c_str (), port_in_ext_motion_det_name.c_str ());
+    std::cout << "waiting for an -external motion detection- port to be connected" << std::endl;
+    while (!Network::isConnected (port_out_ext_motion_det_name.c_str (), port_in_ext_motion_det_name.c_str ())
+        && n->ok ())
+    {
+    }
+    std::cout << "An -external motion detection- port is connected, ready for activation data..." << std::endl;
+  }
+
+  if (USE_INT_MOTION_DETECTION)
+  {
+    port_in_int_motion_det.useCallback ();
+    port_in_int_motion_det.open (port_in_int_motion_det_name.c_str ());
+    Network::connect (port_out_int_motion_det_name.c_str (), port_in_int_motion_det_name.c_str ());
+    std::cout << "waiting for an -internal motion detection- port  to be connected" << std::endl;
+    while (!Network::isConnected (port_out_int_motion_det_name.c_str (), port_in_int_motion_det_name.c_str ())
+        && n->ok ())
+    {
+    }
+    std::cout << "An -internal motion detection- port is connected, ready for activation data..." << std::endl;
+  }
+}
+
+void
+say (const string& what_to_say)
+{
+  msg_speech_out.arg = what_to_say;
+  msg_speech_out.command = sound_play::SoundRequest::SAY;
+  pub_say_.publish (msg_speech_out);
+}
+
+void
+run ()
+{
+  bool action_asked_for = false;
+  bool effect_asked_for = false;
+  while (n->ok ())
+  {
+
+    switch (exp_state_) {
+      case aff_msgs::ExperimentState::ASK_FOR_ACTION:
+        if (!action_asked_for)
+        {
+          action_asked_for = true;
+          say (ask_for_action);
+          ros::Duration (2).sleep ();
+          ros::spinOnce ();
+        }
+
+        if (new_speech_cmd_rcvd_)
+        {
+          new_speech_cmd_rcvd_ = false;
+          if (msg_speech_in.speech_cmd < aff_msgs::Speech::MAX_ACTION_INDEX)
+          {
+            //action speech command is received, now percept the environment
+            action_asked_for = false;//clear the flag
+            exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
+
+          }
+          else
+          {
+            say (ask_for_action_persistent);
+            ros::Duration (2).sleep ();
+            ros::spinOnce ();
+          }
+        }
+        break;
+      case aff_msgs::ExperimentState::PERCEPTION:
+        //send behavior_manager a message so that robot goes for a configuration
+        //which is required for the perception process (e.g. tuck_arms)
+        ROS_INFO("calling -tuck_arms- action service");
+        srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
+
+        //ros::service::call ("/action", srv_action.request, srv_action.response);
+        ROS_INFO("finished -tuck_arms- action");
+
+        //Assuming that this action is done successfully, now call perception service
+        std::cout << "calling perception service" << std::endl;
+        //ros::service::call ("/perception", perception.request, perception.response);
+        std::cout << "finished perception" << std::endl;
+
+        //TODO:
+        //evaluate current environment if it is suitable for the action being requested
+        //if not ask for a new action
+        //(e.g. action is push_left, but the object specified is not reachable, or
+        // action is grasp but there is no object in the workspace)
+
+        //skip this for the moment
+        exp_state_ == aff_msgs::ExperimentState::ACTION;
+        break;
+      case aff_msgs::ExperimentState::ACTION:
+        //for now perception returns an object of interest, which is a predefined box
+        srv_action.request.pushable_object_center = perception.response.pushable_object_center;
+        srv_action.request.pushable_object_size = perception.response.pushable_object_size;
+        srv_action.request.task = msg_speech_in.speech_cmd;
+
+        std::cout << "calling action service" << std::endl;
+        //ros::service::call ("/action", srv_action.request, srv_action.response);
+        std::cout << "finished action" << std::endl;
+        exp_state_ = aff_msgs::ExperimentState::ASK_FOR_EFFECT;
+        break;
+      case aff_msgs::ExperimentState::ASK_FOR_EFFECT:
+        if (!effect_asked_for)
+        {
+          effect_asked_for = true;
+          say (ask_for_effect);
+          ros::spinOnce ();
+          ros::Duration (2).sleep ();
+        }
+
+        if (new_speech_cmd_rcvd_)
+        {
+          new_speech_cmd_rcvd_ = false;
+          if (msg_speech_in.speech_cmd < aff_msgs::Speech::MAX_ACTION_INDEX)
+          {
+            //effect speech command is received, now percept the environment again to extract
+            //relevant perceptual input, and effect
+            effect_asked_for = false;//clear the flag
+            exp_state_ = aff_msgs::ExperimentState::EFFECT;
+          }
+          else
+          {
+            say (ask_for_effect_persistent);
+            ros::spinOnce ();
+            ros::Duration (2).sleep ();
+          }
+        }
+        break;
+      case aff_msgs::ExperimentState::EFFECT:
+        //send behavior_manager a message so that robot goes for a configuration
+        //which is required for the perception process (e.g. tuck_arms)
+        ROS_INFO("calling -tuck_arms- action service");
+        srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
+        //ros::service::call ("/action", srv_action.request, srv_action.response);
+        ROS_INFO("finished -tuck_arms- action");
+
+        //Assuming that this action is done successfully, now call perception service
+        std::cout << "calling perception service" << std::endl;
+        //ros::service::call ("/perception", perception.request, perception.response);
+        std::cout << "finished perception" << std::endl;
+
+        // now extract the effect vector
+        //TODO:
+        break;
+      default:
+        break;
+    }
+
+    if (exp_state_ == aff_msgs::ExperimentState::ASK_FOR_ACTION)
+    {
+      if (!action_asked_for)
+      {
+        action_asked_for = true;
+        say (ask_for_action);
+        ros::Duration (2).sleep ();
+        ros::spinOnce ();
+      }
+
+      if (new_speech_cmd_rcvd_)
+      {
+        new_speech_cmd_rcvd_ = false;
+        if (msg_speech_in.speech_cmd < aff_msgs::Speech::MAX_ACTION_INDEX)
+        {
+          //action speech command is received, now percept the environment
+          action_asked_for = false;//clear the flag
+          exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
+
+        }
+        else
+        {
+          say (ask_for_action_persistent);
+          ros::Duration (2).sleep ();
+          ros::spinOnce ();
+        }
+      }
+    }
+    else if (exp_state_ == aff_msgs::ExperimentState::PERCEPTION)
+    {
+      //send behavior_manager a message so that robot goes for a configuration
+      //which is required for the perception process (e.g. tuck_arms)
+      ROS_INFO("calling -tuck_arms- action service");
+      srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
+
+      //ros::service::call ("/action", srv_action.request, srv_action.response);
+      ROS_INFO("finished -tuck_arms- action");
+
+      //Assuming that this action is done successfully, now call perception service
+      std::cout << "calling perception service" << std::endl;
+      //ros::service::call ("/perception", perception.request, perception.response);
+      std::cout << "finished perception" << std::endl;
+
+      //TODO:
+      //evaluate current environment if it is suitable for the action being requested
+      //if not ask for a new action
+      //(e.g. action is push_left, but the object specified is not reachable, or
+      // action is grasp but there is no object in the workspace)
+
+      //skip this for the moment
+      exp_state_ == aff_msgs::ExperimentState::ACTION;
+    }
+    else if (exp_state_ == aff_msgs::ExperimentState::ACTION)
+    {
+      //for now perception returns an object of interest, which is a predefined box
+      srv_action.request.pushable_object_center = perception.response.pushable_object_center;
+      srv_action.request.pushable_object_size = perception.response.pushable_object_size;
+      srv_action.request.task = msg_speech_in.speech_cmd;
+
+      std::cout << "calling action service" << std::endl;
+      //ros::service::call ("/action", srv_action.request, srv_action.response);
+      std::cout << "finished action" << std::endl;
+      exp_state_ = aff_msgs::ExperimentState::ASK_FOR_EFFECT;
+    }
+    else if (exp_state_ == aff_msgs::ExperimentState::ASK_FOR_EFFECT)
+    {
+      if (!effect_asked_for)
+      {
+        effect_asked_for = true;
+        say (ask_for_effect);
+        ros::spinOnce ();
+        ros::Duration (2).sleep ();
+      }
+
+      if (new_speech_cmd_rcvd_)
+      {
+        new_speech_cmd_rcvd_ = false;
+        if (msg_speech_in.speech_cmd < aff_msgs::Speech::MAX_ACTION_INDEX)
+        {
+          //effect speech command is received, now percept the environment again to extract
+          //relevant perceptual input, and effect
+          effect_asked_for = false;//clear the flag
+          exp_state_ = aff_msgs::ExperimentState::EFFECT;
+        }
+        else
+        {
+          say (ask_for_effect_persistent);
+          ros::spinOnce ();
+          ros::Duration (2).sleep ();
+        }
+      }
+    }
+    else if (exp_state_ == aff_msgs::ExperimentState::EFFECT)
+    {
+      //send behavior_manager a message so that robot goes for a configuration
+      //which is required for the perception process (e.g. tuck_arms)
+      ROS_INFO("calling -tuck_arms- action service");
+      srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
+      //ros::service::call ("/action", srv_action.request, srv_action.response);
+      ROS_INFO("finished -tuck_arms- action");
+
+      //Assuming that this action is done successfully, now call perception service
+      std::cout << "calling perception service" << std::endl;
+      //ros::service::call ("/perception", perception.request, perception.response);
+      std::cout << "finished perception" << std::endl;
+
+      // now extract the effect vector
+      //TODO:
+    }
+
+    /*
+     //new command received
+     if (msg_speech_in.speech_cmd <= aff_msgs::Speech::MAX_ACTION_INDEX && exp_state_
+     == aff_msgs::ExperimentState::STANDBY)
+     {
+     new_speech_cmd_rcvd_ = false;
+     exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
+
+     std::cout << "calling perception service" << std::endl;
+     ros::service::call ("/perception", perception.request, perception.response);
+     std::cout << "called perception service" << std::endl;
+
+     if (perception.response.feedback == perception.response.DONE)
+     {
+     srv_action.request.pushable_object_center = perception.response.pushable_object_center;
+     srv_action.request.pushable_object_size = perception.response.pushable_object_size;
+     srv_action.request.task = msg_speech_in.speech_cmd;
+     exp_state_ = aff_msgs::ExperimentState::ACTION;
+
+     std::cout << "calling action service" << std::endl;
+
+     std::cout << srv_action.request.pushable_object_center[0] << " "
+     << srv_action.request.pushable_object_center[1] << " " << srv_action.request.pushable_object_center[2]
+     << std::endl;
+
+     std::cout << srv_action.request.pushable_object_size[0] << " " << srv_action.request.pushable_object_size[1]
+     << " " << srv_action.request.pushable_object_size[2] << std::endl;
+
+     ros::service::call ("/action", srv_action.request, srv_action.response);
+     std::cout << "called action service" << std::endl;
+     exp_state_ = aff_msgs::ExperimentState::EFFECT;
+     }
+     }
+     else if (aff_msgs::Speech::MAX_EFFECT_INDEX && exp_state_ == aff_msgs::ExperimentState::EFFECT)
+     {
+     new_speech_cmd_rcvd_ = false;
+
+     std::cout << "calling perception service" << std::endl;
+     ros::service::call ("/perception", perception.request, perception.response);
+     std::cout << "called perception service" << std::endl;
+     exp_state_ = aff_msgs::ExperimentState::STANDBY;
+     }
+     */
+    ros::spinOnce ();
+  }
+  /*
+   while (n->ok ())
+   {
+   if (exp_state_ == aff_msgs::ExperimentState::PERCEPTION)
+   {
+   std::cout << "calling perception service" << std::endl;
+   ros::service::call ("/perception", perception.request, perception.response);
+   std::cout << "called perception service" << std::endl;
+   std::cout << "************  " << (int)perception.response.feedback << "  ************ " << std::endl;
+   if (perception.response.feedback == perception.response.DONE)
+   {
+   srv_action.request.pushable_object_center = perception.response.pushable_object_center;
+   srv_action.request.pushable_object_size = perception.response.pushable_object_size;
+   //        srv_action.request.pushable_object_center
+   exp_state_ = aff_msgs::ExperimentState::ACTION;
+   //        exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
+   }
+   }
+   else if (exp_state_ == aff_msgs::ExperimentState::ACTION)
+   {
+   std::cout << "calling action service" << std::endl;
+
+   std::cout << srv_action.request.pushable_object_center[0] << " " << srv_action.request.pushable_object_center[1]
+   << " " << srv_action.request.pushable_object_center[2] << std::endl;
+
+   std::cout << srv_action.request.pushable_object_size[0] << " " << srv_action.request.pushable_object_size[1]
+   << " " << srv_action.request.pushable_object_size[2] << std::endl;
+
+   ros::service::call ("/action", srv_action.request, srv_action.response);
+   std::cout << "called " << std::endl;
+   exp_state_ = aff_msgs::ExperimentState::STANDBY;
+   }
+   }
+   */
+}
+
+int
+main (int argc, char** argv)
+{
+  //ros initializations
+  ros::init (argc, argv, "experiment_manager");
+  init ();
+  run ();
+
+  return 0;
+}

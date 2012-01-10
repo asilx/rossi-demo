@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_filters/src
+END
+test_passthrough.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_filters/src/test_passthrough.cpp
+END
+test_statistical_removal.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_filters/src/test_statistical_removal.cpp
+END
+test_radius_removal.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_filters/src/test_radius_removal.cpp
+END

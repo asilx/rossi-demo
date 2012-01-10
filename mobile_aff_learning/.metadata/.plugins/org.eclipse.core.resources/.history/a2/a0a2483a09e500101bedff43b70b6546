@@ -1,0 +1,17 @@
+#include "iostream"
+#include "sstream"
+#include "string"
+
+//#include "gazebo_plugins/gaze"
+#include "gazebo/XMLConfig.hh"
+#include "gazebo/SpawnModel.h"
+
+#include "ros/package.h"
+#include "ros/ros.h"
+
+
+
+int main()
+{
+	return 0;
+}

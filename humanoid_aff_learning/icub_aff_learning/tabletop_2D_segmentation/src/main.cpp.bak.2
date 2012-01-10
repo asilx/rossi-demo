@@ -1,0 +1,3136 @@
+//============================================================================
+// Name        : Table Calibration Mono.cpp
+// Author      : 
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <stdio.h>
+#include <signal.h>
+
+#include <yarp/os/all.h>
+#include <yarp/sig/all.h>
+#include <yarp/dev/Drivers.h>
+#include <yarp/dev/Drivers.h>
+#include <yarp/dev/ControlBoardInterfaces.h>
+#include <yarp/dev/GazeControl.h>
+#include <yarp/dev/PolyDriver.h>
+#include <math.h>
+#include <yarp/os/Network.h>
+#include <yarp/math/Math.h>
+#include <yarp/dev/PolyDriver.h>
+#include <yarp/dev/Drivers.h>
+
+#include <vector>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <iomanip>
+
+#include <opencv/highgui.h>
+#include <opencv/cv.h>
+#include <opencv/cxcore.h>
+
+#include "ros/ros.h"
+#include "cv_bridge/cv_bridge.h"
+#include "cv_bridge/CvBridge.h"
+#include "tabletop_2D_segmentation/Perception2D.h"
+
+#include "sensor_msgs/Image.h"
+#include "sensor_msgs/RegionOfInterest.h"
+
+#include "aff_msgs/ExperimentState.h"
+
+const int N_BINS = 10;
+const std::string WORKSPACE_2D_SEGMENTATION_SRV_NAME =
+		"/tabletop_2D_segmentation";
+
+YARP_DECLARE_DEVICES(icubmod)
+;
+
+using namespace yarp::dev;
+using namespace yarp::os;
+using namespace yarp::sig;
+using namespace std;
+//using namespace cv;
+#define PI 3.1415926535898
+
+struct Packet {
+	IplImage* raw_image;
+	IplImage* filtered_image;
+	std::vector<CvRect> boundingBoxes;
+	std::vector<int> segmented_areas;
+
+	bool faceDetected;
+	std::vector<CvHistogram*> redHists;
+	std::vector<CvHistogram*> blueHists;
+	std::vector<CvHistogram*> greenHists;
+};
+
+void initializePacket(Packet *willBeSent);
+int givePercentage(IplImage* overlay);
+void Allocate_imgs();
+int cvOverlayImage(IplImage* src, IplImage* overlay, CvPoint location,
+		bool flag);
+bool detect(IplImage* img, CvPoint* pt1, CvPoint *pt2);
+void drawWireFrame(IplImage *image, bool** willBeFilled, float aboveLimit,
+		IplImage *colourImage);//,int motion);
+float getEuclidianDistance(CvPoint2D32f p1, CvPoint2D32f p2);
+int findEdgeColorForIdentification(CvPoint2D32f p1, CvPoint2D32f p2,
+		IplImage* image);
+int findEdgeColorForVerification(CvPoint2D32f p1, CvPoint2D32f p2,
+		IplImage* image);
+double findDistanceToLine(CvPoint2D32f p1, CvPoint2D32f p2, CvPoint2D32f point);
+int* determineWays(CvPoint2D32f* singleCorners, int indexAndDegrees[][9],
+		int index);
+int* determineOpenSide(CvPoint2D32f* singleCorners, int indexAndDegrees[][9],
+		int index);
+int findExtensionColor(CvPoint2D32f source, CvPoint2D32f destination,
+		IplImage* image);
+void tagOtherCorners(int* ways, int x);
+void tagMainCorner(bool selections[], int verhor[], int x, int *ways);
+int GrowColor(int x, int y, int *minX, int *minY, int *maxX, int *maxY);
+void releaseMemory();
+void initializeTheGlobalVars();
+void findAreasAndCorners(int indexAndDegrees[][9]);
+
+IplImage *destination, *bgr_frameLeft = NULL, *bgr_frameRight = NULL, *img =
+		NULL, *test, *imgHsv, *imgResult, *copyBgr, *Image2;
+int mR_val = 255, mG_val = 0, mB_val = 0, MAR_val = 256, MAG_val = 104,
+		MAB_val = 157;//default green .ctrl BLUE to find color
+char fileName[100];
+char positions[4][4][100];
+char areas[3][3][100];
+CvPoint2D32f** places;
+bool detectedFace = false;
+CvPoint* pt1, *pt2;
+unsigned long total[3];
+
+PolyDriver *clientGaze;
+PolyDriver *clientTorso;
+IGazeControl *igaze;
+IEncoders *ienc;
+IPositionControl *ipos;
+IPositionControl *iposGaze;
+
+int diff, mean[3], temp[3];
+CvScalar color, color1;
+CvScalar value11;
+float threshold = 200.0;//200
+
+IplImage * hue; // hue channel
+IplImage * hue1; // Hue upper bound
+IplImage * hue2; // Hue lower bound
+IplImage * hue3; // hue color filtering
+IplImage * sat; // Sat channel
+IplImage * sat1; // Sat upper bound
+IplImage * sat2; // sat lower bound
+IplImage * sat3; // sat color filtering
+IplImage * HnS; // sat and hue channel
+//vector<Mat> slices;
+IplImage * hsvImage; // hsv image
+
+int HuethresH = 155,//155
+		HuethresL = 51,//51
+		SatthresL = 0, SatthresH = 158,//158
+		ValthresL = 0, ValthresH = 0, erosionCount = 0, blurSize = 0;
+int c = 0;
+int d = 0;
+
+BufferedPort<Bottle> in;
+Bottle *inBot;
+
+//int universalUpDeg = 0;
+//int universalDownDeg = 0;
+//int universalLeftDeg = 0;
+//int universalRightDeg = 0;
+int* ways;
+bool* identified;
+int** identificationIndex;
+bool** willBeFilled;
+int setOrReset[3][3];
+int countForIdentified = 0;
+CvPoint2D32f* singleCorners;
+CvPoint2D32f* features;
+CvPoint2D32f* newCornerFeatures;
+
+int countForPixels;
+
+yarp::sig::Vector angles(3);
+
+BufferedPort<ImageOf<PixelBgr> > *portImgOut, *portDenemeOut, *portDenemeOut1;
+
+// Create memory for calculations
+static CvMemStorage* storage = 0;
+
+// Create a new Haar classifier
+static CvHaarClassifierCascade* cascade = 0;
+
+// Create a string that contains the cascade name
+const char* cascade_name = "haarcascade_frontalface_alt.xml";
+
+IplImage** images = new IplImage*[9];
+bool seenOrNot[9];
+CvPoint* wireFramePoints = new CvPoint[9];
+
+int locationAndSize[9][4];
+Packet willBeSent;
+
+int counter = 0;
+IplImage* tempImg;
+bool motionDone;
+
+//++Kadir
+sensor_msgs::CvBridge* bridge_;
+ros::ServiceServer srv_perception_2D;
+ros::Subscriber sub_exp_state_;
+aff_msgs::ExperimentState exp_state_;
+IplImage* raw_image;
+IplImage* filtered_image;
+cv_bridge::CvImagePtr cv_raw_image_ptr;
+
+
+int percept(int region_id) {
+	//TODO: Yigidim Aslanim
+	return -1;
+}
+
+void expStateCallback(aff_msgs::ExperimentState::ConstPtr exp_state)
+{
+	exp_state_ = *exp_state;
+}
+
+bool perception2DCallback(
+		tabletop_2D_segmentation::Perception2D::Request& request,
+		tabletop_2D_segmentation::Perception2D::Response& response) {
+
+	std::cout << "**********************" << std::endl;
+	std::cout << " service called" << std::endl;
+	std::cout << "**********************" << std::endl;
+	if (request.task
+			== tabletop_2D_segmentation::Perception2D::Request::DO_PERCEPT) {
+
+		int region_id = request.arg * 3 + request.arg2;
+		//		std::cout<<(int)request.arg<<" "<<(int)request.arg2<<" "<<region_id<<std::endl;
+
+		//		percept(region_id);
+		//		cv_raw_image_ptr->image = cv::Mat(raw_image);
+		//		sensor_msgs::CvBridge::fromIpltoRosImage(willBeSent.raw_image, response.raw_image, "bgr8");
+		sensor_msgs::Image::Ptr img_ptr = bridge_->cvToImgMsg(
+				willBeSent.raw_image, "bgr8");
+
+		//cvShowImage("asd", bridge_->imgMsgToCv((sensor_msgs::Image::ConstPtr)img_ptr, "bgr8"));
+		//		cvWaitKey(0);
+		response.raw_image = *img_ptr;
+		img_ptr = bridge_->cvToImgMsg(willBeSent.filtered_image, "bgr8");
+		response.filtered_image = *img_ptr;
+
+		response.rois.resize(9);
+		for (uint8_t i = 0; i < willBeSent.boundingBoxes.size(); i++) {
+			sensor_msgs::RegionOfInterest roi;
+			roi.width = willBeSent.boundingBoxes[i].width;
+			roi.height = willBeSent.boundingBoxes[i].height;
+			roi.x_offset = willBeSent.boundingBoxes[i].x;
+			roi.y_offset = willBeSent.boundingBoxes[i].y;
+			response.rois[i] = roi;
+		}
+
+		response.face_detected = willBeSent.faceDetected;
+		response.ooi_area = willBeSent.segmented_areas[region_id];
+		response.ooi_color_r_hist.resize(N_BINS);
+		response.ooi_color_g_hist.resize(N_BINS);
+		response.ooi_color_b_hist.resize(N_BINS);
+
+		for (uint8_t i = 0; i < N_BINS; i++) {
+			response.ooi_color_r_hist[i]
+					= cvQueryHistValue_1D(willBeSent.redHists[region_id], i);
+			response.ooi_color_g_hist[i]
+					= cvQueryHistValue_1D(willBeSent.greenHists[region_id], i);
+			response.ooi_color_b_hist[i]
+					= cvQueryHistValue_1D(willBeSent.blueHists[region_id], i);
+		}
+	}
+	return true;
+}
+
+//--Kadir
+
+int main(int argc, char** argv) {
+
+	ros::init(argc, argv, "tabletop_2D_segmentator");
+	ros::NodeHandle nh;
+
+	srv_perception_2D = nh.advertiseService(WORKSPACE_2D_SEGMENTATION_SRV_NAME,
+			perception2DCallback);
+
+	sub_exp_state_ = nh.subscribe<aff_msgs::ExperimentState>("/experiment_state", 10, expStateCallback);
+
+	YARP_REGISTER_DEVICES(icubmod);
+
+	pt1 = new CvPoint;
+	pt2 = new CvPoint;
+	bridge_ = new sensor_msgs::CvBridge();
+
+	BufferedPort<ImageOf<PixelBgr> > imagePortLeft, imagePortRight;
+	BufferedPort<ImageOf<PixelBgr> > *portImgOut = new BufferedPort<ImageOf<
+			PixelBgr> > ;
+	BufferedPort<Bottle> motionSense;
+
+	ImageOf<PixelBgr> *frameLeft;
+
+	Network::init();
+
+	Property optGaze("(device gazecontrollerclient)");
+	optGaze.put("remote", "/iKinGazeCtrl");
+	optGaze.put("local", "/gaze_client");
+
+	clientGaze = new PolyDriver;
+	if (!clientGaze->open(optGaze)) {
+		delete clientGaze;
+		return false;
+	}
+
+	// open the view
+	clientGaze->view(igaze);
+	//clientGaze->view(iposGaze);
+
+	// put the gaze in tracking mode, so that
+	// when the torso moves, the gaze controller
+	// will compensate for it
+	igaze->setTrackingMode(false);
+	igaze->setEyesTrajTime(0.2);
+	igaze->setNeckTrajTime(0.4);
+	//	Property optTorso("(device remote_controlboard)");
+	//	optTorso.put("remote","/icub/torso");
+	//	optTorso.put("local","/torso_client");
+	//
+	//	clientTorso=new PolyDriver;
+	//	if (!clientTorso->open(optTorso))
+	//	{
+	//		delete clientTorso;
+	//		return false;
+	//	}
+	//
+	//	// open the view
+	//	clientTorso->view(ienc);
+	//	clientTorso->view(ipos);
+
+	motionSense.open("/ext_motion_detection:i");
+	Network::connect("/ext_motion_detection:o", "/ext_motion_detection:i");
+
+	portImgOut = new BufferedPort<ImageOf<PixelBgr> > ;
+	portImgOut->open("/video/imageLeft/out");
+
+	portDenemeOut = new BufferedPort<ImageOf<PixelBgr> > ;
+	portDenemeOut->open("/video/imageDeneme/out");
+
+	portDenemeOut1 = new BufferedPort<ImageOf<PixelBgr> > ;
+	portDenemeOut1->open("/video/imageDeneme1/out");
+
+	Network::connect("/video/imageLeft/out", "/ed");
+	Network::connect("/video/imageDeneme/out", "/deneme");
+	Network::connect("/video/imageDeneme1/out", "/deneme1");
+
+	imagePortLeft.open("/video/imageLeft/in");
+	Network::connect("/icub/camCalib/left/out", "/video/imageLeft/in");
+	//Network::connect("/icubSim/cam/left","/video/imageLeft/in");
+	//
+	//	imagePortRight.open("/video/imageRight/in");
+	//	Network::connect("/icub/camCalib/right/out","/video/imageRight/in");
+	cvNamedWindow("Captures", CV_WINDOW_AUTOSIZE);
+	cout << "aaa" << endl;
+	wireFramePoints[0].x = 280;
+	wireFramePoints[0].y = 174;
+	wireFramePoints[1].x = 527;
+	wireFramePoints[1].y = 174;
+	wireFramePoints[2].x = 780;
+	wireFramePoints[2].y = 174;
+	wireFramePoints[3].x = 254;
+	wireFramePoints[3].y = 358;
+	wireFramePoints[4].x = 525;
+	wireFramePoints[4].y = 358;
+	wireFramePoints[5].x = 788;
+	wireFramePoints[5].y = 358;
+	wireFramePoints[6].x = 217;
+	wireFramePoints[6].y = 598;
+	wireFramePoints[7].x = 515;
+	wireFramePoints[7].y = 598;
+	wireFramePoints[8].x = 825;
+	wireFramePoints[8].y = 598;
+
+	sprintf(positions[0][0], "Top Left Corner");
+	sprintf(positions[0][1], "Top Left Side");
+	sprintf(positions[0][2], "Top Right Side");
+	sprintf(positions[0][3], "Top Right Corner");
+	sprintf(positions[1][0], "Left Up Side");
+	sprintf(positions[1][1], "Middle Up Left");
+	sprintf(positions[1][2], "Middle Up Right");
+	sprintf(positions[1][3], "Right Up Side");
+	sprintf(positions[2][0], "Left Down Side");
+	sprintf(positions[2][1], "Middle Down Left");
+	sprintf(positions[2][2], "Middle Down Right");
+	sprintf(positions[2][3], "Right Down Side");
+	sprintf(positions[3][0], "Down Left Corner");
+	sprintf(positions[3][1], "Down Left Side");
+	sprintf(positions[3][2], "Down Right Side");
+	sprintf(positions[3][3], "Down Right Corner");
+
+	sprintf(areas[0][0], "Left Up Corner");
+	sprintf(areas[0][1], "Top Middle");
+	sprintf(areas[0][2], "Right Up Corner");
+	sprintf(areas[1][0], "Left Side");
+	sprintf(areas[1][1], "Middle");
+	sprintf(areas[1][2], "Right Side");
+	sprintf(areas[2][0], "Left Down Corner");
+	sprintf(areas[2][1], "Down Middle");
+	sprintf(areas[2][2], "Right Down Corner");
+
+	CvFont font;
+	ImageOf<PixelBgr> imgOut, denemeOut, denemeOut1;
+	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 0.5, CV_AA);
+	imgResult = cvCreateImage(cvSize(640, 480), IPL_DEPTH_8U, 1);
+	IplImage* tempImgG = cvCreateImage(cvGetSize(imgResult), IPL_DEPTH_8U, 1);
+	tempImg = cvCreateImage(cvGetSize(imgResult), IPL_DEPTH_8U, 3);
+	IplImage* tempImg1 = cvCreateImage(cvGetSize(imgResult), IPL_DEPTH_8U, 3);
+	IplImage* tempImgForROI = cvCreateImage(cvGetSize(imgResult), IPL_DEPTH_8U,
+			3);
+	IplImage* wireFrame = cvCreateImage(cvSize(1024, 768), IPL_DEPTH_8U, 3);
+
+	int countt = 0;
+	int motion;
+	bool flag = true;
+
+	initializeTheGlobalVars();
+
+	while (flag) {
+
+		if (!nh.ok())
+			break;
+
+		ros::spinOnce();
+		frameLeft = imagePortLeft.read();
+		if (frameLeft != NULL) {
+			countt++;
+			cout << countt << endl;
+			bgr_frameLeft = (IplImage*) frameLeft->getIplImage();
+			countForIdentified = 0;
+
+			cvCvtColor(bgr_frameLeft, tempImgG, CV_BGR2GRAY);
+			cvCopyImage(bgr_frameLeft,tempImg);
+
+			//cvSmooth(tempImgG, tempImgG, CV_GAUSSIAN, 3, 3, 0, 0);
+			cvThreshold(tempImgG, imgResult, 240, 255, CV_THRESH_BINARY);
+			//cvErode(imgResult, imgResult, NULL,1);
+			igaze->getAngles(angles);
+
+			//inBot = motionSense.read();
+			//if (inBot == NULL) continue;
+
+			//motion = inBot->get(0).asInt();
+			//cout<<"motion: "<<motion<<endl;
+			//igaze->checkMotionDone(&motionDone);
+			//cout<<"Motion Done: "<<motionDone<<endl;
+			if (angles[1] < -26)//&& motion != 1)//Internal motion da eklenecek
+			{
+				releaseMemory();
+
+				initializePacket(&willBeSent);
+
+				willBeSent.raw_image = cvCreateImage(cvGetSize(bgr_frameLeft),
+						bgr_frameLeft->depth, bgr_frameLeft->nChannels);
+				cvCopyImage(bgr_frameLeft,willBeSent.raw_image);
+
+				//Feature Detection
+				int corner_count = 100;
+				features = new CvPoint2D32f[100];
+
+				CvSize img_sz = cvGetSize(imgResult);
+				IplImage* tmp_image = cvCreateImage(img_sz, IPL_DEPTH_32F, 1);
+				IplImage* eig_image = cvCreateImage(img_sz, IPL_DEPTH_32F, 1);
+				int win_size = 20;
+				cvGoodFeaturesToTrack(imgResult, eig_image, tmp_image,
+						features, &corner_count, 0.1, 5, 0, 4, 0, 0.04);
+				//cvGoodFeaturesToTrack(imgResult, eig_image, tmp_image, features,
+				//&corner_count, 0.5, 5, 0, 3,1, 0.04);
+				//				cvFindCornerSubPix(imgResult, features, corner_count, cvSize(win_size,
+				//						win_size), cvSize(-1, -1), cvTermCriteria(CV_TERMCRIT_ITER
+				//						| CV_TERMCRIT_EPS, 20, 0.03));
+				//				cvCopyImage(bgr_frameLeft,tempImg);
+				//				for (int i = 0; i < corner_count; i++) {
+				//					cvCircle(tempImg, cvPoint(features[i].x, features[i].y), 4, cvScalar(0,
+				//							255, 0), -1, 8);
+				//				}
+				//				sprintf(fileName,"/home/yigit/images/features%d.jpg",c);
+				//							  cvSaveImage(fileName,tempImg);
+				//							  c++;
+
+				cvDilate(imgResult, imgResult, NULL, 3);
+
+				//				sprintf(fileName,"/home/yigit/images/white%d.jpg",c);
+				//				  cvSaveImage(fileName,imgResult);
+				//				  c++;
+				int validationNos[corner_count];
+				double degrees[corner_count][2];
+				for (int i = 0; i < corner_count; i++) {
+					validationNos[i] = 0;
+				}
+				int white;
+				double deg = 0.0;
+				IplImage* imgCopy;
+				int count = 0;
+				for (int i = 0; i < corner_count; i++) {
+					for (int j = 0; j < corner_count; j++) {
+						if (i != j && (getEuclidianDistance(features[i],
+								features[j]) > 80 + features[i].y * 0.05)) {
+
+							white = findEdgeColorForVerification(features[i],
+									features[j], imgResult);
+							if (white == 1) {
+								deg = (int) ((atan2((features[i].y
+										- features[j].y), (features[i].x
+										- features[j].x)) * 180) / PI + 360)
+										% 360;
+
+								if (validationNos[i] == 0) {
+
+									degrees[i][validationNos[i]] = deg;
+									validationNos[i]++;
+								} else {
+									int degreeDiff = abs(
+											degrees[i][validationNos[i] - 1]
+													- deg);
+									if ((degreeDiff > 45 && degreeDiff < 135)
+											|| (degreeDiff > 225 && degreeDiff
+													< 315)) {
+
+										degrees[i][validationNos[i]] = deg;
+
+										validationNos[i]++;
+										count++;
+
+									}
+
+								}
+
+							}
+							white = 0;
+
+						}
+						if (validationNos[i] == 2)
+							break;
+
+					}
+
+				}
+				newCornerFeatures = new CvPoint2D32f[count];
+				int index = 0;
+				for (int i = 0; i < corner_count; i++) {
+					if (validationNos[i] == 2) {
+						newCornerFeatures[index].x = features[i].x;
+						newCornerFeatures[index].y = features[i].y;
+						index++;
+					}
+
+				}
+
+				singleCorners = new CvPoint2D32f[count];
+				for (int i = 0; i < count; i++) {
+					singleCorners[i].x = 0;
+					singleCorners[i].y = 0;
+				}
+				int grouping[count];
+				for (int i = 0; i < count; i++) {
+					grouping[i] = -1;
+				}
+
+				counter = 0;
+				int no = 1;
+				for (int i = 0; i < count; i++) {
+					int group = counter;
+					if (grouping[i] == -1) {
+						grouping[i] = group;
+						singleCorners[counter].x
+								+= (int) newCornerFeatures[i].x;
+						singleCorners[counter].y
+								+= (int) newCornerFeatures[i].y;
+
+						for (int x = i + 1; x < count; x++) {
+
+							if (grouping[x] == -1 && getEuclidianDistance(
+									newCornerFeatures[i], newCornerFeatures[x])
+									< 35 + newCornerFeatures[i].y * 0.13) {//)+ (newCornerFeatures[i].y/480)*90 ) {
+								//cout<<"Icerde"<<endl;
+								grouping[x] = group;
+								singleCorners[counter].x
+										+= (int) newCornerFeatures[x].x;
+								singleCorners[counter].y
+										+= (int) newCornerFeatures[x].y;
+								no++;
+							}
+						}
+						singleCorners[counter].x
+								= (int) (singleCorners[counter].x / no);
+						singleCorners[counter].y
+								= (int) (singleCorners[counter].y / no);
+						no = 1;
+						counter++;
+					}
+				}
+
+				cvCopyImage(bgr_frameLeft,tempImg);
+				for (int i = 0; i < counter; i++) {
+					cvCircle(tempImg, cvPoint(singleCorners[i].x,
+							singleCorners[i].y), 4, cvScalar(0, 255, 0), -1, 8);
+				}
+				//				cvShowImage("Corners",tempImg);
+				//				cvWaitKey(0);
+				//					sprintf(fileName,"/home/yigit/images/corners%d.jpg",d);
+				//					  cvSaveImage(fileName,tempImg);
+				//					  d++;
+
+				//cvCopyImage(bgr_frameLeft,tempImg);
+
+				int indexAndDegrees[counter][9];
+				for (int i = 0; i < counter; i++) {
+					indexAndDegrees[i][0] = 0;
+					for (int j = 1; j < 9; j++) {
+						indexAndDegrees[i][j] = -1;
+					}
+				}
+
+				for (int i = 0; i < counter; i++) {
+					//					cvCopyImage(bgr_frameLeft,tempImg);
+					//					cvCircle(tempImg, cvPoint(singleCorners[i].x, singleCorners[i].y), 4,
+					//													cvScalar(255, 255, 0), -1, 8);
+					//					cvShowImage("Neighbours",tempImg);
+					//					cvWaitKey(0);
+					for (int j = 0; j < counter; j++) {
+						if (i != j) {
+
+							white = findEdgeColorForVerification(
+									singleCorners[i], singleCorners[j],
+									imgResult);
+
+							if (white == 1) {
+								//								cvCircle(tempImg, cvPoint(singleCorners[j].x, singleCorners[j].y), 4,
+								//										cvScalar(0, 255, 0), -1, 8);
+								//								cvShowImage("Neighbours",tempImg);
+								//													cvWaitKey(0);
+
+								int degree = (int) ((atan2((singleCorners[i].y
+										- singleCorners[j].y),
+										(singleCorners[i].x
+												- singleCorners[j].x)) * 180)
+										/ PI + 360) % 360;
+								int minIndex = j;
+								int minDegree = degree;
+								double minValue = getEuclidianDistance(
+										singleCorners[i], singleCorners[j]);
+								bool flag = false;
+								if ((degree > 35 && degree <= 145) || (degree
+										> 205 && degree < 325)) {
+									if (minValue < 240)
+										flag = true;
+								} else if ((degree > 315 || degree < 45)
+										|| (degree > 135 && degree < 215)) {
+									if (minValue < 320)
+										flag = true;
+								}
+
+								//cout<<"Uzaklik "<<minValue<<endl;
+								int degreeToCompare = -1;
+
+								for (int k = 0; k < counter; k++) {
+									if (!(i == k || j == k)) {
+										//cout<<"KLAR"<<endl;
+
+										white = findEdgeColorForVerification(
+												singleCorners[i],
+												singleCorners[k], imgResult);
+										if (white == 1) {
+											degreeToCompare
+													= (int) ((atan2(
+															(singleCorners[i].y
+																	- singleCorners[k].y),
+															(singleCorners[i].x
+																	- singleCorners[k].x))
+															* 180) / PI + 360)
+															% 360;
+											//cout<<"compare Edilecek Uzaklik"<<getEuclidianDistance(singleCorners[i],
+											//singleCorners[k])<<endl;
+											if (degreeToCompare > 45
+													&& degreeToCompare < 315
+													&& degree > 45 && degree
+													< 315 && degreeToCompare
+													< degree + 10
+													&& degreeToCompare > degree
+															- 10) {
+
+												if (getEuclidianDistance(
+														singleCorners[i],
+														singleCorners[k])
+														< minValue
+														&& ((degreeToCompare
+																> 35
+																&& degreeToCompare
+																		<= 145)
+																|| (degreeToCompare
+																		> 205
+																		&& degreeToCompare
+																				< 325))
+														&& getEuclidianDistance(
+																singleCorners[i],
+																singleCorners[k])
+																< 240) {
+													minValue
+															= getEuclidianDistance(
+																	singleCorners[i],
+																	singleCorners[k]);
+													minIndex = k;
+													minDegree = degreeToCompare;
+													//cout<<"Degisti"<<endl;
+
+												} else if (getEuclidianDistance(
+														singleCorners[i],
+														singleCorners[k])
+														< minValue
+														&& (degreeToCompare
+																> 135
+																&& degreeToCompare
+																		< 215)
+														&& getEuclidianDistance(
+																singleCorners[i],
+																singleCorners[k])
+																< 320) {
+													minValue
+															= getEuclidianDistance(
+																	singleCorners[i],
+																	singleCorners[k]);
+													minIndex = k;
+													minDegree = degreeToCompare;
+													//cout<<"Degisti"<<endl;
+												}
+
+											} else if ((degreeToCompare > 315
+													|| degreeToCompare < 45)
+													&& (degree < 45 || degree
+															> 315)) {
+												if (getEuclidianDistance(
+														singleCorners[i],
+														singleCorners[k])
+														< minValue
+														&& getEuclidianDistance(
+																singleCorners[i],
+																singleCorners[k])
+																< 320) {
+													minValue
+															= getEuclidianDistance(
+																	singleCorners[i],
+																	singleCorners[k]);
+													minIndex = k;
+													minDegree = degreeToCompare;
+													//cout<<"Degisti"<<endl;
+
+												}
+											}
+										}
+									}
+
+								}
+								int noOfCorner = indexAndDegrees[i][0];
+								//cout<<"no of corner: "<<noOfCorner<<endl;
+								if (noOfCorner != 4) {
+									for (int x = 0; x < noOfCorner + 1; x++) {
+
+										if (indexAndDegrees[i][2 * x + 1]
+												== minIndex) {
+											//cout<<"zaten var"<<endl;
+											break;
+										} else if (indexAndDegrees[i][2 * x + 1]
+												== -1 && flag) {
+											indexAndDegrees[i][2 * x + 1]
+													= minIndex;
+											indexAndDegrees[i][2 * x + 2]
+													= minDegree;
+											indexAndDegrees[i][0]++;
+											//cout<<"Kaydedildi"<<endl;
+
+										}
+									}
+								}
+
+							}
+
+						}
+
+					}
+				}
+
+				//				cout<<"Neighbours:"<<endl;
+				//				for (int y = 0; y < counter; y++) {
+				//					cout<<indexAndDegrees[y][0] <<endl;
+				//					cvCopyImage(bgr_frameLeft,tempImg);
+				//					for (int i = 0; i < indexAndDegrees[y][0]; i++) {
+				//						cvCircle(tempImg, cvPoint(singleCorners[indexAndDegrees[y][2*i+1]].x, singleCorners[indexAndDegrees[y][2*i+1]].y), 4,
+				//								cvScalar(0, 255, 0), -1, 8);
+				//					}
+				//					cvShowImage("Neighbours",tempImg);
+				//					cvWaitKey(0);
+				//
+				//				}
+				//				cout<<"Neighbours finish"<<endl;
+
+				identificationIndex = new int*[counter];
+				for (int y = 0; y < counter; y++) {
+					identificationIndex[y] = new int[2];
+				}
+
+				identified = new bool[counter];
+				for (int x = 0; x < counter; x++) {
+					identified[x] = false;
+				}
+
+				for (int x = 0; x < counter; x++) {
+					for (int y = 0; y < 2; y++) {
+						identificationIndex[x][y] = -1;
+					}
+				}
+
+				willBeFilled = new bool*[4];
+				for (int y = 0; y < 4; y++) {
+					willBeFilled[y] = new bool[4];
+				}
+
+				for (int x = 0; x < 4; x++) {
+					for (int y = 0; y < 4; y++) {
+						willBeFilled[x][y] = false;
+					}
+				}
+
+				/*
+				 * START LABELING
+				 */
+				findAreasAndCorners(indexAndDegrees);
+				/*
+				 * FINISH LABELING
+				 */
+
+				cvCopyImage(bgr_frameLeft,tempImg);
+				cvCopyImage(bgr_frameLeft,tempImg1);
+				for (int x = 0; x < counter; x++) {
+					if (identified[x]) {
+						cvCircle(tempImg1, cvPoint(singleCorners[x].x,
+								singleCorners[x].y), 4, cvScalar(0, 255, 0),
+								-1, 8);
+						cvPutText(
+								tempImg1,
+								positions[identificationIndex[x][0]][identificationIndex[x][1]],
+								cvPoint(singleCorners[x].x, singleCorners[x].y),
+								&font, cvScalar(0, 255, 0, 0));
+					}
+				}
+
+				for (int x = 0; x < 3; x++) {
+					for (int y = 0; y < 3; y++) {
+
+						if (willBeFilled[x][y] && willBeFilled[x + 1][y + 1]
+								&& (places[x][y].x + places[x + 1][y + 1].x)
+										/ 2 < tempImg->width && (places[x][y].x
+								+ places[x + 1][y + 1].x) / 2 > 0
+								&& (places[x][y].y + places[x + 1][y + 1].y)
+										/ 2 < tempImg->height
+								&& (places[x][y].y + places[x + 1][y + 1].y)
+										/ 2 > 0) {
+
+							cvCircle(tempImg, cvPoint((places[x][y].x
+									+ places[x + 1][y + 1].x) / 2,
+									(places[x][y].y + places[x + 1][y + 1].y)
+											/ 2), 4, cvScalar(0, 255, 0), -1, 8);
+							cvPutText(tempImg, areas[x][y], cvPoint(
+									(places[x][y].x + places[x + 1][y + 1].x)
+											/ 2, (places[x][y].y
+											+ places[x + 1][y + 1].y) / 2),
+									&font, cvScalar(0, 255, 0, 0));
+						} else if (willBeFilled[x][y + 1]
+								&& willBeFilled[x + 1][y]
+								&& (places[x][y + 1].x + places[x + 1][y].x)
+										/ 2 < tempImg->width && (places[x][y
+								+ 1].x + places[x + 1][y].x) / 2 > 0
+								&& (places[x][y + 1].y + places[x + 1][y].y)
+										/ 2 < tempImg->height && (places[x][y
+								+ 1].y + places[x + 1][y].y) / 2 > 0) {
+
+							cvCircle(tempImg, cvPoint((places[x][y + 1].x
+									+ places[x + 1][y].x) / 2,
+									(places[x][y + 1].y + places[x + 1][y].y)
+											/ 2), 4, cvScalar(0, 255, 0), -1, 8);
+							cvPutText(tempImg, areas[x][y], cvPoint(
+									(places[x][y + 1].x + places[x + 1][y].x)
+											/ 2, (places[x][y + 1].y + places[x
+											+ 1][y].y) / 2), &font, cvScalar(0,
+									255, 0, 0));
+						}
+
+					}
+				}
+
+				//Prepare the Image
+				int width = bgr_frameLeft->width;
+				int height = bgr_frameLeft->height;
+				if (width > 0 && height > 0) {
+					copyBgr = cvCreateImage(cvSize(bgr_frameLeft->width,
+							bgr_frameLeft->height), IPL_DEPTH_8U, 3);
+					cvCopyImage(bgr_frameLeft,copyBgr);
+					IplImage *ROIGrayAndBinary = cvCreateImage(cvSize(width,
+							height), IPL_DEPTH_8U, 1);
+					cvCvtColor(copyBgr, ROIGrayAndBinary, CV_BGR2GRAY);
+					cvThreshold(ROIGrayAndBinary, ROIGrayAndBinary, 200, 255,
+							CV_THRESH_BINARY );
+
+					cvDilate(ROIGrayAndBinary, ROIGrayAndBinary, NULL, 3);
+
+					CvScalar ptr;
+					CvScalar ptr1;
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							if (b < ROIGrayAndBinary->height && b > 0 && a
+									< ROIGrayAndBinary->width && a > 0) {
+								ptr = cvGet2D(ROIGrayAndBinary, b, a);
+								if (ptr.val[0] > 240.0 && b < copyBgr->height
+										&& b > 0 && a < copyBgr->width && a > 0)
+									cvSet2D(copyBgr, b, a, cvScalarAll(0));
+							}
+						}
+
+					}
+					hsvImage = cvCreateImage(cvSize(width, height),
+							IPL_DEPTH_8U, 3);
+					hue = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
+					hue1
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+					hue2
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+					hue3
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+
+					sat = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
+					sat1
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+					sat2
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+					sat3
+							= cvCreateImage(cvSize(width, height),
+									IPL_DEPTH_8U, 1);
+
+					HnS = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
+					//Mat imgMat(ROI);
+					cvCvtColor(copyBgr, hsvImage, CV_RGB2HSV);
+
+					cvSetImageCOI(hsvImage, 1);
+					cvCopy(hsvImage, hue);
+
+					cvSetImageCOI(hsvImage, 2);
+					cvCopy(hsvImage, sat);
+
+					cvThreshold(hue, hue1, HuethresL, 255, CV_THRESH_BINARY); // get lower bound
+					cvThreshold(hue, hue2, HuethresH, 255, CV_THRESH_BINARY_INV); // get upper bound
+
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							if (b < hue1->height && b > 0 && a < hue1->width
+									&& a > 0 && b < hue2->height && b > 0 && a
+									< hue2->width && a > 0) {
+								ptr = cvGet2D(hue1, b, a);
+								ptr1 = cvGet2D(hue2, b, a);
+								int g = ((int) ptr.val[0] & (int) ptr1.val[0]);
+								if (b < hue3->height && b > 0 && a
+										< hue3->width && a > 0)
+									cvSet2D(hue3, b, a, cvScalarAll(g));
+							}
+						}
+
+					}
+
+					cvThreshold(sat, sat1, SatthresL, 255, CV_THRESH_BINARY); // get lower bound
+					cvThreshold(sat, sat2, SatthresH, 255, CV_THRESH_BINARY_INV); // get upper bound
+					//sat3 = sat1 & sat2; // multiply 2 matrix to get the color range
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							if (b < sat1->height && b > 0 && a < sat1->width
+									&& a > 0 && b < sat2->height && b > 0 && a
+									< sat2->width && a > 0) {
+								ptr = cvGet2D(sat1, b, a);
+								ptr1 = cvGet2D(sat2, b, a);
+								int g = ((int) ptr.val[0] & (int) ptr1.val[0]);
+								if (b < sat3->height && b > 0 && a
+										< sat3->width && a > 0)
+									cvSet2D(sat3, b, a, cvScalarAll(g));
+							}
+
+						}
+
+					}
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							if (b < sat3->height && b > 0 && a < sat3->width
+									&& a > 0 && b < hue3->height && b > 0 && a
+									< hue3->width && a > 0) {
+								ptr = cvGet2D(sat3, b, a);
+								ptr1 = cvGet2D(hue3, b, a);
+								int g = ((int) ptr.val[0] & (int) ptr1.val[0]);
+								if (b < HnS->height && b > 0 && a < HnS->width
+										&& a > 0)
+									cvSet2D(HnS, b, a, cvScalarAll(g));
+							}
+
+						}
+
+					}
+
+					cvDilate(HnS, HnS, NULL, 1);
+
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							//cout<<x<<" "<<y<<endl;
+							if (b < HnS->height && b > 0 && a < HnS->width && a
+									> 0) {
+								ptr = cvGet2D(HnS, b, a);
+								if (ptr.val[0] > 240.0 && b < copyBgr->height
+										&& b > 0 && a < copyBgr->width && a > 0)
+									cvSet2D(copyBgr, b, a, cvScalarAll(0));
+							}
+						}
+
+					}
+
+					for (int a = 0; a < width; a++) {
+						for (int b = 0; b < height; b++) {
+							//cout<<x<<" "<<y<<endl;
+							if (b < copyBgr->height && b > 0 && a
+									< copyBgr->width && a > 0) {
+								ptr = cvGet2D(copyBgr, b, a);
+								if (ptr.val[0] == 0 && b < copyBgr->height && b
+										> 0 && a < copyBgr->width && a > 0)
+									cvSet2D(copyBgr, b, a, cvScalarAll(255));
+							}
+						}
+
+					}
+					cvReleaseImage(&hsvImage);
+					cvReleaseImage(&hue);
+					cvReleaseImage(&hue1);
+					cvReleaseImage(&hue2);
+					cvReleaseImage(&sat);
+					cvReleaseImage(&sat1);
+					cvReleaseImage(&sat2);
+					cvReleaseImage(&HnS);
+					cvReleaseImage(&ROIGrayAndBinary);
+				}
+
+				//cvDilate(copyBgr, copyBgr, NULL,3);
+
+
+				//					cvShowImage("Captures",copyBgr);
+				//					cvWaitKey(0);
+				Image2 = cvCreateImage(cvSize(copyBgr->width, copyBgr->height),
+						IPL_DEPTH_8U, 3);
+				cvZero(Image2);
+				int result = 0;
+				willBeSent.filtered_image = cvCreateImage(cvSize(
+						copyBgr->width, copyBgr->height), IPL_DEPTH_8U, 3);
+				cvCopyImage(copyBgr,willBeSent.filtered_image);
+
+				//cout<<"abbolo"<<endl;
+				int minY, maxY, minX, maxX;
+				for (int x = 2; x >= 0; x--) {
+					for (int y = 2; y >= 0; y--) {
+						//cout<<"x: "<<x<<" , y: "<<y<<endl;
+						if (willBeFilled[x][y] && willBeFilled[x + 1][y + 1]) {
+							//cout<<"girebildim1"<<endl;
+							minY = 480, maxY = 0, minX = 640, maxX = 0;
+							total[0] = 0;
+							total[1] = 0;
+							total[2] = 0;
+							diff = 0;
+							countForPixels = 0;
+							cvZero(Image2);
+							result = GrowColor((places[x][y].x
+									+ places[x + 1][y + 1].x) / 2,
+									(places[x][y].y + places[x + 1][y + 1].y)
+											/ 2, &minX, &minY, &maxX, &maxY);
+							//cout<<minX<<","<<minY<<","<<maxX<<","<<maxY<<endl;
+							if (result == 3) {
+								if (minX < copyBgr->width && minX >= 0 && maxX
+										< copyBgr->width && maxX >= 0 && minY
+										< copyBgr->height && minY >= 0 && maxY
+										< copyBgr->height && maxY >= 0) {
+									if (x == 2) {
+										if (places[x][y].y - minY > (places[x
+												+ 1][y + 1].y - places[x][y].y)
+												/ 4) {
+											setOrReset[x][y] = 1;
+										} else {
+											setOrReset[x][y] = 0;
+										}
+									} else if (x == 1) {
+										//cout<<"1. 1 deyim"<<endl;
+										if (setOrReset[x + 1][y] == -1
+												|| setOrReset[x + 1][y] == 0) {
+											if (places[x][y].y - minY
+													> (places[x + 1][y + 1].y
+															- places[x][y].y)
+															/ 4) {
+												setOrReset[x][y] = 1;
+											} else if (setOrReset[x + 1][y]
+													== -1 && (maxY - places[x
+													+ 1][y + 1].y > (places[x
+													+ 1][y + 1].y
+													- places[x][y].y) / 4)) {
+												setOrReset[x][y] = -1;
+											} else if (setOrReset[x + 1][y]
+													!= 1) {
+												setOrReset[x][y] = 0;
+											}
+										}
+
+									} else {
+										if (setOrReset[x + 1][y] == -1 && (maxY
+												- places[x + 1][y + 1].y
+												> (places[x + 1][y + 1].y
+														- places[x][y].y) / 4)) {
+											setOrReset[x][y] = -1;
+										} else if (setOrReset[x + 1][y] != 1)
+											setOrReset[x][y] = 0;
+
+									}
+									//cout<<"girebildim1"<<endl;
+									//IplImage *ROI = cvCreateImage(cvSize(maxX-minX, maxY-minY), IPL_DEPTH_8U,3);
+									images[y + x * 3] = cvCreateImage(cvSize(
+											maxX - minX, maxY - minY),
+											copyBgr->depth, copyBgr->nChannels);
+									//									if( x != 2 && setOrReset[x+1][y] != 1)
+									//									{
+									//										willBeSent.ROIs[y + x*3] = cvCreateImage( cvSize( maxX-minX,  maxY-minY),copyBgr->depth, copyBgr->nChannels );
+									//										willBeSent.locationAndSize[y + x*3][0] = minX;
+									//										willBeSent.locationAndSize[y + x*3][1] = minY;
+									//										willBeSent.locationAndSize[y + x*3][2] = maxX-minX;
+									//										willBeSent.locationAndSize[y + x*3][3] = maxY-minY;
+									//									}
+									if (x != 2 && setOrReset[x + 1][y] != 1) {
+										willBeSent.boundingBoxes[y + x * 3]
+												= cvRect(minX, minY, maxX
+														- minX, maxY - minY);
+
+									} else if (x == 2) {
+										willBeSent.boundingBoxes[y + x * 3]
+												= cvRect(minX, minY, maxX
+														- minX, maxY - minY);
+									}
+
+									cvSetImageROI(copyBgr, cvRect(minX, minY,
+											maxX - minX, maxY - minY));
+									if (cvGetImageROI(copyBgr).width == maxX
+											- minX
+											&& cvGetImageROI(copyBgr).height
+													== maxY - minY) {
+
+										if (x != 2 && setOrReset[x + 1][y] != 1) {
+											cvCopy(copyBgr, images[y + x * 3]);
+											//											cvShowImage("Captures",copyBgr);
+											//															cvWaitKey(0);
+											if (!seenOrNot[y + x * 3])
+												seenOrNot[y + x * 3] = true;
+											//cvCopy(copyBgr, willBeSent.ROIs[y + x*3]);
+										} else if (x == 2) {
+											cvCopy(copyBgr, images[y + x * 3]);
+											if (!seenOrNot[y + x * 3])
+												seenOrNot[y + x * 3] = true;
+										}
+									}
+
+									cvResetImageROI(copyBgr);
+								}
+
+							} else if (result == -1 || result == -2) {
+								if (seenOrNot[y + x * 3]) {
+									//TODO: Yigit
+									willBeSent.boundingBoxes[y + x * 3] = cvRect(0, 0,0, 0);
+									willBeSent.segmented_areas[y + x * 3] = -1;
+									setOrReset[x][y] = -1;
+									seenOrNot[y + x * 3] = false;
+									cvReleaseImage(&images[y + x * 3]);
+									images[y + x * 3] = NULL;
+								}
+							}
+						} else if (willBeFilled[x][y + 1]
+								&& willBeFilled[x + 1][y]) {
+
+							minY = 480, maxY = 0, minX = 640, maxX = 0;
+							total[0] = 0;
+							total[1] = 0;
+							total[2] = 0;
+							diff = 0;
+							countForPixels = 0;
+							cvZero(Image2);
+							result = GrowColor((places[x][y + 1].x + places[x
+									+ 1][y].x) / 2, (places[x][y + 1].y
+									+ places[x + 1][y].y) / 2, &minX, &minY,
+									&maxX, &maxY);
+							if (result == 3) {
+								if (minX < copyBgr->width && minX >= 0 && maxX
+										< copyBgr->width && maxX >= 0 && minY
+										< copyBgr->height && minY >= 0 && maxY
+										< copyBgr->height && maxY >= 0) {
+
+									if (x == 2) {
+										if (places[x][y + 1].y - minY
+												> (places[x + 1][y].y
+														- places[x][y + 1].y)
+														/ 4) {
+											setOrReset[x][y] = 1;
+										} else {
+											setOrReset[x][y] = 0;
+										}
+									} else if (x == 1) {
+										//cout<<"2. 1 deyim"<<endl;
+										if (setOrReset[x + 1][y] == -1
+												|| setOrReset[x + 1][y] == 0) {
+											if (places[x][y + 1].y - minY
+													> (places[x + 1][y].y
+															- places[x][y + 1].y)
+															/ 4) {
+												setOrReset[x][y] = 1;
+											} else if (setOrReset[x + 1][y]
+													== -1
+													&& (maxY
+															- places[x + 1][y].y
+															> (places[x + 1][y].y
+																	- places[x][y
+																			+ 1].y)
+																	/ 4)) {
+												setOrReset[x][y] = -1;
+											} else if (setOrReset[x + 1][y]
+													!= 1) {
+												setOrReset[x][y] = 0;
+											}
+										}
+
+									} else {
+										if (setOrReset[x + 1][y] == -1 && (maxY
+												- places[x + 1][y].y
+												> (places[x + 1][y].y
+														- places[x][y + 1].y)
+														/ 4))// ||setOrReset[x+1][y] == -1)
+										{
+											setOrReset[x][y] = -1;
+										} else if (setOrReset[x + 1][y] != 1)
+											setOrReset[x][y] = 0;
+									}
+
+									//IplImage *ROI = cvCreateImage(cvSize(maxX-minX, maxY-minY), IPL_DEPTH_8U,3);
+									images[y + x * 3] = cvCreateImage(cvSize(
+											maxX - minX, maxY - minY),
+											copyBgr->depth, copyBgr->nChannels);
+									//									if( x != 2 && setOrReset[x+1][y] != 1)
+									//									{
+									//										willBeSent.ROIs[y + x*3] = cvCreateImage( cvSize( maxX-minX,  maxY-minY),copyBgr->depth, copyBgr->nChannels );
+									//										willBeSent.locationAndSize[y + x*3][0] = minX;
+									//										willBeSent.locationAndSize[y + x*3][1] = minY;
+									//										willBeSent.locationAndSize[y + x*3][2] = maxX-minX;
+									//										willBeSent.locationAndSize[y + x*3][3] = maxY-minY;
+									//									}
+									if (x != 2 && setOrReset[x + 1][y] != 1) {
+										willBeSent.boundingBoxes[y + x * 3]
+												= cvRect(minX, minY, maxX
+														- minX, maxY - minY);
+
+									} else if (x == 2) {
+										willBeSent.boundingBoxes[y + x * 3]
+												= cvRect(minX, minY, maxX
+														- minX, maxY - minY);
+									}
+
+									cvSetImageROI(copyBgr, cvRect(minX, minY,
+											maxX - minX, maxY - minY));
+									if (cvGetImageROI(copyBgr).width == maxX
+											- minX
+											&& cvGetImageROI(copyBgr).height
+													== maxY - minY) {
+
+										if (x != 2 && setOrReset[x + 1][y] != 1) {
+											cvCopy(copyBgr, images[y + x * 3]);
+											if (!seenOrNot[y + x * 3])
+												seenOrNot[y + x * 3] = true;
+											//cvCopy(copyBgr, willBeSent.ROIs[y + x*3]);
+										} else if (x == 2) {
+											cvCopy(copyBgr, images[y + x * 3]);
+											if (!seenOrNot[y + x * 3])
+												seenOrNot[y + x * 3] = true;
+										}
+									}
+
+									cvResetImageROI(copyBgr);
+
+								}
+
+							} else if (result == -1 || result == -2) {
+								if (seenOrNot[y + x * 3]) {
+									willBeSent.boundingBoxes[y + x * 3] = cvRect(0, 0,0, 0);
+									willBeSent.segmented_areas[y + x * 3] = -1;
+									setOrReset[x][y] = -1;
+									seenOrNot[y + x * 3] = false;
+									cvReleaseImage(&images[y + x * 3]);
+									images[y + x * 3] = NULL;
+								}
+							}
+						}
+					}
+				}
+				cvReleaseImage(&copyBgr);
+				cvReleaseImage(&Image2);
+				//cout<<"abbo"<<endl;
+				//cout<<"8.5"<<endl;
+				//igaze->getAngles(angles);
+				//cout<<"8.6"<<endl;
+				//cout<<angles[0]<<endl;
+				//cout<<angles[1]<<endl;
+				//cout<<angles[2]<<endl;
+				cvCopyImage(bgr_frameLeft,tempImgForROI);
+				//cout<<"8.7"<<endl;
+				//Output Wireframe
+				drawWireFrame(wireFrame, willBeFilled, angles[1], tempImgForROI);//,motion);
+				imgOut.wrapIplImage(wireFrame);
+				portImgOut->prepare() = imgOut;
+				portImgOut->write();
+				//cout<<"8.8"<<endl;
+
+				//cout<<"Packet Information"<<endl;
+				//				cout<<"Size of whole Image w:"<<willBeSent.raw_image->width<<" ,h:"<<willBeSent.raw_image->height<<endl;
+				//				for(int x = 0;x<9;x++)
+				//				{
+				//					if(willBeSent != NULL)
+				//					{
+				//						if(willBeSent.ROIs[x] != NULL)
+				//							{
+				//								cout<<"ROI NO: "<<x<<" is found"<<endl;
+				//								cout<<"Properties are:"<<endl;
+				//								cout<<"x and y:"<<willBeSent.locationAndSize[x][0]<<", "<<willBeSent.locationAndSize[x][1]<<endl;
+				//								cout<<"w and h:"<<willBeSent.locationAndSize[x][2]<<", "<<willBeSent.locationAndSize[x][3]<<endl;
+				//								cout<<"size:"<<willBeSent.segmented_areas[x]<<endl;
+				//
+				//												cout<<"bhist bin 0 :"<<cvQueryHistValue_1D(willBeSent.blueHists[x],0)<<endl;
+				//												cout<<"ghist bin 0:"<<cvQueryHistValue_1D(willBeSent.greenHists[x],0)<<endl;
+				//												cout<<"rhist bin 0:"<<cvQueryHistValue_1D(willBeSent.redHists[x],0)<<endl;
+				//							}
+				//					}
+				//
+				//				}
+				//cout<<"patlaaar"<<endl;
+				//PACKET WILL BE SENT FROM HERE
+				//PACKET WILL BE SENT FROM HERE
+				//PACKET WILL BE SENT FROM HERE
+				//cvShowImage("Areas",tempImg);
+				//cvWaitKey(0);
+				denemeOut.wrapIplImage(tempImg);
+				portDenemeOut->prepare() = denemeOut;
+				portDenemeOut->write();
+				//cout<<"8.9"<<endl;
+
+				//cvShowImage("Captures",tempImg1);
+				//cvShowImage("Areas",tempImg1);
+				//cvWaitKey(0);
+				denemeOut1.wrapIplImage(tempImg1);
+				portDenemeOut1->prepare() = denemeOut1;
+				portDenemeOut1->write();
+				//cvShowImage("Captures", imgResult);
+				//cout<<"9"<<endl;
+
+				cvReleaseImage(&eig_image);
+				//			cvReleaseImage(&tempImg);
+				//			cvReleaseImage(&imgResult);
+				cvReleaseImage(&tmp_image);
+				//src = (IplImage*)imgOut.getIplImage();
+				//cvWaitKey(0);
+			} else {
+				//cout<<"burdayim gencler"<<endl;
+				cvCopyImage(bgr_frameLeft,tempImgForROI);
+				drawWireFrame(wireFrame, willBeFilled, angles[1], tempImgForROI);//,motion);
+
+				//PACKET WILL BE SENT FROM HERE
+				//PACKET WILL BE SENT FROM HERE
+				//PACKET WILL BE SENT FROM HERE
+				imgOut.wrapIplImage(wireFrame);
+				portImgOut->prepare() = imgOut;
+				portImgOut->write();
+				cvCopyImage(bgr_frameLeft,tempImg);
+
+				cvCopyImage(bgr_frameLeft,tempImg1);
+
+				//cvShowImage("Points",tempImg);
+				//cvWaitKey(0);
+				denemeOut.wrapIplImage(tempImg);
+				portDenemeOut->prepare() = denemeOut;
+				portDenemeOut->write();
+				//cout<<"8.9"<<endl;
+				//cvShowImage("Areas",tempImg1);
+				//cvWaitKey(0);
+				denemeOut1.wrapIplImage(tempImg1);
+				portDenemeOut1->prepare() = denemeOut1;
+				portDenemeOut1->write();
+			}
+		}
+	}
+}
+
+float getEuclidianDistance(CvPoint2D32f p1, CvPoint2D32f p2) {
+	return sqrt(pow((p1.y - p2.y), 2) + pow((p1.x - p2.x), 2));
+}
+
+double findDistanceToLine(CvPoint2D32f p1, CvPoint2D32f p2, CvPoint2D32f point) {
+	double a = p2.y - p1.y;
+	double b = p1.x - p2.x;
+	double c = p1.y * p2.x - p2.y * p2.x + p2.x * p2.y - p2.y * p1.x;
+
+	return abs(a * point.x + b * point.y + c) / sqrt(pow(a, 2) + pow(b, 2));
+}
+
+int findExtensionColor(CvPoint2D32f source, CvPoint2D32f destination,
+		IplImage* image) {
+
+	CvPoint2D32f newPoint;
+	//cout<<"source x and y: "<<source.x<<", "<<source.y<<endl;
+	//cout<<"destination x and y: "<<destination.x<<", "<<destination.y<<endl;
+	double a = source.y - destination.y;
+	double b = destination.x - source.x;
+	double c = destination.y * source.x - source.y * source.x + source.x
+			* source.y - source.y * destination.x;
+	double xNew;
+	if (destination.x > source.x) {
+		xNew = destination.x + 2 * (destination.x - source.x) / 5;
+		if (xNew < 640) {
+			newPoint.x = xNew;
+			//cout<<"Xnew: "<<xNew<<endl;
+		} else {
+			//cout<<"xNew disarida"<<endl;
+			return -2;
+		}
+
+	} else {
+		xNew = destination.x - 2 * (source.x - destination.x) / 5;
+		if (xNew > 0) {
+			newPoint.x = xNew;
+			//cout<<"Xnew: "<<xNew<<endl;
+		} else {
+			//cout<<"xNew disarida"<<endl;
+			return -2;
+		}
+
+	}
+
+	newPoint.y = (-1 * c - a * xNew) / b;
+	if (newPoint.y < 480 && newPoint.y >= 0)
+		return findEdgeColorForIdentification(destination, newPoint, image);
+	else {
+		//cout<<"yNew disarida"<<endl;
+		return -2;
+	}
+}
+
+int findEdgeColorForVerification(CvPoint2D32f p1, CvPoint2D32f p2,
+		IplImage* image) {
+	int interval = 100;
+	int counter = 0;
+	double deltaX = (p2.x - p1.x) / interval;
+	double deltaY = (p2.y - p1.y) / interval;
+	CvScalar ptr;
+	for (int i = 0; i < interval; i++) {
+		if (p1.y + i * deltaY < image->height && p1.x + i * deltaX
+				< image->width) {
+			if (p1.y + i * deltaY < image->height && p1.y + i * deltaY > 0
+					&& p1.x + i * deltaX < image->width && p1.x + i * deltaX
+					> 0) {
+				ptr = cvGet2D(image, p1.y + i * deltaY, p1.x + i * deltaX);
+				if (ptr.val[0] == 255.0) {
+
+					counter++;
+				}
+			}
+
+		}
+
+	}
+	if (interval - counter < 10)
+		return 1;
+	else
+		return 0;
+
+}
+
+int findEdgeColorForIdentification(CvPoint2D32f p1, CvPoint2D32f p2,
+		IplImage* image) {
+	int interval = 100;
+	int counter = 0;
+	//int white = false;
+	double deltaX = (p2.x - p1.x) / interval;
+	double deltaY = (p2.y - p1.y) / interval;
+	CvScalar ptr;
+	for (int i = 0; i < interval; i++) {
+		if (p1.y + i * deltaY < image->height && p1.x + i * deltaX
+				< image->width) {
+			if (p1.y + i * deltaY < image->height && p1.y + i * deltaY > 0
+					&& p1.x + i * deltaX < image->width && p1.x + i * deltaX
+					> 0) {
+				ptr = cvGet2D(image, p1.y + i * deltaY, p1.x + i * deltaX);
+				//cout<<p1.y + i * deltaY<<"   "<<p1.x + i * deltaX<<endl;
+				if (ptr.val[0] == 255.0) {
+
+					counter++;
+				}
+			}
+
+		}
+
+	}
+	//cout<<"interval - counter = "<<interval - counter<<endl;
+	int noOfBlack = interval - counter;
+	int noOfWhite = counter;
+	if (noOfWhite > 70)
+		return 1;
+	else if (noOfBlack > 70)
+		return 0;
+	else
+		return -1;
+}
+
+// 0->left, 1->down, 2->right, 3->up
+int* determineWays(CvPoint2D32f* singleCorners, int indexAndDegrees[][9],
+		int index) {
+	int* ways = new int[4];
+	double distance = 0;
+	double minHor = 10000;
+	int minHorIndex = -1;
+	double minVer = 10000;
+	int maxHorIndex = -1;
+	double maxHor = 0;
+	int maxVerIndex = -1;
+	double maxVer = 0;
+	int minVerIndex = -1;
+
+	for (int x = 0; x < indexAndDegrees[index][0]; x++) {
+		distance = singleCorners[indexAndDegrees[index][2 * x + 1]].y
+				- singleCorners[index].y;
+		if (distance > maxVer) {
+			maxVer = distance;
+			maxVerIndex = indexAndDegrees[index][2 * x + 1];
+			//universalDownDeg = indexAndDegrees[index][2 * x + 2];
+		}
+		if (distance < minVer) {
+			minVer = distance;
+			minVerIndex = indexAndDegrees[index][2 * x + 1];
+			//universalUpDeg = indexAndDegrees[index][2 * x + 2];
+		}
+
+	}
+	ways[1] = maxVerIndex;
+	ways[3] = minVerIndex;
+	for (int x = 0; x < indexAndDegrees[index][0]; x++) {
+		distance = singleCorners[indexAndDegrees[index][2 * x + 1]].x
+				- singleCorners[index].x;
+		if (distance > maxHor) {
+			maxHor = distance;
+			maxHorIndex = indexAndDegrees[index][2 * x + 1];
+			//universalRightDeg = indexAndDegrees[index][2 * x + 2];
+		}
+		if (distance < minHor) {
+			minHor = distance;
+			minHorIndex = indexAndDegrees[index][2 * x + 1];
+			//universalLeftDeg = indexAndDegrees[index][2 * x + 2];
+		}
+
+	}
+	ways[0] = minHorIndex;
+	ways[2] = maxHorIndex;
+	return ways;
+}
+
+void tagMainCorner(bool selections[], int verhor[], int x, int* ways) {
+	if (selections[0] && selections[1]) {
+
+		identificationIndex[x][0] = 2 - verhor[0];
+		identificationIndex[x][1] = 1 + verhor[1];
+
+	} else if (selections[1] && selections[2]) {
+		identificationIndex[x][0] = 2 - verhor[0];
+		identificationIndex[x][1] = 2 - verhor[1];
+	} else if (selections[2] && selections[3]) {
+		identificationIndex[x][0] = 1 + verhor[0];
+		identificationIndex[x][1] = 2 - verhor[1];
+	} else if (selections[3] && selections[0]) {
+		identificationIndex[x][0] = 1 + verhor[0];
+		identificationIndex[x][1] = 1 + verhor[1];
+	}
+	identified[x] = true;
+	willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]] = true;
+	places[identificationIndex[x][0]][identificationIndex[x][1]]
+			= singleCorners[x];
+	countForIdentified++;
+	//cout<<"Ana koordinatlari x: "<<identificationIndex[x][0]<<", y: "<<identificationIndex[x][1]<<endl;
+	//cvWaitKey(0);
+	//cout<<"TAGGED AS: "<<endl;
+	tagOtherCorners(ways, x);
+
+}
+
+void tagOtherCorners(int* ways, int x) {
+
+	if (ways[0] != -1) {
+		identificationIndex[ways[0]][0] = identificationIndex[x][0];
+		identificationIndex[ways[0]][1] = identificationIndex[x][1] - 1;
+	}
+	if (ways[1] != -1) {
+		identificationIndex[ways[1]][0] = identificationIndex[x][0] + 1;
+		identificationIndex[ways[1]][1] = identificationIndex[x][1];
+	}
+	if (ways[2] != -1) {
+		identificationIndex[ways[2]][0] = identificationIndex[x][0];
+		identificationIndex[ways[2]][1] = identificationIndex[x][1] + 1;
+	}
+
+	if (ways[3] != -1) {
+		identificationIndex[ways[3]][0] = identificationIndex[x][0] - 1;
+		identificationIndex[ways[3]][1] = identificationIndex[x][1];
+	}
+
+	for (int a = 0; a < 4; a++) {
+
+		if (ways[a] != -1 && !identified[ways[a]]
+				&& identificationIndex[ways[a]][0] >= 0
+				&& identificationIndex[ways[a]][0] < 4
+				&& identificationIndex[ways[a]][1] >= 0
+				&& identificationIndex[ways[a]][1] < 4) {
+			identified[ways[a]] = true;
+			//cout<<"ways["<<a<<"]:"<<endl;
+			//cout<<"koordinatlari x: "<<identificationIndex[ways[a]][0]<<", y: "<<identificationIndex[ways[a]][1]<<endl;
+			willBeFilled[identificationIndex[ways[a]][0]][identificationIndex[ways[a]][1]]
+					= true;
+			places[identificationIndex[ways[a]][0]][identificationIndex[ways[a]][1]]
+					= singleCorners[ways[a]];
+			countForIdentified++;
+		}
+
+	}
+
+}
+
+void drawWireFrame(IplImage *image, bool** willBeFilled, float aboveLimit,
+		IplImage *colourImage)//,int motion)
+{
+	CvFont font;
+	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5, 0, 0.5, CV_AA);
+	cvZero(image);
+	cvDrawLine(image, cvPoint(175, 101), cvPoint(875, 101), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(875, 101), cvPoint(990, 733), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(990, 733), cvPoint(37, 733), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(37, 733), cvPoint(175, 101), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(142, 254), cvPoint(902, 254), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(95, 470), cvPoint(941, 470), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(399, 101), cvPoint(344, 733), cvScalar(255, 255,
+			255), 2);
+	cvDrawLine(image, cvPoint(649, 101), cvPoint(681, 733), cvScalar(255, 255,
+			255), 2);
+	//cvPutText(image, "Face Not Detected", cvPoint(10,30), &font, cvScalar(0, 255, 0,0));
+
+	//cout<<aboveLimit<<endl;
+	if (aboveLimit < -26) {
+		//cout<<"not in"<<endl;
+		if (detectedFace == true) {
+
+			//cvPutText(image, "Face Detected", cvPoint(10,30), &font, cvScalar(0, 255, 0,0));
+			cvOverlayImage(image, destination, cvPoint(image->width / 2
+					- destination->width / 2, 0), true);
+		} else
+			cvPutText(image, "Face Not Detected", cvPoint(10, 30), &font,
+					cvScalar(0, 255, 0, 0));
+
+		//		for (int x = 0; x < 3; x++) {
+		//			for (int y = 0; y < 3; y++) {
+		//				cout<<setOrReset[x][y]<<" ";
+		//			}
+		//			cout<<endl;
+		//		}
+		int numBins = N_BINS;
+		float range[] = { 0, 255 };
+		float *ranges[] = { range };
+
+		for (int x = 0; x < 3; x++) {
+			for (int y = 0; y < 3; y++) {
+
+				if ((willBeFilled[x][y] && willBeFilled[x + 1][y + 1])
+						|| seenOrNot[y + x * 3]) {
+					if (images[y + x * 3] != NULL && (setOrReset[x][y] == 1
+							|| setOrReset[x][y] == 0)) {
+						int size = cvOverlayImage(image, images[y + x * 3],
+								wireFramePoints[y + x * 3], false);
+						if (x != 2 && setOrReset[x + 1][y] != 1) {
+							willBeSent.segmented_areas[y + x* 3] = size;
+
+							willBeSent.blueHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.redHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.greenHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							cvClearHist(willBeSent.blueHists[y + x * 3]);
+							cvClearHist(willBeSent.redHists[y + x * 3]);
+							cvClearHist(willBeSent.greenHists[y + x * 3]);
+							IplImage* imgRed = cvCreateImage(cvGetSize(images[y
+									+ x * 3]), 8, 1);
+							IplImage* imgGreen = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+							IplImage* imgBlue = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+
+							cvSplit(images[y + x * 3], imgBlue, imgGreen,
+									imgRed, NULL);
+
+							cvCalcHist(&imgRed, willBeSent.redHists[y + x * 3],
+									0, 0);
+							cvCalcHist(&imgGreen, willBeSent.greenHists[y + x
+									* 3], 0, 0);
+							cvCalcHist(&imgBlue,
+									willBeSent.blueHists[y + x * 3], 0, 0);
+
+							cvReleaseImage(&imgRed);
+							cvReleaseImage(&imgGreen);
+							cvReleaseImage(&imgBlue);
+
+						} else if (x == 2) {
+							willBeSent.segmented_areas[y + x* 3] = size;
+
+							willBeSent.blueHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.redHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.greenHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							cvClearHist(willBeSent.blueHists[y + x * 3]);
+							cvClearHist(willBeSent.redHists[y + x * 3]);
+							cvClearHist(willBeSent.greenHists[y + x * 3]);
+							IplImage* imgRed = cvCreateImage(cvGetSize(images[y
+									+ x * 3]), 8, 1);
+							IplImage* imgGreen = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+							IplImage* imgBlue = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+
+							cvSplit(images[y + x * 3], imgBlue, imgGreen,
+									imgRed, NULL);
+
+							cvCalcHist(&imgRed, willBeSent.redHists[y + x * 3],
+									0, 0);
+							cvCalcHist(&imgGreen, willBeSent.greenHists[y + x
+									* 3], 0, 0);
+							cvCalcHist(&imgBlue,
+									willBeSent.blueHists[y + x * 3], 0, 0);
+
+							cvReleaseImage(&imgRed);
+							cvReleaseImage(&imgGreen);
+							cvReleaseImage(&imgBlue);
+
+						}
+						//						if( x != 2 && setOrReset[x+1][y] != 1)
+						//						{
+						//													willBeSent.blueHists[y+ x*3] = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													willBeSent.redHists[y+ x*3]  = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													willBeSent.greenHists[y+ x*3]  = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													cvClearHist(willBeSent.blueHists[y+ x*3]);
+						//													cvClearHist(willBeSent.redHists[y+ x*3]);
+						//													cvClearHist(willBeSent.greenHists[y+ x*3]);
+						//													willBeSent.segmented_areas[y+ x*3] = size;
+						//													IplImage* imgRed = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//													IplImage* imgGreen = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//													IplImage* imgBlue = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//
+						//													cvSplit(images[y+ x*3], imgBlue, imgGreen, imgRed, NULL);
+						//
+						//													cvCalcHist(&imgRed, willBeSent.redHists[y+ x*3], 0, 0);
+						//													cvCalcHist(&imgGreen, willBeSent.greenHists[y+ x*3], 0, 0);
+						//													cvCalcHist(&imgBlue, willBeSent.blueHists[y+ x*3], 0, 0);
+						//
+						//
+						//
+						//													cvReleaseImage(&imgRed);
+						//													cvReleaseImage(&imgGreen);
+						//													cvReleaseImage(&imgBlue);
+						//
+						//						}
+
+					}
+
+					//			cvCircle(image, wireFramePoints[y+ x*3], 4,
+					//						cvScalar(0, 255, 0), -1, 8);
+				} else if ((willBeFilled[x][y + 1] && willBeFilled[x + 1][y])
+						|| seenOrNot[y + x * 3]) {
+					if (images[y + x * 3] != NULL && (setOrReset[x][y] == 1
+							|| setOrReset[x][y] == 0)) {
+						int size = cvOverlayImage(image, images[y + x * 3],
+								wireFramePoints[y + x * 3], false);
+						if (x != 2 && setOrReset[x + 1][y] != 1) {
+							willBeSent.segmented_areas[y + x* 3] = size;
+
+							willBeSent.blueHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.redHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.greenHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							cvClearHist(willBeSent.blueHists[y + x * 3]);
+							cvClearHist(willBeSent.redHists[y + x * 3]);
+							cvClearHist(willBeSent.greenHists[y + x * 3]);
+							IplImage* imgRed = cvCreateImage(cvGetSize(images[y
+									+ x * 3]), 8, 1);
+							IplImage* imgGreen = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+							IplImage* imgBlue = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+
+							cvSplit(images[y + x * 3], imgBlue, imgGreen,
+									imgRed, NULL);
+
+							cvCalcHist(&imgRed, willBeSent.redHists[y + x * 3],
+									0, 0);
+							cvCalcHist(&imgGreen, willBeSent.greenHists[y + x
+									* 3], 0, 0);
+							cvCalcHist(&imgBlue,
+									willBeSent.blueHists[y + x * 3], 0, 0);
+
+							cvReleaseImage(&imgRed);
+							cvReleaseImage(&imgGreen);
+							cvReleaseImage(&imgBlue);
+
+						} else if (x == 2) {
+							willBeSent.segmented_areas[y + x* 3] = size;
+
+							willBeSent.blueHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.redHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							willBeSent.greenHists[y + x * 3] = cvCreateHist(1,
+									&numBins, CV_HIST_ARRAY, ranges, 1);
+							cvClearHist(willBeSent.blueHists[y + x * 3]);
+							cvClearHist(willBeSent.redHists[y + x * 3]);
+							cvClearHist(willBeSent.greenHists[y + x * 3]);
+							IplImage* imgRed = cvCreateImage(cvGetSize(images[y
+									+ x * 3]), 8, 1);
+							IplImage* imgGreen = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+							IplImage* imgBlue = cvCreateImage(cvGetSize(
+									images[y + x * 3]), 8, 1);
+
+							cvSplit(images[y + x * 3], imgBlue, imgGreen,
+									imgRed, NULL);
+
+							cvCalcHist(&imgRed, willBeSent.redHists[y + x * 3],
+									0, 0);
+							cvCalcHist(&imgGreen, willBeSent.greenHists[y + x
+									* 3], 0, 0);
+							cvCalcHist(&imgBlue,
+									willBeSent.blueHists[y + x * 3], 0, 0);
+
+							cvReleaseImage(&imgRed);
+							cvReleaseImage(&imgGreen);
+							cvReleaseImage(&imgBlue);
+
+						}
+						//						if( x != 2 && setOrReset[x+1][y] != 1)
+						//						{
+						//													willBeSent.blueHists[y+ x*3] = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													willBeSent.redHists[y+ x*3]  = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													willBeSent.greenHists[y+ x*3]  = cvCreateHist(1, &numBins, CV_HIST_ARRAY, ranges, 1);
+						//													cvClearHist(willBeSent.blueHists[y+ x*3]);
+						//													cvClearHist(willBeSent.redHists[y+ x*3]);
+						//													cvClearHist(willBeSent.greenHists[y+ x*3]);
+						//													willBeSent.pixSizeOfObject[y+ x*3] = size;
+						//													IplImage* imgRed = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//													IplImage* imgGreen = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//													IplImage* imgBlue = cvCreateImage(cvGetSize(images[y+ x*3]), 8, 1);
+						//
+						//													cvSplit(images[y+ x*3], imgBlue, imgGreen, imgRed, NULL);
+						//
+						//													cvCalcHist(&imgRed, willBeSent.redHists[y+ x*3], 0, 0);
+						//													cvCalcHist(&imgGreen, willBeSent.greenHists[y+ x*3], 0, 0);
+						//													cvCalcHist(&imgBlue, willBeSent.blueHists[y+ x*3], 0, 0);
+						//
+						//													cvReleaseImage(&imgRed);
+						//													cvReleaseImage(&imgGreen);
+						//													cvReleaseImage(&imgBlue);
+						//						}
+					}
+
+					//				cvCircle(image, wireFramePoints[y+ x*3], 4,
+					//						cvScalar(0, 255, 0), -1, 8);
+
+				}
+
+			}
+		}
+		//cvShowImage("WireFrame",image);
+		//cvWaitKey(0);
+	} else if (aboveLimit > -26 && detect(colourImage, pt1, pt2)) {
+		cout << "detected" << endl;
+		//cout<<"10"<<endl;
+		//cout<<r->width<<endl;
+		if (pt2->x > 0 && pt2->y > 0) {
+			IplImage *ROI = cvCreateImage(cvSize(pt2->x, pt2->y), IPL_DEPTH_8U,
+					3);
+			//cout<<"1a"<<endl;
+			for (int a = 0; a < ROI->width; a++) {
+
+				for (int b = 0; b < ROI->height; b++) {
+					//cout<<"For ROI"<<a<<" "<<b<<endl;
+					//cout<<"For BGR"<<places[x+1][y].x + a<<" "<<places[x][y+1].y + b<<endl;
+					if (pt1->y + b < colourImage->height && pt1->y + b > 0
+							&& pt1->x + a < colourImage->width && pt1->x + a
+							> 0) {
+						CvScalar over = cvGet2D(colourImage, pt1->y + b, pt1->x
+								+ a);
+						if (b < ROI->height && b > 0 && a < ROI->width && a > 0) {
+							cvSet2D(ROI, b, a, over);
+						}
+					}
+				}
+			}
+			//cvSetImageROI(colourImage, cvRect(10,30, pt2->x,pt2->y));
+			cout << "1b" << endl;
+			//cvCopy(colourImage, ROI);
+			//cout<<"1c"<<endl;
+			//cvResetImageROI(colourImage);
+			//cout<<"1d"<<endl;
+			//cvPutText(image, "Face Detected", cvPoint(10,30), &font, cvScalar(0, 255, 0,0));
+			if ((int) ((ROI->width * 50) / 100) > 0
+					&& (int) ((ROI->height * 50) / 100) > 0) {
+				destination = cvCreateImage(cvSize(75, 75), ROI->depth,
+						ROI->nChannels);
+				cvResize(ROI, destination);
+				cvOverlayImage(image, destination, cvPoint(image->width / 2
+						- destination->width / 2, 0), true);
+				detectedFace = true;
+
+				//cvReleaseImage(&destination);
+			}
+			cvReleaseImage(&ROI);
+		}
+		//cvShowImage("WireFrame",image);
+		//cvWaitKey(0);
+
+	} else if (aboveLimit > -26 && !detect(colourImage, pt1, pt2)) {
+		cout << "not detected" << endl;
+		pt1->x = -1;
+		pt1->y = -1;
+		pt2->x = -1;
+		pt2->y = -1;
+		cvPutText(image, "Face Not Detected", cvPoint(10, 30), &font, cvScalar(
+				0, 255, 0, 0));
+		detectedFace = false;
+		//cvShowImage("WireFrame",image);
+		//cvWaitKey(0);
+	}
+
+	willBeSent.faceDetected = detectedFace;
+}
+
+//Function to detect and draw any faces that is present in an image
+bool detect(IplImage* img, CvPoint* pt1, CvPoint *pt2) {
+	bool detected = false;
+
+	// Allocate the memory storage
+	storage = cvCreateMemStorage(0);
+
+	// Load the HaarClassifierCascade
+	cascade = (CvHaarClassifierCascade*) cvLoad(cascade_name, 0, 0, 0);
+	// Create two points to represent the face locations
+	int i;
+
+	// Clear the memory storage which was used before
+	cvClearMemStorage(storage);
+	// Find whether the cascade is loaded, to find the faces. If yes, then:
+	if (cascade) {
+
+		// There can be more than one face in an image. So create a growable sequence of faces.
+		// Detect the objects and store them in the sequence
+		CvSeq* faces = cvHaarDetectObjects(img, cascade, storage, 1.1, 3,
+				CV_HAAR_DO_CANNY_PRUNING, cvSize(10, 10));
+
+		// Loop the number of faces found.
+		for (i = 0; i < faces->total; i++) {
+			// Create a new rectangle for drawing the face
+			CvRect* r = (CvRect*) cvGetSeqElem(faces, i);
+
+			detected = true;
+
+			// Find the dimensions of the face,and scale it if necessary
+			pt1->x = r->x;
+			pt1->y = r->y;
+			pt2->x = r->width;
+			pt2->y = r->height;
+
+			//cvRectangle( img, pt2, pt1, CV_RGB(255,255,255), 3, 8, 0 );
+			r = NULL;
+
+		}
+		faces = NULL;
+	}
+	return detected;
+
+}
+
+int cvOverlayImage(IplImage* src, IplImage* overlay, CvPoint location,
+		bool flag) {
+	int sizeOfObject = 0;
+	for (int x = 0; x < overlay->width; x++) {
+
+		for (int y = 0; y < overlay->height; y++) {
+
+			if (y < overlay->height && y > 0 && x < overlay->width && x > 0) {
+				CvScalar over = cvGet2D(overlay, y, x);
+				if (y + location.y < src->height && y + location.y > 0 && x
+						+ location.x < src->width && x + location.x > 0 && flag) {
+					cvSet2D(src, y + location.y, x + location.x, over);
+				} else if (y + location.y < src->height && y + location.y > 0
+						&& x + location.x < src->width && x + location.x > 0
+						&& !flag) {
+
+					if (over.val[0] > 5.0 && over.val[0] < 250.0) {
+						cvSet2D(src, y + location.y - overlay->height / 2, x
+								+ location.x - overlay->width / 2, over);
+						sizeOfObject++;
+					}
+
+				}
+			}
+			//cvSet2D(src, y+location.y - overlay->height/2, x+location.x- overlay->width/2, over);
+		}
+	}
+
+	return sizeOfObject;
+}
+
+int givePercentage(IplImage* overlay) {
+
+	int counterForBlack = 0;
+	for (int x = 0; x < overlay->width; x++) {
+
+		for (int y = 0; y < overlay->height; y++) {
+
+			if (y < overlay->height && y > 0 && x < overlay->width && x > 0) {
+
+				CvScalar over = cvGet2D(overlay, y, x);
+				if (over.val[0] < 5) {
+					counterForBlack++;
+				}
+
+			}
+			//cvSet2D(src, y+location.y - overlay->height/2, x+location.x- overlay->width/2, over);
+		}
+	}
+	double percentage = (counterForBlack * 100) / (overlay->width
+			* overlay->height);
+
+	return (int) percentage;
+
+}
+
+/* Purpose: This routine does recursive region growing for color
+ inputs. */
+int GrowColor(int x, int y, int *minX, int *minY, int *maxX, int *maxY) {
+	/* Check to see if point already part of region */
+
+	if ((x < Image2->width - 2) && (y < Image2->height - 2) && (x
+			< copyBgr->width - 2) && (x > 1) && (y < copyBgr->height - 2) && (y
+			> 1)) {
+		color = cvGet2D(Image2, y, x);
+		color1 = cvGet2D(copyBgr, y, x);
+		if ((color.val[0] == 0 && color.val[1] == 0 && color.val[2] == 0)
+				&& (color1.val[0] != 255 || color1.val[1] != 255
+						|| color1.val[2] != 255)) {
+
+			/* See if point is close enough to add */
+
+			if (countForPixels == 0) {
+				//cout<<"if"<<endl;
+				if ((x < copyBgr->width - 1) && (x > 0)
+						&& (y < copyBgr->height) && (y > 0)) {
+					value11 = cvGet2D(copyBgr, y, x);
+					total[0] += abs(value11.val[0]);
+					total[1] += abs(value11.val[1]);
+					total[2] += abs(value11.val[2]);
+					countForPixels++;
+				}
+
+				if ((x < copyBgr->width - 1) && (x > 0)
+						&& (y < copyBgr->height) && (y > 0)) {
+					color = cvGet2D(copyBgr, y, x);
+					if ((x < Image2->width - 1) && (x > 0) && (y
+							< Image2->height) && (y > 0)) {
+						cvSet2D(Image2, y, x, cvScalar(color.val[0],
+								color.val[1], color.val[2], color.val[3]));
+						if (y < *minY)
+							*minY = y;
+						if (y > *maxY)
+							*maxY = y;
+						if (x < *minX)
+							*minX = x;
+						if (x > *maxX)
+							*maxX = x;
+					}
+				}
+				if (x > 2)
+					GrowColor(x - 1, y, minX, minY, maxX, maxY);
+				if (y > 2)
+					GrowColor(x, y - 1, minX, minY, maxX, maxY);
+				if (x < bgr_frameLeft->width - 2)
+					GrowColor(x + 1, y, minX, minY, maxX, maxY);
+				if (y < bgr_frameLeft->height - 2)
+					GrowColor(x, y + 1, minX, minY, maxX, maxY);
+				return 3;
+
+			} else {
+				//cout<<"else"<<endl;
+				if ((x < copyBgr->width - 1) && (x > 0)
+						&& (y < copyBgr->height) && (y > 0)) {
+					value11 = cvGet2D(copyBgr, y, x);
+					mean[0] = total[0] / countForPixels;
+					mean[1] = total[1] / countForPixels;
+					mean[2] = total[2] / countForPixels;
+
+					temp[0] = abs(value11.val[0]) - mean[0];
+					temp[1] = abs(value11.val[1]) - mean[1];
+					temp[2] = abs(value11.val[2]) - mean[2];
+					diff = temp[0] + temp[1] + temp[2];
+					if (diff < threshold) {
+						total[0] += abs(value11.val[0]);
+						total[1] += abs(value11.val[1]);
+						total[2] += abs(value11.val[2]);
+						countForPixels++;
+
+						if ((x < copyBgr->width - 1) && (x > 0) && (y
+								< copyBgr->height) && (y > 0)) {
+							color = cvGet2D(copyBgr, y, x);
+							if ((x < Image2->width - 1) && (x > 0) && (y
+									< Image2->height) && (y > 0)) {
+								cvSet2D(Image2, y, x, cvScalar(color.val[0],
+										color.val[1], color.val[2],
+										color.val[3]));
+								if (y < *minY)
+									*minY = y;
+								if (y > *maxY)
+									*maxY = y;
+								if (x < *minX)
+									*minX = x;
+								if (x > *maxX)
+									*maxX = x;
+							}
+						}
+						//cout<<"ustte boya var mi"<<endl;
+
+						if (x > 2)
+							GrowColor(x - 1, y, minX, minY, maxX, maxY);
+						if (y > 2)
+							GrowColor(x, y - 1, minX, minY, maxX, maxY);
+						if (x < bgr_frameLeft->width - 2)
+							GrowColor(x + 1, y, minX, minY, maxX, maxY);
+						if (y < bgr_frameLeft->height - 2)
+							GrowColor(x, y + 1, minX, minY, maxX, maxY);
+						return 1;
+					} else
+						return 1;
+				} else
+					return -1;
+
+			}
+
+		} else
+			return -1;
+	} else {
+		return -2;
+	}
+
+}
+
+void initializePacket(Packet *willBeSent) {
+
+	willBeSent->redHists.resize(9);
+	willBeSent->greenHists.resize(9);
+	willBeSent->blueHists.resize(9);
+
+	for (uint i = 0; i < willBeSent->redHists.size(); i++) {
+		willBeSent->redHists[i] = NULL;
+		willBeSent->greenHists[i] = NULL;
+		willBeSent->blueHists[i] = NULL;
+	}
+
+	willBeSent->boundingBoxes.resize(9);
+	for (int a = 0; a < willBeSent->boundingBoxes.size(); a++) {
+		willBeSent->boundingBoxes[a] = cvRect(0, 0, 0, 0);
+	}
+
+
+	willBeSent->segmented_areas.resize(9);
+	for (int a = 0; a < willBeSent->segmented_areas.size(); a++) {
+		willBeSent->segmented_areas[a] = -1;
+	}
+
+
+	willBeSent->raw_image = NULL;
+	willBeSent->filtered_image = NULL;
+	willBeSent->faceDetected = false;
+
+}
+void initializeTheGlobalVars() {
+
+	for (int x = 0; x < 3; x++) {
+		for (int y = 0; y < 3; y++) {
+			setOrReset[x][y] = -1;
+		}
+	}
+
+	places = new CvPoint2D32f*[4];
+	for (int y = 0; y < 4; y++) {
+		places[y] = new CvPoint2D32f[4];
+	}
+
+	for (int x = 0; x < 9; x++) {
+		images[x] = NULL;
+	}
+
+	for (int x = 0; x < 9; x++) {
+		seenOrNot[x] = false;
+	}
+}
+
+void releaseMemory() {
+	//	for (int x = 0; x < 9; x++) {
+	//		if(images != NULL)
+	//		{
+	//			if(images[x] != NULL)
+	//				cvReleaseImage(&images[x]);
+	//		}
+	//
+	//	}
+	//
+	//	for (int x = 0; x < 9; x++) {
+	//		images[x] = NULL;
+	//	}
+
+	//	for (int x = 0; x < 9; x++) {
+	//		if(willBeSent.ROIs != NULL)
+	//		{
+	//			if(willBeSent.ROIs[x] != NULL)
+	//				cvReleaseImage(&willBeSent.ROIs[x]);
+	//		}
+	//	}
+	//	for (int x = 0; x < 9; x++) {
+	//		if(willBeSent.ROIs != NULL)
+	//		{
+	//			willBeSent.ROIs[x] = NULL;
+	//		}
+	//	}
+	//
+	//	for (int x = 0; x < 9; x++) {
+	//		if(willBeSent.blueHists != NULL)
+	//		{
+	//			if(willBeSent.blueHists[x] != NULL)
+	//				willBeSent.blueHists[x] = NULL;
+	//		}
+	//	}
+	//
+	//	willBeSent.redHists = NULL;
+	//
+	//	for (int x = 0; x < 9; x++) {
+	//		if(willBeSent.redHists != NULL)
+	//		{
+	//			if(willBeSent.redHists[x] != NULL)
+	//				willBeSent.redHists[x] = NULL;
+	//		}
+	//	}
+	//
+	//	willBeSent.redHists = NULL;
+	//
+	//	for (int x = 0; x < 9; x++) {
+	//		if(willBeSent.greenHists != NULL)
+	//		{
+	//			if(willBeSent.greenHists[x] != NULL)
+	//				willBeSent.greenHists[x] = NULL;
+	//		}
+	//	}
+	//
+	//	willBeSent.greenHists = NULL;
+
+	//	if(willBeSent->boundingBoxes.size() == 0)
+	//	{
+	//		for(int a = 0; a < 9; a++)
+	//		{
+	//			willBeSent->boundingBoxes.push_back(cvRect(-1,-1,-1,-1));
+	//		}
+	//	}
+
+	if (willBeSent.raw_image != NULL)
+		cvReleaseImage(&willBeSent.raw_image);
+
+	willBeSent.raw_image = NULL;
+
+	if (willBeSent.filtered_image != NULL)
+		cvReleaseImage(&willBeSent.filtered_image);
+
+	willBeSent.filtered_image = NULL;
+
+	if (features != NULL) {
+		delete[] features;
+		features = NULL;
+	}
+
+	if (newCornerFeatures != NULL) {
+		delete[] newCornerFeatures;
+		newCornerFeatures = NULL;
+	}
+
+	if (singleCorners != NULL) {
+		delete[] singleCorners;
+		singleCorners = NULL;
+	}
+
+	for (int i = 0; i < counter; i++) {
+		if (identificationIndex[i] != NULL) {
+			delete[] identificationIndex[i];
+			identificationIndex[i] = NULL;
+		}
+
+	}
+
+	if (identificationIndex != NULL) {
+		delete[] identificationIndex;
+		identificationIndex = NULL;
+	}
+
+	if (identified != NULL) {
+		delete[] identified;
+		identified = NULL;
+	}
+
+	//
+	for (int i = 0; i < 4; i++) {
+		if (willBeFilled != NULL) {
+			if (willBeFilled[i] != NULL) {
+				delete[] willBeFilled[i];
+				willBeFilled[i] = NULL;
+			}
+		}
+
+	}
+	if (willBeFilled != NULL) {
+		delete[] willBeFilled;
+		willBeFilled = NULL;
+	}
+	//	cout<<"hiiiii"<<endl;
+	if (newCornerFeatures != NULL) {
+		delete[] newCornerFeatures;
+		newCornerFeatures = NULL;
+	}
+
+	if (singleCorners != NULL) {
+		delete[] singleCorners;
+		singleCorners = NULL;
+	}
+
+	//cvWaitKey(0);
+	////
+	////
+	//
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		if(places != NULL)
+	//		{
+	//			if(places[i] != NULL)
+	//			{
+	//				delete[]places[i];
+	//				places[i] = NULL;
+	//			}
+	//		}
+	//	}
+	//	if(places != NULL)
+	//	{
+	//		delete[]places;
+	//		places = NULL;
+	//	}
+}
+
+void findAreasAndCorners(int indexAndDegrees[][9]) {
+	for (int x = 0; x < counter; x++) {
+		if (indexAndDegrees[x][0] == 4) {
+			//cout<<"4lu"<<endl;
+			ways = determineWays(singleCorners, indexAndDegrees, x);
+			bool leftSelected = false;
+			bool rightSelected = false;
+			bool upSelected = false;
+			bool downSelected = false;
+			int horizontal;
+			int vertical;
+			if (abs(singleCorners[ways[0]].x - 320) < abs(
+					singleCorners[ways[2]].x - 320)) {
+				leftSelected = true;
+				horizontal = findExtensionColor(singleCorners[x],
+						singleCorners[ways[0]], imgResult);
+			} else {
+				rightSelected = true;
+				horizontal = findExtensionColor(singleCorners[x],
+						singleCorners[ways[2]], imgResult);
+			}
+			if (abs(singleCorners[ways[1]].y - 240) < abs(
+					singleCorners[ways[3]].y - 240)) {
+				downSelected = true;
+				vertical = findExtensionColor(singleCorners[x],
+						singleCorners[ways[1]], imgResult);
+			} else {
+				upSelected = true;
+				vertical = findExtensionColor(singleCorners[x],
+						singleCorners[ways[3]], imgResult);
+			}
+
+			bool selections[4];
+			selections[0] = leftSelected;
+			selections[1] = downSelected;
+			selections[2] = rightSelected;
+			selections[3] = upSelected;
+			int verhor[2];
+			verhor[0] = vertical;
+			verhor[1] = horizontal;
+
+			if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+					&& verhor[1] != -1) {
+				tagMainCorner(selections, verhor, x, ways);
+			}
+
+			if (ways != NULL) {
+				delete[] ways;
+				ways = NULL;
+			}
+		}
+
+	}
+
+	for (int x = 0; x < counter; x++) {
+		if (indexAndDegrees[x][0] == 3) {
+
+			int *ways = new int[4];
+			for (int i = 0; i < 4; i++) {
+				ways[i] = -1;
+			}
+			for (int i = 0; i < indexAndDegrees[x][0]; i++) {
+
+				if (indexAndDegrees[x][2 * i + 2] > 135 && indexAndDegrees[x][2
+						* i + 2] <= 225) {
+					ways[2] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 45
+						&& indexAndDegrees[x][2 * i + 2] <= 135) {
+					ways[3] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 315
+						|| indexAndDegrees[x][2 * i + 2] <= 45) {
+					ways[0] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 225
+						&& indexAndDegrees[x][2 * i + 2] <= 315) {
+					ways[1] = indexAndDegrees[x][2 * i + 1];
+				}
+
+			}
+
+			bool selections[4];
+			selections[0] = false;
+			selections[1] = false;
+			selections[2] = false;
+			selections[3] = false;
+			int verhor[2];
+			verhor[0] = false;
+			verhor[1] = false;
+			int whiteOrBlack;
+			//cout<<"-1 kontrolu"<<endl;
+			if (ways[0] == -1) {
+				//cout<<"SOl bos"<<endl;
+				whiteOrBlack = findExtensionColor(singleCorners[ways[2]],
+						singleCorners[x], imgResult);
+				if (abs(singleCorners[ways[1]].y - 240) < abs(
+						singleCorners[ways[3]].y - 240)) {
+
+					selections[1] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+				} else {
+					selections[3] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+				}
+
+				if (whiteOrBlack == 1) {
+					//cout<<"beyazim"<<endl;
+					selections[2] = true;
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+
+					}
+				} else if (whiteOrBlack == 0) {
+					//cout<<"siyahim"<<endl;
+					if ((selections[1] && verhor[0] == 1) || (selections[3]
+							&& verhor[0] == 0)) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if ((selections[1] && verhor[0] == 0)
+							|| (selections[3] && verhor[0] == 1)) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				}
+				//else
+				//cout<<"belirsiz"<<endl;
+				//cvWaitKey(0);
+
+			} else if (ways[1] == -1) {
+				//cout<<"asagi bos"<<endl;
+				whiteOrBlack = findExtensionColor(singleCorners[ways[3]],
+						singleCorners[x], imgResult);
+				if (abs(singleCorners[ways[0]].x - 320) < abs(
+						singleCorners[ways[2]].x - 320)) {
+					selections[0] = true;
+
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+				} else {
+					selections[2] = true;
+
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+				}
+
+				if (whiteOrBlack == 1) {
+					selections[3] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+					}
+
+				} else if (whiteOrBlack == 0) {
+					if ((selections[0] && verhor[1] == 1) || (selections[2]
+							&& verhor[1] == 0)) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if ((selections[0] && verhor[1] == 0)
+							|| (selections[2] && verhor[1] == 1)) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				}
+
+			} else if (ways[2] == -1) {
+				//cout<<"sag bos"<<endl;
+				whiteOrBlack = findExtensionColor(singleCorners[ways[0]],
+						singleCorners[x], imgResult);
+				if (abs(singleCorners[ways[1]].y - 240) < abs(
+						singleCorners[ways[3]].y - 240)) {
+
+					selections[1] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+				} else {
+					selections[3] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+				}
+
+				if (whiteOrBlack == 1) {
+					selections[0] = true;
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						//cout<<"TAGGING"<<endl;
+						tagMainCorner(selections, verhor, x, ways);
+					}
+
+				} else if (whiteOrBlack == 0) {
+					if ((selections[1] && verhor[0] == 1) || (selections[3]
+							&& verhor[0] == 0)) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if ((selections[1] && verhor[0] == 0)
+							|| (selections[3] && verhor[0] == 1)) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				}
+
+			} else if (ways[3] == -1) {
+				//cout<<"ust bos"<<endl;
+				whiteOrBlack = findExtensionColor(singleCorners[ways[1]],
+						singleCorners[x], imgResult);
+				if (abs(singleCorners[ways[0]].x - 320) < abs(
+						singleCorners[ways[2]].x - 320)) {
+					selections[0] = true;
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+				} else {
+					selections[2] = true;
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+				}
+
+				if (whiteOrBlack == 1) {
+					selections[1] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+					}
+				} else if (whiteOrBlack == 0) {
+					if ((selections[0] && verhor[1] == 1) || (selections[2]
+							&& verhor[1] == 0)) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if ((selections[0] && verhor[1] == 0)
+							|| (selections[2] && verhor[1] == 1)) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				}
+
+			}
+
+
+			if (ways != NULL) {
+				delete[] ways;
+				ways = NULL;
+			}
+		}
+	}
+
+	for (int x = 0; x < counter; x++) {
+		if (indexAndDegrees[x][0] == 2) {
+
+			int *ways = new int[4];
+			for (int i = 0; i < 4; i++) {
+				ways[i] = -1;
+			}
+			for (int i = 0; i < indexAndDegrees[x][0]; i++) {
+
+				if (indexAndDegrees[x][2 * i + 2] > 135 && indexAndDegrees[x][2
+						* i + 2] <= 225) {
+					ways[2] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 45
+						&& indexAndDegrees[x][2 * i + 2] <= 135) {
+					ways[3] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 315
+						|| indexAndDegrees[x][2 * i + 2] <= 45) {
+					ways[0] = indexAndDegrees[x][2 * i + 1];
+				} else if (indexAndDegrees[x][2 * i + 2] > 225
+						&& indexAndDegrees[x][2 * i + 2] <= 315) {
+					ways[1] = indexAndDegrees[x][2 * i + 1];
+				}
+
+			}
+
+			bool selections[4];
+			selections[0] = false;
+			selections[1] = false;
+			selections[2] = false;
+			selections[3] = false;
+			int verhor[2];
+			verhor[0] = -1;
+			verhor[1] = -1;
+			bool whiteOrBlack;
+			int control[2];
+			if (ways[3] == -1 && ways[2] == -1) {
+				//cout<<"3 ve 2 yok"<<endl;
+
+				control[0] = findExtensionColor(singleCorners[ways[1]],
+						singleCorners[x], imgResult);
+				control[1] = findExtensionColor(singleCorners[ways[0]],
+						singleCorners[x], imgResult);
+				//				cout<<"control[0]"<<control[0]<<endl;
+				//				cout<<"control[1]"<<control[1]<<endl;
+				if (control[0] == 0 && control[1] == 0) {
+					identificationIndex[x][0] = 0;
+					identificationIndex[x][1] = 3;
+					identified[x] = true;
+					willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+							= true;
+					places[identificationIndex[x][0]][identificationIndex[x][1]]
+							= singleCorners[x];
+				} else if (control[0] == 0 && control[1] == 1) {
+
+					int horizontal = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+					if (horizontal == 1) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (horizontal == 0) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+
+				} else if (control[0] == 1 && control[1] == 0) {
+					int vertical = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+					if (vertical == 1) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (vertical == 0) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				} else if (control[0] == 1 && control[1] == 1) {
+					selections[1] = true;
+					selections[0] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+					}
+				}
+
+			} else if (ways[0] == -1 && ways[3] == -1) {
+				//cout<<"0 ve 3 yok"<<endl;
+				control[0] = findExtensionColor(singleCorners[ways[2]],
+						singleCorners[x], imgResult);
+				control[1] = findExtensionColor(singleCorners[ways[1]],
+						singleCorners[x], imgResult);
+				//				cout<<"control[0]"<<control[0]<<endl;
+				//				cout<<"control[1]"<<control[1]<<endl;
+				if (control[0] == 0 && control[1] == 0) {
+					identificationIndex[x][0] = 0;
+					identificationIndex[x][1] = 0;
+					identified[x] = true;
+					willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+							= true;
+					places[identificationIndex[x][0]][identificationIndex[x][1]]
+							= singleCorners[x];
+				} else if (control[0] == 0 && control[1] == 1) {
+
+					int vertical = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+					if (vertical == 1) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (vertical == 0) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+
+				} else if (control[0] == 1 && control[1] == 0) {
+					int horizontal = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+					if (horizontal == 1) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (horizontal == 0) {
+						identificationIndex[x][0] = 0;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				} else if (control[0] == 1 && control[1] == 1) {
+					selections[1] = true;
+					selections[2] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[1]], imgResult);
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						//cout<<"TAGGING"<<endl;
+						tagMainCorner(selections, verhor, x, ways);
+					}
+				}
+			} else if (ways[1] == -1 && ways[2] == -1) {
+				//cout<<"1 ve 2 yok"<<endl;
+				control[0] = findExtensionColor(singleCorners[ways[3]],
+						singleCorners[x], imgResult);
+				control[1] = findExtensionColor(singleCorners[ways[0]],
+						singleCorners[x], imgResult);
+				//				cout<<"control[0]"<<control[0]<<endl;
+				//				cout<<"control[1]"<<control[1]<<endl;
+				if (control[0] == 0 && control[1] == 0) {
+					identificationIndex[x][0] = 3;
+					identificationIndex[x][1] = 3;
+					identified[x] = true;
+					willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+							= true;
+					places[identificationIndex[x][0]][identificationIndex[x][1]]
+							= singleCorners[x];
+				} else if (control[0] == 0 && control[1] == 1) {
+
+					int horizontal = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+					if (horizontal == 1) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (horizontal == 0) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+
+				} else if (control[0] == 1 && control[1] == 0) {
+					int vertical = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+					if (vertical == 1) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (vertical == 0) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 3;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				} else if (control[0] == 1 && control[1] == 1) {
+					selections[3] = true;
+					selections[0] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[0]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+					}
+				}
+			} else if (ways[0] == -1 && ways[1] == -1) {
+				//cout<<"0 ve 1 yok"<<endl;
+				control[0] = findExtensionColor(singleCorners[ways[2]],
+						singleCorners[x], imgResult);
+				control[1] = findExtensionColor(singleCorners[ways[3]],
+						singleCorners[x], imgResult);
+				//				cout<<"control[0]"<<control[0]<<endl;
+				//				cout<<"control[1]"<<control[1]<<endl;
+				if (control[0] == 0 && control[1] == 0) {
+					identificationIndex[x][0] = 3;
+					identificationIndex[x][1] = 0;
+					identified[x] = true;
+					willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+							= true;
+					places[identificationIndex[x][0]][identificationIndex[x][1]]
+							= singleCorners[x];
+				} else if (control[0] == 0 && control[1] == 1) {
+
+					int vertical = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+					if (vertical == 1) {
+						identificationIndex[x][0] = 1;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (vertical == 0) {
+						identificationIndex[x][0] = 2;
+						identificationIndex[x][1] = 0;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+
+				} else if (control[0] == 1 && control[1] == 0) {
+					int horizontal = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+					if (horizontal == 1) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 1;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					} else if (horizontal == 0) {
+						identificationIndex[x][0] = 3;
+						identificationIndex[x][1] = 2;
+						identified[x] = true;
+						willBeFilled[identificationIndex[x][0]][identificationIndex[x][1]]
+								= true;
+						places[identificationIndex[x][0]][identificationIndex[x][1]]
+								= singleCorners[x];
+					}
+				} else if (control[0] == 1 && control[1] == 1) {
+					selections[3] = true;
+					selections[2] = true;
+					verhor[0] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[3]], imgResult);
+					verhor[1] = findExtensionColor(singleCorners[x],
+							singleCorners[ways[2]], imgResult);
+
+					if (verhor[0] != -2 && verhor[1] != -2 && verhor[0] != -1
+							&& verhor[1] != -1) {
+						tagMainCorner(selections, verhor, x, ways);
+					}
+				}
+			}
+
+			if (ways != NULL) {
+				delete[] ways;
+				ways = NULL;
+			}
+		}
+	}
+
+	for (int g = 0; g < counter; g++) {
+		if (!identified[g]) {
+
+			for (int y = 0; y < indexAndDegrees[g][0]; y++) {
+				if (identified[indexAndDegrees[g][2 * y + 1]]) {
+					//cvCopyImage(bgr_frameLeft,tempImg);
+					//					cvCircle(tempImg, cvPoint(singleCorners[g].x, singleCorners[g].y), 4,cvScalar(0, 255, 0), -1, 8);
+					//					cvShowImage("Captures",tempImg);
+					//cvWaitKey(0);
+					if ((indexAndDegrees[g][2 * y + 2] <= 225)
+							&& (indexAndDegrees[g][2 * y + 2] > 135)) {
+						//						cout<<"sagda tanimli"<<endl;
+						//						cvCircle(tempImg, cvPoint(singleCorners[indexAndDegrees[g][2*y +1]].x, singleCorners[indexAndDegrees[g][2*y +1]].y), 4,cvScalar(0, 255, 0), -1, 8);
+						//												cvShowImage("Captures",tempImg);
+						//	cvWaitKey(0);
+						identificationIndex[g][0]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][0];
+						identificationIndex[g][1]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][1] - 1;
+						//cout<<"koordinatlari x: "<<identificationIndex[g][0]<<", y: "<<identificationIndex[g][1]<<endl;
+
+						if (identificationIndex[g][0] >= 0
+								&& identificationIndex[g][0] < 4
+								&& identificationIndex[g][1] >= 0
+								&& identificationIndex[g][1] < 4) {
+							identified[g] = true;
+							willBeFilled[identificationIndex[g][0]][identificationIndex[g][1]]
+									= true;
+							places[identificationIndex[g][0]][identificationIndex[g][1]]
+									= singleCorners[g];
+							break;
+						} else {
+							identificationIndex[g][0] = -1;
+							identificationIndex[g][1] = -1;
+						}
+
+					} else if ((indexAndDegrees[g][2 * y + 2] > 315)
+							|| (indexAndDegrees[g][2 * y + 2] <= 45)) {
+
+						//						cout<<"solda tanimli"<<endl;
+						//						cvCircle(tempImg, cvPoint(singleCorners[indexAndDegrees[g][2*y +1]].x, singleCorners[indexAndDegrees[g][2*y +1]].y), 4,cvScalar(0, 255, 0), -1, 8);
+						//												cvShowImage("Captures",tempImg);
+						//												//cvWaitKey(0);
+						identificationIndex[g][0]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][0];
+						identificationIndex[g][1]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][1] + 1;
+						//cout<<"koordinatlari x: "<<identificationIndex[g][0]<<", y: "<<identificationIndex[g][1]<<endl;
+						if (identificationIndex[g][0] >= 0
+								&& identificationIndex[g][0] < 4
+								&& identificationIndex[g][1] >= 0
+								&& identificationIndex[g][1] < 4) {
+							identified[g] = true;
+							willBeFilled[identificationIndex[g][0]][identificationIndex[g][1]]
+									= true;
+							places[identificationIndex[g][0]][identificationIndex[g][1]]
+									= singleCorners[g];
+							break;
+						} else {
+							identificationIndex[g][0] = -1;
+							identificationIndex[g][1] = -1;
+						}
+					} else if ((indexAndDegrees[g][2 * y + 2] <= 315)
+							&& (indexAndDegrees[g][2 * y + 2] > 225)) {
+						//cout<<"asagida tanimli"<<endl;
+						//						cvCircle(tempImg, cvPoint(singleCorners[indexAndDegrees[g][2*y +1]].x, singleCorners[indexAndDegrees[g][2*y +1]].y), 4,cvScalar(0, 255, 0), -1, 8);
+						//												cvShowImage("Captures",tempImg);
+						//cvWaitKey(0);
+						identificationIndex[g][0]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][0] - 1;
+						identificationIndex[g][1]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][1];
+						//cout<<"koordinatlari x: "<<identificationIndex[g][0]<<", y: "<<identificationIndex[g][1]<<endl;
+						if (identificationIndex[g][0] >= 0
+								&& identificationIndex[g][0] < 4
+								&& identificationIndex[g][1] >= 0
+								&& identificationIndex[g][1] < 4) {
+							identified[g] = true;
+							willBeFilled[identificationIndex[g][0]][identificationIndex[g][1]]
+									= true;
+							places[identificationIndex[g][0]][identificationIndex[g][1]]
+									= singleCorners[g];
+							break;
+						} else {
+							identificationIndex[g][0] = -1;
+							identificationIndex[g][1] = -1;
+						}
+					} else if ((indexAndDegrees[g][2 * y + 2] <= 135)
+							&& (indexAndDegrees[g][2 * y + 2] > 45)) {
+						//cout<<"ustte tanimli"<<endl;
+						cvCircle(tempImg,
+								cvPoint(singleCorners[indexAndDegrees[g][2 * y
+										+ 1]].x,
+										singleCorners[indexAndDegrees[g][2 * y
+												+ 1]].y), 4,
+								cvScalar(0, 255, 0), -1, 8);
+						cvShowImage("Captures", tempImg);
+						//cvWaitKey(0);
+						identificationIndex[g][0]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][0] + 1;
+						identificationIndex[g][1]
+								= identificationIndex[indexAndDegrees[g][2 * y
+										+ 1]][1];
+						//cout<<"koordinatlari x: "<<identificationIndex[g][0]<<", y: "<<identificationIndex[g][1]<<endl;
+						if (identificationIndex[g][0] >= 0
+								&& identificationIndex[g][0] < 4
+								&& identificationIndex[g][1] >= 0
+								&& identificationIndex[g][1] < 4) {
+							identified[g] = true;
+							willBeFilled[identificationIndex[g][0]][identificationIndex[g][1]]
+									= true;
+							places[identificationIndex[g][0]][identificationIndex[g][1]]
+									= singleCorners[g];
+							break;
+						} else {
+							identificationIndex[g][0] = -1;
+							identificationIndex[g][1] = -1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

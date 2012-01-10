@@ -1,0 +1,17 @@
+<package>
+  <description brief="learning_manager">
+
+     learning_manager
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/learning_manager</url>
+  <depend package="libsvm"/>
+  <depend package="roscpp"/>
+  <depend package="aff_msgs"/>
+
+</package>
+
+

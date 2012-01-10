@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/43/trunk/data_collector
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/31/trunk/data_collector/.project
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/30/trunk/data_collector/manifest.xml
+END
+cmake_install.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/29/trunk/data_collector/cmake_install.cmake
+END
+.cproject
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/30/trunk/data_collector/.cproject
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/29/trunk/data_collector/mainpage.dox
+END
+.pydevproject
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/29/trunk/data_collector/.pydevproject
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/30/trunk/data_collector/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/29/trunk/data_collector/Makefile
+END

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<robot name="sr4k"
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+
+  <!-- PR2 base -->
+  <include filename="$(find pr2_description)/urdf/base_v0/base.urdf.xacro" />
+  <xacro:pr2_base_v0 name="base"/>
+
+  <property name="name" value="swissranger"/>
+  <property name="parent" value="base_link"/>
+
+	<link name="${name}_mount_link">
+		<inertial>
+		    <mass value="0.470" />
+		    <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+		    <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+		             iyy="1.0" iyz="0.0" 
+		             izz="1.0" />
+		</inertial>
+	</link>
+
+</robot>
+

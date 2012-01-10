@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch
+END
+pr2_learning_affordances.launch
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/pr2_learning_affordances.launch
+END
+coffee_cup.launch
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/coffee_cup.launch
+END
+cylinder_object.launch
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/cylinder_object.launch
+END
+simple_sphere.launch
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/simple_sphere.launch
+END
+simple_box.launch
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/simple_box.launch
+END
+simple_cylinder.launch
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/pr2_learning_affordances/launch/simple_cylinder.launch
+END

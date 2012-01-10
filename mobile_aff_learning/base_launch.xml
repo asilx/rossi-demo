@@ -1,0 +1,14 @@
+<launch>
+	<!-- start teleop node -->
+	<node pkg="teleop_base" type="teleop_base_keyboard" output="screen" name="teleoper" >
+	    <remap from="base_controller/command" to="create/cmd_vel" />
+	</node>
+
+	<!-- start rviz node -->
+	<arg name="gui" default="False" />
+	<param name="robot_description" command="$(find xacro)/xacro.py $(find learning_urdf)/defs/pioneer3dx.xacro" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find learning_urdf)/urdf.vcg" />
+</launch>

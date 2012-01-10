@@ -1,0 +1,17 @@
+uint8 DO_PERCEPT = 0
+uint8 EXTRACT_EFFECT = 1
+uint8 task
+int8 arg
+int8 arg2
+---
+#uint8 PROCESSING = 0
+#uint8 DONE = 1
+#uint8 feedback
+sensor_msgs/Image raw_image
+sensor_msgs/Image filtered_image
+sensor_msgs/RegionOfInterest[] rois
+bool face_detected
+int16 ooi_area
+int8[] ooi_color_r_hist
+int8[] ooi_color_g_hist
+int8[] ooi_color_b_hist

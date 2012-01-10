@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom
+END
+collada-dom-2.2.zip.md5sum
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom/collada-dom-2.2.zip.md5sum
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom/manifest.xml
+END
+collada-dom.patch
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom/collada-dom.patch
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom/mainpage.dox
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/colladadom/Makefile
+END

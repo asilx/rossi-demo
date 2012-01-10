@@ -1,0 +1,13 @@
+<launch>
+
+	<arg name="tabletop_segmentation_points_input" default="/swissranger/pointcloud2_raw" />
+
+	<!-- segmentation -->
+	<include file="$(find tabletop_object_detector)/launch/tabletop_segmentation.launch">
+	  <arg name="tabletop_segmentation_points_in" value="$(arg tabletop_segmentation_points_input)" />
+	</include>
+	
+	<!-- launch workspace_detector node -->
+  <node pkg="workspace_detector" type="workspace_detector" name="workspace_detector" output="screen"/>
+
+</launch>

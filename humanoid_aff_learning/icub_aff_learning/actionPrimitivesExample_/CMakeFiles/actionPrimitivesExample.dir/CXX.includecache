@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/actionPrimitivesExample/main.cpp
+yarp/os/Network.h
+-
+yarp/os/RFModule.h
+-
+yarp/os/Bottle.h
+-
+yarp/os/BufferedPort.h
+-
+yarp/sig/Vector.h
+-
+yarp/math/Math.h
+-
+yarp/dev/Drivers.h
+-
+iCub/perception/models.h
+-
+iCub/action/actionPrimitives.h
+-
+iostream
+-
+fstream
+-
+iomanip
+-
+string
+-
+deque
+-
+

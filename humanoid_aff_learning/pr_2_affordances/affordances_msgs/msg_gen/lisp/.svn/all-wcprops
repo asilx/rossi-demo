@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/affordances_msgs/msg_gen/lisp
+END
+PerceiveRangeData.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/affordances_msgs/msg_gen/lisp/PerceiveRangeData.lisp
+END
+_package.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/affordances_msgs/msg_gen/lisp/_package.lisp
+END
+_package_PerceiveRangeData.lisp
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/affordances_msgs/msg_gen/lisp/_package_PerceiveRangeData.lisp
+END
+affordances_msgs-msg.asd
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/affordances_msgs/msg_gen/lisp/affordances_msgs-msg.asd
+END

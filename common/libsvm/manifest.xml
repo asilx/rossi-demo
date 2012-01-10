@@ -1,0 +1,13 @@
+<package>
+  <description brief="libsvm">
+
+     libsvm
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/libsvm</url>
+</package>
+
+

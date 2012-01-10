@@ -1,0 +1,19 @@
+<package>
+  <description brief="experiment_test">
+
+     experiment_test
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/experiment_test</url>
+  <depend package="roscpp"/>
+  <depend package="gazebo"/>
+  <depend package="pcl"/>
+  <depend package="pcl_ros"/>
+  <depend package="gazebo_plugins"/>
+
+</package>
+
+

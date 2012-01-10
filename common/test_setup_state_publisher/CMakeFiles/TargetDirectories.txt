@@ -1,0 +1,16 @@
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/clean-test-results.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/publisher_transform.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/rosbuild_precompile.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/rospack_genmsg.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/rospack_genmsg_libexe.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/rospack_gensrv.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/test.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/test-future.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/test-results.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/test-results-run.dir
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/test_setup_state_publisher/CMakeFiles/tests.dir

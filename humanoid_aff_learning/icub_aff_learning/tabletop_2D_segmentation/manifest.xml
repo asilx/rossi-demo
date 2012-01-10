@@ -1,0 +1,19 @@
+<package>
+  <description brief="tabletop_2D_segmentation">
+
+     tabletop_2D_segmentation
+
+  </description>
+  <author>Yigit</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/tabletop_2D_segmentation</url>
+  <depend package="roscpp"/>
+  <depend package="cv_bridge"/>
+  <depend package="sensor_msgs"/>
+  <depend package="aff_msgs"/>
+  <!--depend package="opencv2"/-->
+
+</package>
+
+

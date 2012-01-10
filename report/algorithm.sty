@@ -1,0 +1,618 @@
+%  algorithm.sty --- style file for algorithms
+%  
+%  (c) 1993,1994 Christophe Fiorio, L.I.R.M.M. at Montpellier, France
+%  
+%  Report bugs and comments to:
+%  fiorio@lirmm.fr
+%
+%  $Id: algorithm.sty,v 2.13 1995/03/13 08:55:25 fiorio Exp $
+%
+%%%%%%%%%%%%%%%  Release 2.5
+%
+%   History:
+%
+%   - March 14 1995: Release 2.5
+%    * a new macros defined with \SetKwIf: \uIf (for uncomplete if)
+%      which defines a If block unterminated like in a \eIf
+%      block. Allows to have a correct line when doing things like:
+%      \uIF{condition}{
+%        if's block
+%      }
+%      \lElse{else in one ligne}
+%   - February 13 1995: Release 2.4
+%    * \marge works for algorithm[H] now !
+%   - September 30 1994: Release 2.3
+%    * alignement in \SetKwData, SetKwInOut macros is right now !
+%   - September 14 1994: Release 2.2
+%    * Add a new macro called \SetKwInOut{Kw}{input} is defined. This
+%      macro act as \SetKwData{Kw}{input} except for the
+%      presentation. The ":" of all macros such defined will be place
+%      at the same position. For example if you define
+%      \SetKwInOut{In}{input} and \SetKwInOut{Out}{output} you will
+%      obtain for \In{toto}\par \Out{tata}:
+%      input  : toto
+%      output : tata
+%      Caution : even used alone, \In{toto} will give:
+%      input  : toto
+%      In a such case use \SetKwData{Input}{input}.
+%    * Add macro \ReSetInOut{input} which reset the position of ":" at
+%      "input :". 
+%   - June 14 1994: Release 2.1
+%    * add a new type of text: Data text. The macro SetData{}{},
+%      SetDataSty{} and \DataSty{} are been defined. The default value
+%      of DataSty is \tt
+%    * The presentation of KwData defined by \SetKwData{Kw}{input} has been
+%      redefined: the argument's text of \Kw will be printed to the
+%      right of "input: ".
+%   - June 01 1994: Release 2.0
+%    * number line position corrected in vertical mode: add width of
+%      \vrule
+%    * Add a margin (a \hbox to \marge before the \vbox of the algo)
+%      By default equal to \leftskip + \parindent default values.
+%    * add two macros:
+%      \setInd{before rule space}{after rule space}
+%          sets the size of the space before the rule and after the
+%          rule. In \NoLine mode the indentation space is the sum of
+%          this two values, by default 0.5em and 1em
+%      \setnlskip{length} 
+%          set the value of the space between the line numbers and the
+%          text, by default 1em.
+%
+%   - May 17 1994: Release 2.0b
+%    * add to algorithm[H] the same vertical space before and after as
+%      present in floating object.
+%    * harmonize the interline skip.
+%
+%   - May 13 1994: Release 2.0a
+%    * algorithm environment works now exactly as figure: i.e. it is a
+%      floating object and you can have position parameters [htbp].
+%    * a new position parameter H has been added for algorithm only.
+%      it forces the algorithm to stay in place. 
+%    * the way to do indentation has been changed. No changes for the
+%      users, but the numbers of line are now more precisely
+%      positionned for example.
+%    * new:
+%      - add new predefined Key Words: 
+%        \ForEach, \lForEach, \PourCh, \lPourCh
+%
+%   - Release 1.3b
+%    * modification:
+%      - change the look of the line numbers. Now they are printed in
+%      \bf, they was previously printed in between [].
+%    * new:
+%      - add a new macro: \SetnlSty{}{} which is set by default to
+%      \SetnlSty{\bf}{} (see previous note) and allows the user to
+%      define the style of the line numbers.
+%      ex: \SetnlSty{[}{]} print [1] (style of release 1.3a)
+%          \SetnlSty{}{)}  print 1)
+%
+%   - Release 1.3a
+%    * correction:
+%      - the macros \SetArg didn't work on the same way as similar
+%        macros like \SetKw, it's ok now.
+%
+%   - Release 1.3
+%     * modification:
+%       - there is now in Vline mode a little vertical space
+%       after the end of a block. 
+%
+%   - Release 1.2
+%     * corrections: 
+%       - the use of \fn\ at the end of a line did printed (). This
+%       bug is now corrected.
+%       - the function doesn't print no more an additional space
+%       before them.
+%       - \fn{} prints no more () and space after it.
+%     * news:
+%       - \SetKwArg works now like \SetKwFunction
+%
+%   - Release 1.1
+%     * modifications: 
+%       - Lines with macros beginning with \l must now ends by a \;
+%       command : allow multi-use of such macros on the same line,
+%       exemple: \lIf{test}{\lPour{all}{do that}}
+%     * news:
+%       - user's define fonctions without arguments are now print
+%       without `()', exemple: \SetKwFunction{Fn}{TheFunction} use
+%       as \Fn\ gives now TheFunction and no more TheFunction()
+%       - environment algorithmHere: algorithm writen with this
+%       argument are not floating object. Caution: algorithm
+%       can't be cut, so if there is no such place to put the
+%       algorithm here, LaTeX will left a blank and put the algorithm
+%       on the following page.
+%
+%   - December 03 1993 : Release 1.0
+%     First release
+%
+%%%%%%%%%%%%%%
+%
+%   Short summary  
+%   -------------
+%  
+%   algorithm is the environment for algorithms
+%   It provide macros that allow you to create differents
+%   sorts of key words, therefore a set of predefined key word
+%   is gived.
+%
+%   IT should be used as follows
+%
+%   \begin{algorithm}
+%       ...
+%       ...
+%   \end{algorithm}
+%
+%
+%   IMPORTANT : each line MUST end with \;
+%
+%   Note that if you define macros outside algorithm environment they
+%   are avaible in all the document and particulary you can use then
+%   inside all algorithms without redefine them.
+%  
+%%%%%%%%%%%%%%         predefined english keywords
+%
+%     \Data{input}
+%     \Result{output}
+%     \In{input}
+%     \Out{output}
+%     \Procedure{[name]}
+%     \Funct{[name]}
+%     \Ret{[value]}
+%     \Begin{block inside}
+%     \If{condition}{Then block}                  % in a block
+%     \Else{inside Else}                          % in a block
+%     \eIf{condition}{Then Block}{Else block}     % in blocks
+%     \lIf{condition}{Else text}                  % on the same line
+%     \lElse{Else text}                           % on the same line        
+%     \Switch{Condition}{Switch block}
+%     \Case{a case}{case block}                   % in a block
+%     \lCase{a case}{case text}                   % on the same line
+%     \Other{otherwise block}                     % in a block
+%     \lOther{otherwise block}                    % on the same line
+%     \For{condition}{text loop}                  % in a block
+%     \lFor{condition}{text}                      % on the same line
+%     \ForEach{condition}{text loop}              % in a block
+%     \lForEach{condition}{text}                      % on the same line
+%     \Repeat{End condition}{text loop}           % in a block
+%     \lRepeat{condition}{text}                   % on the same line
+%     \While{condition}{text loop}                % in a block
+%     \lWhile{condition}{text loop}               % on the same line
+%
+%
+%%%%%%%%%%%%%%        predefined french keywords
+%
+%     \Donnees{input}
+%     \Res{input}
+%     \Proc{[name]}
+%     \Fct{[name]}
+%     \Retour[valeur]}
+%     \Deb{block inside}
+%     \Si{condition}{Bloc du Alors}                 % Dans un bloc
+%     \eSi{condition}{Bloc du Alors}{Bloc du Sinon} % Dans un bloc
+%     \lSi{condition}{texte du Alors}               % sur la meme ligne
+%     \lSinon{texte du Sinon}                       % sur la meme ligne
+%     \Suivant{Condition}{Bloc de l'instruction}
+%     \Cas{cas}{Bloc de ce cas}                     % Dans un bloc
+%     \lCas{cas}{Bloc de ce cas}                    % sur la meme ligne
+%     \Autres{Bloc de l'alternative}                % Dans un bloc
+%     \lAutres{Bloc de l'alternative}               % sur la meme ligne
+%     \Pour{condition}{texte de la boucle}          % Dans un bloc
+%     \lPour{condition}{texte}                      % sur la meme ligne
+%     \PourCh{condition}{texte de la boucle}          % Dans un bloc
+%     \lPourCh{condition}{texte}                      % sur la meme ligne
+%     \Repeter{End condition}{texte de la boucle}   % Dans un bloc
+%     \lRepeter{condition}{texte}                   % sur la meme ligne
+%     \Tq{condition}{texte de la boucle}            % Dans un bloc
+%     \lTq{condition}{texte de la boucle}           % sur la meme ligne
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% for more complete informations you can see algorithm.tex
+%
+%
+\expandafter\ifx\csname algorithm.sty\endcsname\relax%
+\expandafter\gdef\csname algorithm.sty\endcsname{}%
+\else \message{already loaded}\endinput\fi%
+\def\filename{algorithm.sty}
+%
+\def\algorithmname{algorithm} \def\ASdate{March 13 1995}
+\def\ASversion{Release 2.5} \def\algorithmstyleid{\ASversion\space --
+  \ASdate\space --}
+\typeout{^^JDocument style option `\algorithmname'\space%
+                   \algorithmstyleid^^J}%\space(Christophe Fiorio)}
+%%
+%%
+%%
+%%
+\newcounter{AlgoLine}
+\setcounter{AlgoLine}{0}
+\newskip\skiptotal
+\newskip\skiprule
+\newskip\skiptext
+\newskip\skiplength
+\newskip\marge
+\newskip\skipnumline
+\newdimen\algowidth
+\newdimen\inoutsize
+%%
+%%
+\def\arg@e{}
+\def\arg@space{\ }
+\def\BlankLine{\vskip 1ex}
+%%
+\def\vespace{1ex}
+\def\SetInd#1#2{%
+\skiprule=#1%
+\skiptext=#2%
+\skiplength=\skiptext\advance\skiplength by \skiprule\advance\skiplength by 0.4pt}
+\def\setInd#1#2{\SetInd{#1}{#2}} % definition for compatibilty with
+                                 % previous versions
+\setInd{0.5em}{1em}
+\def\setnlskip#1{\skiptotal=#1}
+
+\marge=\leftskip\advance\marge by \parindent
+%%
+%%
+\def\Indp{\advance\leftskip by 1em\advance \skiptotal by 1em}
+\def\Indpp{\advance\leftskip by 0.5em\advance \skiptotal by 0.5em}
+\def\Indm{\advance\leftskip by -1em\advance\skiptotal by -1em}
+\def\Indmm{\advance\leftskip by -0.5em\advance\skiptotal by -0.5em}
+%%
+\def\SetnlSty#1#2{\def\nlSty##1{{#1{##1}#2}}}
+\def\nl{\addtocounter{AlgoLine}{1}\hskip 0pt\llap{%
+\scriptsize{\nlSty{\theAlgoLine}}\hskip\skiptotal}\ignorespaces}
+%
+\def\lnl#1{\nl\immediate\write\@auxout{\string \newlabel {#1}{{\theAlgoLine}{\thepage}}}%
+\ignorespaces}
+%%
+\def\dontprintsemicolon{\def\;{\par}}
+\def\printsemicolon{\def\;{\string; \par}}
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\push#1{\advance\skiptotal by #1\moveright #1}
+\def\pop#1{\advance\skiptotal by -#1}
+\def\addskiptotal{\advance\skiptotal by 0.4pt\advance\hsize by -0.4pt}  % 0.4 pt=width of \vrule
+\def\subskiptotal{\advance\skiptotal by -0.4pt} % 0.4 pt=width of \vrule
+\long\def\V@line#1{\push{\skiprule}\hbox{\vrule%
+\vtop{\push{\skiptext}\vtop{\addskiptotal\advance\hsize by -\skiplength #1}\Hlne}}%
+\pop{\skiprule}\subskiptotal\vskip\vespace}
+%
+\long\def\V@sline#1{\push{\skiprule}\hbox{\vrule%
+\vtop{\push{\skiptext}\vtop{\addskiptotal\advance\hsize by -\skiplength #1\vskip 1ex}}}%
+\pop{\skiprule}\subskiptotal\vskip 1pt\nointerlineskip}
+%
+\def\H@lne{\hrule height 0,4pt depth 0pt width .5em}
+%
+\long\def\No@line#1{\par\push{\skiprule}\hbox{%
+\vtop{\push{\skiptext}\vtop{\advance\hsize by -\skiplength #1}}}%
+\pop{\skiprule}\vskip\vespace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\def\SetVline{%
+\long\def\a@block##1##2{\V@line{##1}}%
+\long\def\a@group##1{\V@sline{##1}}
+\def\Hlne{\H@lne}}
+\def\SetNoline{%
+\long\def\a@block##1##2{\No@line{##1}\KwSty{##2}\par}%
+\long\def\a@group##1{\No@line{##1}}
+\def\Hlne{}}
+%
+\def\SetKwSty#1{\def\KwSty##1{{#1##1}}}
+\def\SetArgSty#1{\def\ArgSty##1{{#1##1}}}
+\def\SetFuncSty#1{\def\FuncSty##1{{#1##1}}}
+\def\SetDataSty#1{\def\DataSty##1{{#1##1}}}
+%
+%
+\def\SetArg#1#2{%
+\expandafter\def\csname#1\endcsname{%
+\ArgSty{#2}\ }%
+}
+%
+\def\SetData#1#2{%
+\expandafter\def\csname#1\endcsname{%
+\DataSty{#2}\ }%
+}
+%
+\def\SetKwInOut#1#2{%
+\newbox\inoutsbox\setbox\inoutsbox=\hbox{#2\typo:\ }%
+\expandafter\ifx\csname InOutSizeDefined\endcsname\relax%
+\expandafter\gdef\csname InOutSizeDefined\endcsname{}%
+\inoutsize=\wd\inoutsbox%
+\else\ifdim\wd\inoutsbox>\inoutsize\inoutsize=\wd\inoutsbox\fi%
+\fi%
+\long\expandafter\def\csname#1\endcsname##1{%
+\newdimen\inoutline\inoutline=\hsize\advance\inoutline by-\inoutsize%
+\parbox[t]{\inoutsize}{#2\hfill:\mbox{\ }}\parbox[t]{\inoutline}{##1}%
+\vskip\vespace\nointerlineskip}%
+}
+%
+\def\ResetInOut#1{%
+\newbox\inoutsbox\setbox\inoutsbox=\hbox{#1\typo:\ }%
+\inoutsize=\wd\inoutsbox%
+}
+%
+%
+\def\SetKwData#1#2{%
+\long\expandafter\def\csname#1\endcsname##1{%
+\newbox\inoutbox\setbox\inoutbox=\hbox{#2\typo: }%
+\newdimen\inoutline\inoutline=\hsize\advance\inoutline by-\wd\inoutbox%
+\parbox[t]{\wd\inoutbox}{\box\inoutbox}\parbox[t]{\inoutline}{##1}%
+\vskip\vespace\nointerlineskip}%
+}
+%
+\def\SetKw#1#2{%
+\expandafter\def\csname#1\endcsname{%
+\KwSty{#2}}%
+}
+%
+\def\SetKwArg#1#2{%
+\expandafter\def\csname#1\endcsname##1{%
+\def\theArg{##1}%
+\ifx##1\arg@space\KwSty{#2}\ %
+\else%
+\ifx##1\ \KwSty{#2}\ %
+\else%
+\ifx\theArg\arg@e\KwSty{#2}%
+\else\KwSty{#2} \ArgSty{##1}%
+\fi\fi\fi}%
+}
+%
+\def\SetKwFunction#1#2{%
+\expandafter\def\csname#1\endcsname##1{%
+\def\theArg{##1}%
+\ifx##1\arg@space\FuncSty{#2\ }%
+\else%
+\ifx##1\ \FuncSty{#2\ }%
+\else%
+\ifx\theArg\arg@e\FuncSty{#2}%
+\else\FuncSty{#2(}\ArgSty{##1}\FuncSty{)}%
+\fi\fi\fi}%
+}
+%
+\def\SetKwBlock#1#2#3{%
+\long\expandafter\def\csname#1\endcsname##1{%
+\KwSty{#2}\par\a@group{##1}\KwSty{#3}\par}
+}
+%
+\def\SetKwIf#1#2#3#4#5#6{%
+\long\expandafter\def\csname e#1\endcsname##1##2##3{%
+\KwSty{#3} \ArgSty{##1} \KwSty{#4}\par%
+\a@group{##2}\KwSty{#5}\par\a@block{##3}{#6}}%
+\long\expandafter\def\csname#1\endcsname##1##2{%
+\KwSty{#3} \ArgSty{##1} \KwSty{#4}\par\a@block{##2}{#6}}%
+\long\expandafter\def\csname u#1\endcsname##1##2{%
+\KwSty{#3} \ArgSty{##1} \KwSty{#4}\par\a@group{##2}\par}%
+\long\expandafter\def\csname#2\endcsname##1{%
+\KwSty{#5}\par\a@block{##1}{#6}}%
+\expandafter\def\csname l#1\endcsname##1##2{%x
+\KwSty{#3} \ArgSty{##1} %
+\KwSty{#4} ##2}%
+\expandafter\def\csname l#2\endcsname##1{%
+\KwSty{#5} ##1}%
+}
+%
+\def\SetKwSwitch#1#2#3#4#5#6#7#8{%
+\long\expandafter\def\csname#1\endcsname##1##2{%
+\KwSty{#4} \ArgSty{##1} %
+\KwSty{#5}\par\a@block{##2}{#8}}%
+\long\expandafter\def\csname#2\endcsname##1##2{%
+\KwSty{#6} \ArgSty{##1}\par\a@block{##2}{}}%
+\long\expandafter\def\csname l#2\endcsname##1##2{%
+\KwSty{#6} \ArgSty{##1} ##2}%
+\long\expandafter\def\csname#3\endcsname##1{%
+\KwSty{#7}\par\a@block{##1}{}}%
+\long\expandafter\def\csname l#3\endcsname##1{%
+\KwSty{#7} ##1}%
+}
+%
+\def\SetKwFor#1#2#3#4{%
+\long\expandafter\def\csname#1\endcsname##1##2{%
+\KwSty{#2} \ArgSty{##1} \KwSty{#3}\par\a@block{##2}{#4}}%
+\expandafter\def\csname l#1\endcsname##1##2{%
+\KwSty{#2} \ArgSty{##1} \KwSty{#3} ##2}%
+}
+%
+\def\SetKwRepeat#1#2#3{%
+\long\expandafter\def\csname#1\endcsname##1##2{%
+\KwSty{#2}\par\a@group{##2}\KwSty{#3} \ArgSty{##1}\;}%
+\long\expandafter\def\csname l#1\endcsname##1##2{%
+\KwSty{#2} ##2 \KwSty{#3} \ArgSty{##1}}%
+}
+%
+% 
+%
+% .......................................................if french undefined
+\expandafter\ifx\csname frenchstyleid\endcsname\relax
+\def\listalgorithmname{List of Algorithms}%
+\def\algorithmname{Algorithm}%
+\def\typo{}
+%
+\else%...................................................else french style
+%
+\def\listalgorithmname{Liste des Algorithmes}%
+\def\algorithmname{Algorithme}%
+\def\typo{\ }
+\fi
+%
+%........................................................fi
+
+\def\fps@floatalgo{htb}
+\def\ftype@floatalgo{8}
+\def\ext@floatalgo{loa}
+\def\fnum@floatalgo{\algorithmname~\thefloatalgo}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\expandafter\ifx\csname intextsep\endcsname\relax% Space left on top and bottom of an in-text float
+\newskip\intextsep%
+\fi
+\ifdim \intextsep =\z@%                Si sa valeur n'est pas defini alors
+\intextsep 10ex plus 2pt minus 2pt%
+\fi
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\@algobegin{\hbox\bgroup\hbox to \marge{\hfill}\vbox\bgroup\InitAlgo}
+\def\@algoend{\egroup\egroup\RestoreAlgo}
+%
+\def\@algoHere{%
+\expandafter\let\csname endalgorithm\endcsname\end@algoHere%
+\hbox\bgroup\hbox to \marge{\hfill}\par\vbox\bgroup%
+\def\@captype{algorithm}%
+\def\baselinestretch{1}\small\normalsize\@parboxrestore%
+\InitAlgo\ignorespaces\vskip\intextsep}
+%
+\def\end@algoHere{\egroup\egroup\vskip\intextsep\par}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\expandafter\ifx\csname @float\endcsname\relax %float undefined !
+%
+\def\algorithm{% algorithm defined as a \vbox
+\hbox\bgroup\hbox to \marge{\hfill}\par\vbox\bgroup%
+\def\@captype{algorithm}%
+\def\baselinestretch{1}\small\normalsize\@parboxrestore%
+\InitAlgo\ignorespaces\vskip\intextsep\@warning{float undefined}}
+%
+\def\endalgorithm{\egroup\egroup\vskip\intextsep\par}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\else %algorithm defined as a floating object
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\def\@algoparam[#1]{\ifx #1H\@algoHere\else\@float{floatalgo}[#1]\@algobegin\fi}
+%
+\def\algorithm{\@ifnextchar[{\@algoparam}{\@float{floatalgo}\@algobegin}}
+\def\endalgorithm{\@algoend\end@float}
+%
+\def\@dblalgoparam[#1]{\@dblfloat{floatalgo}[#1]\@algobegin}
+\@namedef{algorithm*}{\@ifnextchar[{\@dblalgoparam}{\@dblfloat{floatalgo}\@algobegin}}
+\@namedef{endalgorithm*}{\@algoend\end@dblfloat}
+%
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+\newif\if@onecolfree
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\expandafter\ifx\csname chapter\endcsname\relax% if chapter undefined then not in report style !
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\expandafter\ifx\csname section\endcsname\relax% if no section or chapter then no listofalgorithm !
+%
+\def\listofalgorithms{\relax }
+\newcounter{floatalgo}
+\def\thefloatalgo{\@arabic\c@floatalgo}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\else %section defined but not report then we are in article style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% for style article
+%
+\def\listofalgorithms{\section*{\listalgorithmname\@mkboth
+   {\uppercase{\listalgorithmname}}{\uppercase{\listalgorithmname}}}%
+  \@starttoc{loa}}
+\def\l@floatalgo{\@dottedtocline{1}{1.5em}{2.3em}}
+
+\newcounter{floatalgo}
+\def\thefloatalgo{\@arabic\c@floatalgo}
+%
+%
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\else %chapter defined then we are in report style.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% for style report
+%
+\def\listofalgorithms{\@onecolfreefalse
+  \if@twocolumn\@onecolfreetrue\onecolumn\fi
+  \chapter*{\listalgorithmname\@mkboth{\uppercase{\listalgorithmname}}%
+     {\uppercase{\listalgorithmname}}}\@starttoc{loa}\if@onecolfree
+   \twocolumn\fi}
+\def\l@floatalgo{\@dottedtocline{1}{1.5em}{2.3em}}
+
+\newcounter{floatalgo}[chapter]
+\def\thefloatalgo{\thechapter.\@arabic\c@floatalgo}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+\def\addtoloa#1{\addcontentsline{\ext@floatalgo}{floatalgo}{\numberline{\thefloatalgo}{#1}}}
+\def\addcount{\refstepcounter{floatalgo}}
+%
+\def\titleofalgo#1{\addcount {\bf\fnum@floatalgo\typo: }#1\par\addtoloa{#1}\medskip}
+\def\Titleofalgo#1{\addcount {\bf\fnum@floatalgo\typo: }#1\par\addtoloa{#1}}
+\def\freetitleofalgo#1{\addcount #1\par\addtoloa{#1}\medskip} 
+\def\Freetitleofalgo#1{\addcount #1\par\addtoloa{#1}}
+\def\InitAlgo{\setcounter{AlgoLine}{0}\advance\hsize by -\marge\algowidth=\hsize\setnlskip{1em}}
+\def\RestoreAlgo{\hsize=\algowidth\lineskip\normallineskip}
+%
+%
+%
+%    Algorithm Environnement -> static object
+%
+% Caution: if there isn't enough space to place algorithm here, it 
+%          will be pushed on the following page and a vertical blank 
+%          space will be added to the end of the actual page. 
+%
+\newenvironment{algorithmHere}{
+\@warning{AlgorithmHere is obsolete! Please use algorithm with [H] option.}
+\begin{algorithm}[H]
+}{
+\end{algorithm}
+}
+
+
+
+%
+%
+%  Default Definitions
+%
+%
+\SetnlSty{\bf}{}
+\SetKwSty{\bf}
+\SetArgSty{\em}
+\SetFuncSty{\sc}
+\SetDataSty{\tt}
+\printsemicolon
+\SetNoline
+%
+%
+\SetKwData{Donnees}{Donn\'ees}
+\SetKwData{Res}{R\'esultat}
+\SetKwArg{Proc}{proc\'edure}
+\SetKwArg{Fct}{fonction}
+\SetKwArg{Retour}{retourner}
+\SetKwBlock{Deb}{d\'ebut}{fin}
+\SetKwIf{Si}{Sinon}{si}{alors}{sinon}{finSi}
+\SetKwSwitch{Suivant}{Cas}{Autre}{suivant}{faire}{cas o\`u}{autres cas}{fin d'alternative}
+\SetKwFor{Pour}{pour}{faire}{finPour}
+\SetKwFor{PourCh}{pour chaque}{faire}{finPourChaque}
+\SetKwRepeat{Repeter}{r\'ep\'eter}{jusqu'\`a}
+\SetKwFor{Tq}{tant que}{faire}{finTq}
+%
+%
+\SetKwData{Data}{Data}
+\SetKwData{Result}{Result}
+\SetKwData{In}{Input}
+\SetKwData{Out}{Output}
+\SetKw{To}{to}
+\SetKwArg{Func}{function}        %hold for compatibility
+\SetKwArg{Procedure}{procedure}  %hold for compatibility
+\SetKwArg{Ret}{return}
+\SetKwBlock{Begin}{begin}{end}
+\SetKwIf{If}{Else}{if}{then}{else}{endif}
+\SetKwSwitch{Switch}{Case}{Other}{switch}{do}{case}{otherwise}{endswitch}
+\SetKwFor{For}{for}{do}{endfor}
+\SetKwFor{ForEach}{foreach}{do}{endforeach}
+\SetKwRepeat{Repeat}{repeat}{until}
+\SetKwFor{While}{while}{do}{endwhile}
+%
+%
+%

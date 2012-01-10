@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/convex_decomposition
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/convex_decomposition/manifest.xml
+END
+convex_decomposition.patch
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/convex_decomposition/convex_decomposition.patch
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/convex_decomposition/Makefile
+END

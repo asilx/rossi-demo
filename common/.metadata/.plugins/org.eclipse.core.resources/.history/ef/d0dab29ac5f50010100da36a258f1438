@@ -1,0 +1,194 @@
+//ros includes
+#include <ros/ros.h>
+#include <sensor_msgs/JointState.h>
+
+//read led information from yarp network and update joint values
+
+// yarp includes
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/Bottle.h>
+#include <yarp/os/BufferedPort.h>
+#include <yarp/sig/Vector.h>
+#include <yarp/math/Math.h>
+
+// standard includes
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+
+using namespace std;
+using namespace yarp::os;
+using namespace yarp::sig;
+using namespace yarp::dev;
+using namespace yarp::math;
+
+typedef struct ledVector {
+	ConstString channelName;
+	Vector coordinates;
+
+	ledVector() {
+		coordinates.resize(3);
+	}
+} LEDVector;
+
+vector<LEDVector> vectorList;
+
+Vector getCoordinatesByChannelName(const char* channelOfInterest) {
+	for (int i = 0; i < vectorList.size(); i++)
+		if (vectorList[i].channelName == channelOfInterest)
+			return vectorList[i].coordinates;
+
+	cerr
+			<< "Could not find the queried channel of interest, something wrong with the leds or mocap, EXITING!"
+			<< endl;
+	exit(-1);
+}
+
+// We are interested in camera's leds. They are channels 101, 103 and 104
+void getCameraLedInfo(const Bottle *b) {
+
+	int channelCount = b->get(0).asInt();//get number of active leds
+	vectorList.clear();
+
+	for (int i = 1; i < channelCount * 5; i = i + 5) {
+		LEDVector led;
+		led.channelName = b->get(i).asString();//channel name
+		//now convert led coordinates from KDL frame to iCub frame
+		led.coordinates[0] = b->get(i + 1).asDouble();//x
+		led.coordinates[1] = b->get(i + 2).asDouble();//KDL's "y" -> icub's "z"
+		led.coordinates[2] = b->get(i + 3).asDouble();//z
+
+		cout << led.channelName << " " << led.coordinates[0] << " "
+				<< led.coordinates[1] << " " << led.coordinates[2] << endl;
+
+		vectorList.push_back(led);
+	}
+}
+
+void getTransformation(vector<double> &rpy, vector<double> &offset) {
+	Vector ch101 = getCoordinatesByChannelName("Channel101");
+	Vector ch103 = getCoordinatesByChannelName("Channel103");
+	Vector ch104 = getCoordinatesByChannelName("Channel104");
+	Vector ch201 = getCoordinatesByChannelName("Channel201");
+
+
+	Vector zS = ch101 - ch103;//getCoordinatesByChannelName("Channel101");
+	Vector xz = ch104 - ch103;// getCoordinatesByChannelName("Channel104");
+
+	Vector yS;
+
+	yS = cross(zS, xz);
+
+	for (int i = 0; i < 3; i++)
+		offset[i] = ch103[i];
+
+	Vector xS = cross(yS, zS);
+
+	Matrix rot(3, 3);
+	Matrix translation(3, 1);
+
+	Vector xG(3);
+	xG[0] = 1;
+	xG[1] = 0;
+	xG[2] = 0;
+	Vector yG(3);
+	yG[0] = 0;
+	yG[1] = 1;
+	yG[2] = 0;
+	Vector zG(3);
+	zG[0] = 0;
+	zG[1] = 0;
+	zG[2] = 1;
+
+	Vector v(3);
+	v[0] = dot(xS, xG);
+	v[1] = dot(xS, yG);
+	v[2] = dot(xS, zG);
+	rot.setCol(0, v);
+
+	v[0] = dot(yS, xG);
+	v[1] = dot(yS, yG);
+	v[2] = dot(yS, zG);
+	rot.setCol(1, v);
+
+	v[0] = dot(zS, xG);
+	v[1] = dot(zS, yG);
+	v[2] = dot(zS, zG);
+	rot.setCol(2, v);
+
+	//double* rpy = new double[3];
+
+
+	rot = luinv(rot);
+	for (int i = 0; i < 3; i++)
+		offset[i] = -1 * offset[i];
+
+	rpy[0] = atan2(rot(2, 1), rot(2, 2)); // r
+	rpy[2] = atan2(rot(1, 0), rot(0, 0)); // y
+	rpy[1] = atan2(-rot(2, 0), cos(rpy[2]) * rot(0, 0) + sin(rpy[2])
+			* rot(1, 0)); // p
+	//	return rpy;
+
+}
+
+//mocap data received callback
+class DataPort: public BufferedPort<Bottle> {
+	virtual void onRead(Bottle& b) {
+		// process data in b
+		size_t found;
+		string left = "/left/in";
+		getCameraLedInfo(b);
+		getTransformation(rpy, offset);
+	}
+};
+
+int main(int argc, char* argv[]) {
+
+	//ros initializations
+	ros::init(argc, argv, "test_setup_state_publisher");
+	ros::NodeHandle n;
+	ros::Publisher joint_state_publisher =
+			n.advertise<sensor_msgs::JointState> ("joint_states", 1000);
+
+	//yarp initializations
+	Network::init();
+	DataPort vzInPort;
+	vzInPort.useCallback();
+	vzInPort.open("/i:vzListen");
+	Network::connect("/vzPout", "/i:vzListen");
+	bool is_connected = Network::isConnected("/vzPout", "/i:vzListen");
+	if (!is_connected) {
+		std::cerr << "mocap is not connected, EXITING!" << std::endl;
+		exit(-2);
+	}
+
+	vector<LEDVector> vectors;
+	int bottleSize;
+
+	vector<double> rpy(3);
+	vector<double> offset(3);
+
+	ros::Rate loop_rate(15);
+	sensor_msgs::JointState js;
+
+	js.name.push_back(std::string("/swissranger_link"));
+	js.position.resize(6);
+
+	while (n.ok()) {
+
+		js.header.frame_id = "/base_link";
+		js.header.stamp = ros::Time::now();
+		js.position[0] = offset[0];//x
+		js.position[1] = offset[1];//y
+		js.position[2] = offset[2];//z
+		js.position[3] = rpy[0];//r
+		js.position[4] = rpy[1];//p
+		js.position[5] = rpy[2];//y
+		joint_state_publisher.publish(js);
+		ros::spinOnce();
+		loop_rate.sleep();
+	}
+	Network::fini();
+}

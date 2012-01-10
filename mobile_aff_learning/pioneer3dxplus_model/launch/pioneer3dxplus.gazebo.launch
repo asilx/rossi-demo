@@ -1,0 +1,24 @@
+<launch>
+
+  <include file="$(find gazebo_worlds)/launch/empty_world.launch"/>
+
+  <include file="$(find pioneer3dxplus_model)/launch/upload_pioneer3dxplus.gazebo.xml"/>
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_pioneer" pkg="gazebo" type="spawn_model" args="-z 0.051 -urdf -param robot_description -model robot_description" respawn="false" output="screen" />
+
+  <!-- Controller Manager -->
+  <include file="$(find pr2_controller_manager)/controller_manager.launch" />
+
+      <param name="axis_vx" type="int" value="1"/>
+      <param name="axis_vw" type="int" value="0"/>
+      <param name="axis_vy" type="int" value="2"/>
+      <param name="axis_pan" type="int" value="3"/>
+      <param name="axis_tilt" type="int" value="4"/>
+      <param name="passthrough_button" type="int" value="1"/>
+      <param name="head_button" type="int" value="1"/>
+      
+      <node name="joy" pkg="joy" type="joy" />
+      <node name="p2os_teleop" pkg="p2os_teleop" type="p2os_teleop"/>
+
+</launch>

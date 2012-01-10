@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;tabletop_2D_segmentation/src/main.cpp&apos; to &apos;main.cpp.bak&apos;" description="Rename resource &apos;main.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main.cpp" name="main.cpp.bak" stamp="1320949427349" updateReferences="true"/>
+</session>

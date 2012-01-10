@@ -1,0 +1,126 @@
+!SESSION 2011-10-12 14:29:33.310 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.cdt.core 1 0 2011-10-12 14:30:32.332
+!MESSAGE Indexed 'workspace_detector' (3 sources, 976 headers) in 27.23 sec: 59,994 declarations; 220,867 references; 4 unresolved inclusions; 73 syntax errors; 2,453 unresolved names (0.87%)
+
+!ENTRY org.tigris.subversion.subclipse.core 4 0 2011-10-12 15:47:08.164
+!MESSAGE org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+!STACK 1
+org.tigris.subversion.subclipse.core.SVNException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.subclipse.core.SVNException.wrapException(SVNException.java:101)
+	at org.tigris.subversion.subclipse.core.status.StatusCacheManager.refreshStatus(StatusCacheManager.java:298)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.refreshStatus(FileModificationManager.java:179)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.resourceChanged(FileModificationManager.java:128)
+	at org.eclipse.core.internal.events.NotificationManager$2.run(NotificationManager.java:291)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:285)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:149)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:313)
+	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1022)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:341)
+	at org.eclipse.ui.actions.GlobalBuildAction$1.run(GlobalBuildAction.java:178)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.tigris.subversion.subclipse.core.SVNException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.subclipse.core.SVNException.wrapException(SVNException.java:91)
+	at org.tigris.subversion.subclipse.core.status.NonRecursiveStatusUpdateStrategy.statusesToUpdate(NonRecursiveStatusUpdateStrategy.java:60)
+	at org.tigris.subversion.subclipse.core.status.StatusCacheManager.refreshStatus(StatusCacheManager.java:273)
+	... 11 more
+Caused by: org.tigris.subversion.svnclientadapter.SVNClientException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:542)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:514)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:507)
+	at org.tigris.subversion.subclipse.core.status.NonRecursiveStatusUpdateStrategy.statusesToUpdate(NonRecursiveStatusUpdateStrategy.java:55)
+	... 12 more
+Caused by: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.javahl.SVNClient.status(Native Method)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:528)
+	... 15 more
+!SUBENTRY 1 org.tigris.subversion.subclipse.core 4 -6 2011-10-12 15:47:08.202
+!MESSAGE org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+!STACK 1
+org.tigris.subversion.subclipse.core.SVNException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.subclipse.core.SVNException.wrapException(SVNException.java:91)
+	at org.tigris.subversion.subclipse.core.status.NonRecursiveStatusUpdateStrategy.statusesToUpdate(NonRecursiveStatusUpdateStrategy.java:60)
+	at org.tigris.subversion.subclipse.core.status.StatusCacheManager.refreshStatus(StatusCacheManager.java:273)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.refreshStatus(FileModificationManager.java:179)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.resourceChanged(FileModificationManager.java:128)
+	at org.eclipse.core.internal.events.NotificationManager$2.run(NotificationManager.java:291)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:285)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:149)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:313)
+	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1022)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:341)
+	at org.eclipse.ui.actions.GlobalBuildAction$1.run(GlobalBuildAction.java:178)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.tigris.subversion.svnclientadapter.SVNClientException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:542)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:514)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:507)
+	at org.tigris.subversion.subclipse.core.status.NonRecursiveStatusUpdateStrategy.statusesToUpdate(NonRecursiveStatusUpdateStrategy.java:55)
+	... 12 more
+Caused by: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.javahl.SVNClient.status(Native Method)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:528)
+	... 15 more
+!SUBENTRY 2 org.tigris.subversion.subclipse.core 4 -6 2011-10-12 15:47:08.202
+!MESSAGE org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+!STACK 0
+org.tigris.subversion.svnclientadapter.SVNClientException: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:542)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:514)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:507)
+	at org.tigris.subversion.subclipse.core.status.NonRecursiveStatusUpdateStrategy.statusesToUpdate(NonRecursiveStatusUpdateStrategy.java:55)
+	at org.tigris.subversion.subclipse.core.status.StatusCacheManager.refreshStatus(StatusCacheManager.java:273)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.refreshStatus(FileModificationManager.java:179)
+	at org.tigris.subversion.subclipse.core.resourcesListeners.FileModificationManager.resourceChanged(FileModificationManager.java:128)
+	at org.eclipse.core.internal.events.NotificationManager$2.run(NotificationManager.java:291)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:285)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:149)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:313)
+	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1022)
+	at org.eclipse.core.internal.resources.Workspace.build(Workspace.java:341)
+	at org.eclipse.ui.actions.GlobalBuildAction$1.run(GlobalBuildAction.java:178)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.tigris.subversion.javahl.ClientException: Working copy not locked; this is probably a bug, please report
+svn: Directory '/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/workspace_detector/CMakeFiles/.svn' containing working copy admin area is missing
+
+	at org.tigris.subversion.javahl.SVNClient.status(Native Method)
+	at org.tigris.subversion.svnclientadapter.javahl.AbstractJhlClientAdapter.getStatus(AbstractJhlClientAdapter.java:528)
+	... 15 more
+
+!ENTRY org.eclipse.ui.ide 4 4 2011-10-13 03:44:32.310
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 2 1 2011-10-13 03:44:32.323
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2011-10-13 03:44:32.323
+!MESSAGE The project description file (.project) for 'workspace_detector' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.

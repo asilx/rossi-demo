@@ -1,0 +1,16 @@
+<package>
+  <description brief="test_feature_struct">
+
+     test_feature_struct
+
+  </description>
+  <author>Kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/test_feature_struct</url>
+  <depend package="pcl"/>
+  <depend package="roscpp"/>
+
+</package>
+
+

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test
+END
+pr2.urdf
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/pr2.urdf
+END
+test_two_links_fixed_joint.launch
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_two_links_fixed_joint.launch
+END
+test_two_links_moving_joint.launch
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_two_links_moving_joint.launch
+END
+test_publisher.launch
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_publisher.launch
+END
+test_one_link.launch
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_one_link.launch
+END
+two_links_fixed_joint.urdf
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/two_links_fixed_joint.urdf
+END
+two_links_moving_joint.urdf
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/two_links_moving_joint.urdf
+END
+test_two_links_fixed_joint.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_two_links_fixed_joint.cpp
+END
+test_two_links_moving_joint.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_two_links_moving_joint.cpp
+END
+one_link.urdf
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/one_link.urdf
+END
+test_publisher.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_publisher.cpp
+END
+test_one_link.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/test/test_one_link.cpp
+END

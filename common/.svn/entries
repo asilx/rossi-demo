@@ -1,0 +1,37 @@
+10
+
+dir
+42
+http://svn.teamroboturk.com/kadir/metu-ros-pkg/stacks/aff_learning/common
+http://svn.teamroboturk.com/kadir
+
+
+
+2002-04-06T08:29:20.449626Z
+36
+kadir
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bb58395d-abd5-4e6c-9036-cfa28b7bc8a5
+
+feature_factory
+dir
+
+feature_extractor
+dir
+
+ff_test
+dir
+

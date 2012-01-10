@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.cdt.make.ui.MULTIPLE_INPUT_DIALOG_2">
+		<item value="421" key="org.eclipse.cdt.make.ui.DIALOG_WIDTH"/>
+		<item value="513" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_X"/>
+		<item value="64" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_Y"/>
+		<item value="224" key="org.eclipse.cdt.make.ui.DIALOG_HEIGHT"/>
+	</section>
+</section>

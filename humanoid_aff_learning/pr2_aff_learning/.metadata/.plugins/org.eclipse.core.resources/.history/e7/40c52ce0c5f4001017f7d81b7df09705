@@ -1,0 +1,19 @@
+#include "iostream"
+#include "sensor_msgs/PointCloud2.h"
+
+#include "ros/ros.h"
+//#include "tabletop_object_detector/TabletopDetectionResult.h"
+//#include "tabletop_object_detector/TabletopDetection.h"
+#include "tabletop_object_detector/TabletopSegmentation.h"
+#include "tabletop_collision_map_processing/TabletopCollisionMapProcessing.h"
+#include <visualization_msgs/MarkerArray.h>
+
+#include "pcl/filters/statistical_outlier_removal.h"
+#include "pcl/filters/radius_outlier_removal.h"
+#include "sensor_msgs/point_cloud_conversion.h"
+#include <pcl/ros/conversions.h>
+
+int main(int argc, char** argv) {
+
+	return 0;
+}

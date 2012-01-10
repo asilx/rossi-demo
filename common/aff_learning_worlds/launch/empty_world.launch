@@ -1,0 +1,27 @@
+<launch>
+
+	<param name="/use_sim_time" value="true" />
+	
+	<node name="gazebo" pkg="gazebo" type="gazebo" args="-s -1 -u $(find gazebo_worlds)/worlds/empty.world" 
+	respawn="false" output="screen"/>
+
+    <!--param name="robot_description" command="$(find xacro)/xacro.py '$(find aff_learning_worlds)/defs/empty_world.xacro'"/-->
+    
+     <!-- push robot_description to factory and spawn robot in gazebo -->
+     <!--node name="spawn_swissranger" pkg="gazebo" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model test_setup" respawn="false" output="screen" /-->
+
+  <!-- spawn table and tabletop object -->
+  <param name="table_description" 
+   command="$(find xacro)/xacro.py '$(find pr2_interactive_manipulation)/urdf/table.urdf.xacro'" />
+  <node name="spawn_table" pkg="gazebo" type="spawn_model" args="-urdf -param table_description -model table_1" 
+   respawn="false" output="screen" />
+
+	<param name="test_setup_description" 
+	command="$(find xacro)/xacro.py '$(find aff_learning_worlds)/defs/empty_world.xacro'" />
+	<node name="spawn_swissranger" pkg="gazebo" type="spawn_model" args="-urdf -unpause -param test_setup_description -model test_setup" 
+	respawn="false" output="screen" />
+
+	<node name="sor_pgs_iters" pkg="dynamic_reconfigure" type="dynparam" args="set gazebo sor_pgs_iters 50"/>
+	<node name="time_step" pkg="dynamic_reconfigure" type="dynparam" args="set gazebo time_step 0.002"/>
+
+</launch>

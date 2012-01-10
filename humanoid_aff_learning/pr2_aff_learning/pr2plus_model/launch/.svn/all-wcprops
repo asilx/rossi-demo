@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch
+END
+pr2_w_sr4k.launch
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch/pr2_w_sr4k.launch
+END
+pr2_learning_affordances.launch
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch/pr2_learning_affordances.launch
+END
+pr2_aff_learning_setup.launch
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch/pr2_aff_learning_setup.launch
+END
+pr2_w_sr4k_no_controllers.launch
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch/pr2_w_sr4k_no_controllers.launch
+END
+upload_pr2_w_sr4k.launch
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2plus_model/launch/upload_pr2_w_sr4k.launch
+END

@@ -1,0 +1,16 @@
+<package>
+  <description brief="aff_viz">
+
+     aff_viz
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/aff_viz</url>
+  <depend package="visualization_msgs"/>
+  <depend package="aff_msgs"/>
+
+</package>
+
+

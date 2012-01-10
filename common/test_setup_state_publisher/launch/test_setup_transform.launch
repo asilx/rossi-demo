@@ -1,0 +1,15 @@
+<launch>
+
+	<param name="/use_sim_time" value="false" />
+!-- 
+	<param name="robot_description" command="$(find xacro)/xacro.py $(find test_setup_state_publisher)/defs/test_setup.xacro" />
+ 
+<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+    <remap from="joint_state" to="joint_state"/>
+    <param name="publish_frequency" type="double" value="15.0"/>
+    <param name="tf_prefix" type="string" value=""/>
+  </node>
+-->
+	<node name="publisher" pkg="test_setup_state_publisher" type="publisher_transform"/>
+
+</launch>

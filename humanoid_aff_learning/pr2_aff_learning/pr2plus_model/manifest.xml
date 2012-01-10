@@ -1,0 +1,16 @@
+<package>
+  <description brief="pr2plus_model">
+
+     pr2plus_model
+
+  </description>
+  <author>kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/pr2plus_model</url>
+  <depend package="urdf"/>
+  <depend package="xacro"/>
+
+</package>
+
+

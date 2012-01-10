@@ -1,0 +1,16 @@
+<package>
+  <description brief="simple_armstack_goals">
+
+     simple_armstack_goals
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/simple_armstack_goals</url>
+  <depend package="move_arm_msgs"/>
+  <depend package="actionlib"/>
+
+</package>
+
+

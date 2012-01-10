@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       name="test_setup" >
+
+	<property name="M_PI" value="3.14159"/>
+	<property name="SR4K_NAME" value="swissranger"/>
+	<property name="BASE_NAME" value="/base_link"/>
+
+	<link name="/base_link" />
+
+	<include filename="$(find swissranger_camera_description)/urdf/swissranger_camera_description.xacro" />
+	<xacro:swissranger_camera name="${SR4K_NAME}" parent="${BASE_NAME}">
+		<!--origin xyz="0 0 1" rpy="0 0.7 0.3"/-->
+  	<origin xyz="0 0 0" rpy="0 0 0"/>
+	</xacro:swissranger_camera>
+	
+</robot>
+

@@ -1,0 +1,1679 @@
+Opened the engine!
+[0m[ INFO] [1320077757.898576742]: object detection service is ready[0m
+[0m[ INFO] [1320077757.898694581]: Calling tabletop segmentator[0m
+0.143612
+0.239814
+[0m[ INFO] [1320077758.389235225]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+This cluster is new or moved by the experimenter. Identifying!!
+Started assigning a new clusters 
+here
+here2
+Assigned 0
+Pushed my new cluster identification
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077758.394230116]: Calling tabletop segmentator[0m
+0.179316
+0.170764
+[0m[ INFO] [1320077758.745694893]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077758.749316243]: Calling tabletop segmentator[0m
+0.214595
+[0m[ INFO] [1320077758.964499829]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077758.968371637]: Calling tabletop segmentator[0m
+0.208745
+0.181847
+[0m[ INFO] [1320077759.364427686]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077759.368549764]: Calling tabletop segmentator[0m
+0.226243
+0.146973
+[0m[ INFO] [1320077759.711077502]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077759.719298040]: Calling tabletop segmentator[0m
+0.233542
+[0m[ INFO] [1320077759.964443826]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077759.972902082]: Calling tabletop segmentator[0m
+0.16949
+0.178009
+[0m[ INFO] [1320077760.332680786]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077760.337162751]: Calling tabletop segmentator[0m
+0.226909
+0.148235
+[0m[ INFO] [1320077760.691683155]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077760.695646841]: Calling tabletop segmentator[0m
+0.279529
+[0m[ INFO] [1320077760.984430202]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077760.988435108]: Calling tabletop segmentator[0m
+0.201805
+0.177341
+[0m[ INFO] [1320077761.345502643]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077761.349211949]: Calling tabletop segmentator[0m
+0.142035
+0.133525
+[0m[ INFO] [1320077761.634782340]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077761.638344867]: Calling tabletop segmentator[0m
+0.12926
+0.129923
+[0m[ INFO] [1320077761.901525634]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077761.905976162]: Calling tabletop segmentator[0m
+0.15057
+0.124291
+[0m[ INFO] [1320077762.168172293]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077762.171673753]: Calling tabletop segmentator[0m
+0.136129
+0.128458
+[0m[ INFO] [1320077762.425412098]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077762.435033476]: Calling tabletop segmentator[0m
+0.16508
+0.125715
+[0m[ INFO] [1320077762.715749084]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077762.719413436]: Calling tabletop segmentator[0m
+0.163079
+0.127027
+[0m[ INFO] [1320077763.019179297]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077763.022738130]: Calling tabletop segmentator[0m
+0.165739
+0.135837
+[0m[ INFO] [1320077763.344435608]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077763.348488534]: Calling tabletop segmentator[0m
+0.201613
+0.169675
+[0m[ INFO] [1320077763.701683553]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077763.710163384]: Calling tabletop segmentator[0m
+0.208074
+0.147154
+[0m[ INFO] [1320077764.094391470]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077764.118004435]: Calling tabletop segmentator[0m
+0.201134
+0.184715
+[0m[ INFO] [1320077764.439069694]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077764.447720473]: Calling tabletop segmentator[0m
+0.264525
+[0m[ INFO] [1320077764.760573786]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077764.767821705]: Calling tabletop segmentator[0m
+0.222344
+0.159404
+[0m[ INFO] [1320077765.105931080]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077765.109653761]: Calling tabletop segmentator[0m
+0.270279
+[0m[ INFO] [1320077765.385269796]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077765.395681437]: Calling tabletop segmentator[0m
+0.204849
+0.150671
+[0m[ INFO] [1320077765.747201658]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077765.750817143]: Calling tabletop segmentator[0m
+0.21734
+0.217309
+[0m[ INFO] [1320077766.194139532]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077766.205586822]: Calling tabletop segmentator[0m
+0.283395
+[0m[ INFO] [1320077766.500173893]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077766.505580505]: Calling tabletop segmentator[0m
+0.211903
+0.165192
+[0m[ INFO] [1320077766.894415572]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077766.898264922]: Calling tabletop segmentator[0m
+0.231931
+0.161651
+[0m[ INFO] [1320077767.323221036]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077767.326761692]: Calling tabletop segmentator[0m
+0.192092
+0.188792
+[0m[ INFO] [1320077767.684432156]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077767.694356876]: Calling tabletop segmentator[0m
+0.269878
+[0m[ INFO] [1320077767.972201301]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077767.976143912]: Calling tabletop segmentator[0m
+0.188365
+0.251621
+[0m[ INFO] [1320077768.394584342]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077768.399562004]: Calling tabletop segmentator[0m
+0.294604
+[0m[ INFO] [1320077768.695259449]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077768.699011677]: Calling tabletop segmentator[0m
+0.177884
+0.181709
+[0m[ INFO] [1320077769.050509435]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077769.058342132]: Calling tabletop segmentator[0m
+0.228551
+0.174456
+[0m[ INFO] [1320077769.477312811]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077769.489025781]: Calling tabletop segmentator[0m
+0.198993
+0.129886
+[0m[ INFO] [1320077769.790417475]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077769.794053804]: Calling tabletop segmentator[0m
+0.141568
+0.136322
+[0m[ INFO] [1320077770.064413344]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077770.067918882]: Calling tabletop segmentator[0m
+0.165423
+0.125352
+[0m[ INFO] [1320077770.357666405]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077770.362743623]: Calling tabletop segmentator[0m
+0.15779
+0.127164
+[0m[ INFO] [1320077770.642798544]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077770.646951594]: Calling tabletop segmentator[0m
+0.161225
+0.129312
+[0m[ INFO] [1320077770.943262477]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077770.951729033]: Calling tabletop segmentator[0m
+0.231155
+0.126367
+[0m[ INFO] [1320077771.321892498]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077771.335029871]: Calling tabletop segmentator[0m
+0.215385
+0.211547
+[0m[ INFO] [1320077771.749173459]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077771.757115301]: Calling tabletop segmentator[0m
+0.239101
+0.15807
+[0m[ INFO] [1320077772.149766818]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077772.153305273]: Calling tabletop segmentator[0m
+0.482235
+[0m[ INFO] [1320077772.634750813]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077772.639025458]: Calling tabletop segmentator[0m
+0.213245
+0.159573
+[0m[ INFO] [1320077773.012079722]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077773.018881075]: Calling tabletop segmentator[0m
+0.332706
+[0m[ INFO] [1320077773.353111368]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077773.360997550]: Calling tabletop segmentator[0m
+0.296766
+[0m[ INFO] [1320077773.635053178]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077773.642667218]: Calling tabletop segmentator[0m
+0.35647
+[0m[ INFO] [1320077773.995437556]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077773.999033785]: Calling tabletop segmentator[0m
+0.206985
+0.227942
+[0m[ INFO] [1320077774.464421089]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077774.468053838]: Calling tabletop segmentator[0m
+0.202304
+0.171639
+[0m[ INFO] [1320077774.795588887]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077774.800764257]: Calling tabletop segmentator[0m
+0.24653
+[0m[ INFO] [1320077775.064990236]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077775.070410270]: Calling tabletop segmentator[0m
+0.193294
+0.152176
+[0m[ INFO] [1320077775.380736303]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077775.387806183]: Calling tabletop segmentator[0m
+0.197078
+0.212313
+[0m[ INFO] [1320077775.808919320]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077775.812754110]: Calling tabletop segmentator[0m
+0.230803
+[0m[ INFO] [1320077776.034408179]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077776.038348509]: Calling tabletop segmentator[0m
+0.242155
+0.141459
+[0m[ INFO] [1320077776.458706832]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077776.463147683]: Calling tabletop segmentator[0m
+0.271813
+0.138425
+[0m[ INFO] [1320077776.885414713]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077776.888937364]: Calling tabletop segmentator[0m
+0.190397
+0.197356
+[0m[ INFO] [1320077777.283149474]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077777.287976103]: Calling tabletop segmentator[0m
+0.182534
+0.137826
+[0m[ INFO] [1320077777.583245433]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077777.586910180]: Calling tabletop segmentator[0m
+0.149901
+0.127955
+[0m[ INFO] [1320077777.852134901]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077777.855803172]: Calling tabletop segmentator[0m
+0.169802
+0.125422
+[0m[ INFO] [1320077778.161390636]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077778.165069753]: Calling tabletop segmentator[0m
+0.177534
+0.196726
+[0m[ INFO] [1320077778.528692605]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077778.532472009]: Calling tabletop segmentator[0m
+0.149906
+0.136738
+[0m[ INFO] [1320077778.795899610]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077778.807984510]: Calling tabletop segmentator[0m
+0.147163
+0.141349
+[0m[ INFO] [1320077779.101734046]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077779.111109129]: Calling tabletop segmentator[0m
+0.181664
+0.12264
+[0m[ INFO] [1320077779.407277427]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077779.410924773]: Calling tabletop segmentator[0m
+0.219624
+[0m[ INFO] [1320077779.635503399]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077779.643955439]: Calling tabletop segmentator[0m
+0.22681
+[0m[ INFO] [1320077779.889709444]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077779.893537434]: Calling tabletop segmentator[0m
+0.222866
+0.177946
+[0m[ INFO] [1320077780.278980469]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077780.284005654]: Calling tabletop segmentator[0m
+0.273214
+[0m[ INFO] [1320077780.594399998]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077780.598075919]: Calling tabletop segmentator[0m
+0.247466
+0.189568
+[0m[ INFO] [1320077781.027839562]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077781.035015085]: Calling tabletop segmentator[0m
+0.214312
+0.147011
+[0m[ INFO] [1320077781.384373045]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077781.387899184]: Calling tabletop segmentator[0m
+0.247866
+0.168881
+[0m[ INFO] [1320077781.814470391]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077781.822450937]: Calling tabletop segmentator[0m
+0.241084
+0.163626
+[0m[ INFO] [1320077782.211447074]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077782.215412137]: Calling tabletop segmentator[0m
+0.213336
+0.150556
+[0m[ INFO] [1320077782.585423544]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077782.589233336]: Calling tabletop segmentator[0m
+0.227462
+0.246888
+[0m[ INFO] [1320077783.061647326]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077783.065823733]: Calling tabletop segmentator[0m
+0.217232
+[0m[ INFO] [1320077783.295207768]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077783.298647692]: Calling tabletop segmentator[0m
+0.188496
+0.154956
+[0m[ INFO] [1320077783.650540221]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077783.654486056]: Calling tabletop segmentator[0m
+0.172506
+0.180009
+[0m[ INFO] [1320077784.038119589]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077784.041973203]: Calling tabletop segmentator[0m
+0.185192
+0.169835
+[0m[ INFO] [1320077784.339920512]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077784.343564594]: Calling tabletop segmentator[0m
+0.215788
+[0m[ INFO] [1320077784.598719973]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077784.602391860]: Calling tabletop segmentator[0m
+0.256622
+0.191623
+[0m[ INFO] [1320077785.044445794]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077785.048152596]: Calling tabletop segmentator[0m
+0.191091
+0.143804
+[0m[ INFO] [1320077785.367407668]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077785.372093650]: Calling tabletop segmentator[0m
+0.17338
+0.128519
+[0m[ INFO] [1320077785.678464543]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077785.682273383]: Calling tabletop segmentator[0m
+0.142433
+0.131054
+0.137785
+[0m[ INFO] [1320077786.088639950]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077786.092411368]: Calling tabletop segmentator[0m
+0.155787
+0.134599
+[0m[ INFO] [1320077786.367580957]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077786.375823970]: Calling tabletop segmentator[0m
+0.14214
+0.127787
+[0m[ INFO] [1320077786.638948167]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077786.655372747]: Calling tabletop segmentator[0m
+0.167538
+0.121505
+[0m[ INFO] [1320077786.915499897]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077786.923184148]: Calling tabletop segmentator[0m
+0.143309
+0.12773
+[0m[ INFO] [1320077787.206157407]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077787.212483896]: Calling tabletop segmentator[0m
+0.182607
+0.174534
+[0m[ INFO] [1320077787.643867168]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077787.652135172]: Calling tabletop segmentator[0m
+0.285005
+0.151163
+[0m[ INFO] [1320077788.009981225]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077788.014025781]: Calling tabletop segmentator[0m
+0.289709
+[0m[ INFO] [1320077788.335911380]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077788.339497027]: Calling tabletop segmentator[0m
+0.191368
+0.16741
+[0m[ INFO] [1320077788.656146146]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077788.660036220]: Calling tabletop segmentator[0m
+0.200684
+0.15139
+[0m[ INFO] [1320077789.058200476]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077789.061886758]: Calling tabletop segmentator[0m
+0.175895
+0.160871
+[0m[ INFO] [1320077789.364484431]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077789.368264628]: Calling tabletop segmentator[0m
+0.212276
+0.155211
+[0m[ INFO] [1320077789.761347951]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077789.769123048]: Calling tabletop segmentator[0m
+0.210843
+0.209099
+[0m[ INFO] [1320077790.175464996]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077790.178974081]: Calling tabletop segmentator[0m
+0.212009
+[0m[ INFO] [1320077790.389544620]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077790.393138772]: Calling tabletop segmentator[0m
+0.250782
+[0m[ INFO] [1320077790.690678000]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077790.695304704]: Calling tabletop segmentator[0m
+0.197257
+0.207802
+[0m[ INFO] [1320077791.093117889]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077791.097379937]: Calling tabletop segmentator[0m
+0.187421
+0.163752
+[0m[ INFO] [1320077791.433608500]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077791.437858953]: Calling tabletop segmentator[0m
+0.256748
+0.207185
+[0m[ INFO] [1320077791.901097545]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077791.905717510]: Calling tabletop segmentator[0m
+0.191059
+0.175528
+[0m[ INFO] [1320077792.247322128]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077792.251595296]: Calling tabletop segmentator[0m
+0.227655
+0.271453
+[0m[ INFO] [1320077792.747977999]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077792.751854175]: Calling tabletop segmentator[0m
+0.221067
+0.184368
+[0m[ INFO] [1320077793.185411324]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077793.188956235]: Calling tabletop segmentator[0m
+0.189985
+0.129895
+[0m[ INFO] [1320077793.497378638]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077793.505814672]: Calling tabletop segmentator[0m
+0.153053
+0.129169
+[0m[ INFO] [1320077793.799286330]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077793.803144377]: Calling tabletop segmentator[0m
+0.176238
+0.128866
+[0m[ INFO] [1320077794.104764115]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077794.108458616]: Calling tabletop segmentator[0m
+0.176855
+0.135294
+[0m[ INFO] [1320077794.414482613]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077794.418232277]: Calling tabletop segmentator[0m
+0.1519
+0.128945
+[0m[ INFO] [1320077794.689240315]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077794.692851063]: Calling tabletop segmentator[0m
+0.145757
+0.138622
+[0m[ INFO] [1320077794.978378483]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077794.982645267]: Calling tabletop segmentator[0m
+0.154785
+0.12878
+[0m[ INFO] [1320077795.293355951]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077795.304445653]: Calling tabletop segmentator[0m
+0.195163
+0.194258
+[0m[ INFO] [1320077795.701516416]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077795.705588798]: Calling tabletop segmentator[0m
+0.198295
+0.224374
+[0m[ INFO] [1320077796.115813775]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077796.120071470]: Calling tabletop segmentator[0m
+0.178314
+0.165398
+[0m[ INFO] [1320077796.532959914]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077796.542744160]: Calling tabletop segmentator[0m
+0.184178
+0.2002
+[0m[ INFO] [1320077796.822150633]: Successful segmentation! Moving to feature extraction...[0m
+Look for matches
+Getting the centroid of new cluster
+OK with this....
+Match found. The obstacle has been stable since the last human interruption
+Setting the identification
+Do you have a problem with centroid?
+I thought so
+ID set
+Match Done 
+Prune done
+hedehodo
+[0m[ INFO] [1320077796.828597188]: Calling tabletop segmentator[0m
+0.228102

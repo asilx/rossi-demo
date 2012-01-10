@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src
+END
+main__.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/main__.cpp
+END
+main_.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/main_.cpp
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/main.cpp
+END
+RobotArm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/RobotArm.cpp
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/Makefile
+END
+RobotTorso.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/RobotTorso.cpp
+END

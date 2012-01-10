@@ -1,0 +1,64 @@
+# install erratic package for libdiffdrive_plugin.so gazebo differential
+# drive controller plugin
+sudo apt-get install ros-electric-erratic-robot
+
+# install pioneer p3dx platform related package
+# note that the gazebo model in this package uses "differential_position2d" controller
+# whereas erratic platform uses "diffdrive_plugin" that is "libdiffdrive_plugin.so"
+
+sudo apt-get install ros-electric-p2os
+# DO: replace the controller:differential_position2d section of the file 
+# "p2os/p2os_urdf/defs/pioneer3dx.xacro" with the controller:diffdrive_plugin
+# section of the file erratic_robot/erratic_description/urdf/erratic_base.xacro
+# considering the kinematics structure of the pioneer3dx platform
+
+# This controller waits for velocity information from a "cmd_vel" named topic
+# as a "geometry_msgs::Twist" message.
+
+#create a folder "/home/kadir/my_tools/ros_tools" and checkout the sr4k model
+svn co http://ua-ros-pkg.googlecode.com/svn/trunk/arrg/ua_robots/swissranger_camera_description/
+
+# Check if joystick is running correctly, replace js0 with the proper joystick device name
+jstest /dev/input/js0
+
+# DO: modify the file "p2os/p2os_teleop/src/p2os_teleop.cc" so that it includes
+# "sensor_msgs/Joy.h" not "joy/Joy.h". Also change the related code lines. Besides,
+# modify the "manifest.xml" file of this package (disable "joy" dependency, and add
+# sensor_msgs dependency)
+
+# NOTE: Modified files are added to the externally_modified_files folder for future
+# quick replacement.
+
+# Now a pioneer robot can be controlled via joystick on the gazebo simulator by running
+# following nodes:
+roslaunch p2os_urdf pioneer3dx.gazebo.launch
+rosrun joy joy
+rosrun p2os_teleop p2os_teleop
+
+# While controlling the robot ensure that you press the "1" (right pad upper button),
+# otherwise robot will not going to move. Analog is useful as you might guess.
+
+# This is also useful for writing your own teleoperation node:
+# http://www.ros.org/wiki/joy/Tutorials/WritingTeleopNode
+# This is yet another example:
+# https://github.com/cwru-robotics/cwru-ros-pkg/blob/master/cwru_semi_stable/cwru_teleop/src/teleop_cwru_joy.cpp
+
+# In order to correctly visualize this model on rviz, you should make a few modifications in
+# pioneer3dx xacro files: (This is because gazebo sends transforms between "odom" and "base_footprint" frames,
+# and the robot's transforms are originally sent w.r.t. the "base_link" frame which has no transforms w.r.t. the
+# base_footprint. Either you send a transform between "base_link" and "base_footprint" as a fixed joint 
+# transformation, or do what is explained here)
+
+# change "base_link" entries in the file p2os/p2os_urdf/defs/pioneer3dx_wheel.xacro
+# to ${parent}, it is certainly a mistake in this file.
+
+# change "base_link entries in the file "p2os/p2os_urdf/defs/pioneer3dx.xacro" to "${base_name}"
+# and add "<property name="base_name" value="base_footprint"/>" at the very first of the file.
+
+# In rviz fixed_frame: .......... 		target_frame: ............
+
+# Do: modify swissranger_camera_description as follows:
+# change visual->color properties, and the rpy property of ${name}_joint to
+# rpy="0.0 0.0 0.0". Finally, change the field of view by referencing the manual of the sr4k.
+
+

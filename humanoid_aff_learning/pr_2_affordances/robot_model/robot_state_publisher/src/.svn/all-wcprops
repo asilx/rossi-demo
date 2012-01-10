@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/src
+END
+robot_state_publisher.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/src/robot_state_publisher.cpp
+END
+treefksolverposfull_recursive.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/src/treefksolverposfull_recursive.cpp
+END
+joint_state_listener.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/robot_state_publisher/src/joint_state_listener.cpp
+END

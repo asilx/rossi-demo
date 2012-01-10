@@ -1,0 +1,739 @@
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/Bottle.h>
+#include <yarp/os/BufferedPort.h>
+#include <yarp/sig/Vector.h>
+#include <yarp/math/Math.h>
+#include <yarp/dev/Drivers.h>
+#include <iCub/perception/models.h>
+#include <iCub/action/actionPrimitives.h>
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <deque>
+
+YARP_DECLARE_DEVICES(icubmod)
+
+using namespace std;
+using namespace yarp::os;
+using namespace yarp::sig;
+using namespace yarp::dev;
+using namespace yarp::math;
+using namespace iCub::perception;
+using namespace iCub::action;
+
+const double PI = 3.14159265;
+
+class BehaviorManager : public RFModule
+{
+protected:
+  ActionPrimitivesLayer2 *action;
+  BufferedPort<Bottle> inPort;
+  Port rpcPort;
+
+  Vector graspOrien;
+  Vector graspDisp;
+  Vector dOffs;
+  Vector dLift;
+  Vector home_x;
+
+  bool openPorts;
+  bool firstRun;
+
+public:
+  BehaviorManager ()
+  {
+    graspOrien.resize (4);
+    graspDisp.resize (4);
+    dOffs.resize (3);
+    dLift.resize (3);
+    home_x.resize (3);
+
+    // default values for arm-dependent quantities
+    graspOrien[0] = -0.171542;
+    graspOrien[1] = 0.124396;
+    graspOrien[2] = -0.977292;
+    graspOrien[3] = 3.058211;
+
+    graspDisp[0] = 0.0;
+    graspDisp[1] = 0.0;
+    graspDisp[2] = 0.05;
+
+    dOffs[0] = -0.03;
+    dOffs[1] = -0.07;
+    dOffs[2] = -0.02;
+
+    dLift[0] = 0.0;
+    dLift[1] = 0.0;
+    dLift[2] = 0.15;
+
+    home_x[0] = -0.29;
+    home_x[1] = -0.21;
+    home_x[2] = 0.11;
+
+    action = NULL;
+
+    openPorts = false;
+    firstRun = true;
+  }
+
+  void
+  getArmDependentOptions (Bottle &b, Vector &_gOrien, Vector &_gDisp, Vector &_dOffs, Vector &_dLift, Vector &_home_x)
+  {
+    if (Bottle *pB=b.find("grasp_orientation").asList())
+    {
+      int sz = pB->size ();
+      int len = _gOrien.length ();
+      int l = len < sz ? len : sz;
+
+      for (int i = 0; i < l; i++)
+        _gOrien[i] = pB->get (i).asDouble ();
+    }
+
+    if (Bottle *pB=b.find("grasp_displacement").asList())
+    {
+      int sz = pB->size ();
+      int len = _gDisp.length ();
+      int l = len < sz ? len : sz;
+
+      for (int i = 0; i < l; i++)
+        _gDisp[i] = pB->get (i).asDouble ();
+    }
+
+    if (Bottle *pB=b.find("systematic_error_displacement").asList())
+    {
+      int sz = pB->size ();
+      int len = _dOffs.length ();
+      int l = len < sz ? len : sz;
+
+      for (int i = 0; i < l; i++)
+        _dOffs[i] = pB->get (i).asDouble ();
+    }
+
+    if (Bottle *pB=b.find("lifting_displacement").asList())
+    {
+      int sz = pB->size ();
+      int len = _dLift.length ();
+      int l = len < sz ? len : sz;
+
+      for (int i = 0; i < l; i++)
+        _dLift[i] = pB->get (i).asDouble ();
+    }
+
+    if (Bottle *pB=b.find("home_position").asList())
+    {
+      int sz = pB->size ();
+      int len = _home_x.length ();
+      int l = len < sz ? len : sz;
+
+      for (int i = 0; i < l; i++)
+        _home_x[i] = pB->get (i).asDouble ();
+    }
+  }
+
+  virtual bool
+  configure (ResourceFinder &rf)
+  {
+    string name = rf.find ("name").asString ().c_str ();
+    setName (name.c_str ());
+
+    string partUsed = rf.find ("part").asString ().c_str ();
+    if ((partUsed != "left_arm") && (partUsed != "right_arm"))
+    {
+      cout << "Invalid part requested!" << endl;
+      return false;
+    }
+
+    Property config;
+    config.fromConfigFile (rf.findFile ("from").c_str ());
+    Bottle &bGeneral = config.findGroup ("general");
+    if (bGeneral.isNull ())
+    {
+      cout << "Error: group general is missing!" << endl;
+      return false;
+    }
+
+    // parsing general config options
+    Property option;
+    for (int i = 1; i < bGeneral.size (); i++)
+    {
+      Bottle *pB = bGeneral.get (i).asList ();
+      if (pB->size () == 2)
+        option.put (pB->get (0).asString ().c_str (), pB->get (1));
+      else
+      {
+        cout << "Error: invalid option!" << endl;
+        return false;
+      }
+    }
+
+    option.put ("local", name.c_str ());
+    option.put ("part", rf.find ("part").asString ().c_str ());
+    option.put ("grasp_model_type", rf.find ("grasp_model_type").asString ().c_str ());
+    option.put ("grasp_model_file", rf.findFile ("grasp_model_file").c_str ());
+    option.put ("hand_sequences_file", rf.findFile ("hand_sequences_file").c_str ());
+
+    printf ("%s\n", option.toString ().c_str ());
+
+    // parsing arm dependent config options
+    Bottle &bArm = config.findGroup ("arm_dependent");
+    getArmDependentOptions (bArm, graspOrien, graspDisp, dOffs, dLift, home_x);
+
+    cout << "***** Instantiating primitives for " << partUsed << endl;
+    action = new ActionPrimitivesLayer2 (option);
+    if (!action->isValid ())
+    {
+      delete action;
+      return false;
+    }
+
+    deque<string> q = action->getHandSeqList ();
+    cout << "***** List of available hand sequence keys:" << endl;
+    for (size_t i = 0; i < q.size (); i++)
+      cout << q[i] << endl;
+
+    string fwslash = "/";
+    inPort.open ((fwslash + name + "/in").c_str ());
+    rpcPort.open ((fwslash + name + "/rpc").c_str ());
+    attach (rpcPort);
+
+    openPorts = true;
+
+    // check whether the grasp model is calibrated,
+    // otherwise calibrate it and save the results
+    Model *model;
+    action->getGraspModel (model);
+    if (!model->isCalibrated ())
+    {
+      Property prop ("(finger all)");
+      model->calibrate (prop);
+
+      ofstream fout;
+      fout.open (option.find ("grasp_model_file").asString ().c_str ());
+      model->toStream (fout);
+      fout.close ();
+    }
+
+    return true;
+  }
+
+  virtual bool
+  close ()
+  {
+    if (action != NULL)
+      delete action;
+
+    if (openPorts)
+    {
+      inPort.close ();
+      rpcPort.close ();
+    }
+
+    return true;
+  }
+
+  virtual double
+  getPeriod ()
+  {
+    return 0.1;
+  }
+
+  void
+  init ()
+  {
+    bool f;
+
+    action->pushAction (home_x, "open_hand");
+    action->checkActionsDone (f, true);
+    action->enableArmWaving (home_x);
+  }
+
+  Vector
+  vectorAngle2Normal (Vector vec_angle_rep)
+  {
+    Matrix R = iCub::ctrl::axis2dcm (vec_angle_rep);
+
+    Vector v (3);
+    v[0] = R[0][2];
+    v[1] = R[1][2];
+    v[2] = R[2][2];
+    return v;
+  }
+
+  Vector
+  normal2VectorAngle (const Vector& hand_normal)
+  {
+    double z_theta_hand = atan2 (hand_normal[1], hand_normal[0]);
+    std::cout << "theta: " << z_theta_hand << std::endl;
+    //    Vector oz (4);
+    Vector ox (4);
+    Vector oz_final (4);
+
+    ox[0] = 1.0;
+    ox[1] = 0.0;
+    ox[2] = 0.0;
+    ox[3] = -PI / 2;
+
+    oz_final[0] = 0.0;
+    oz_final[1] = 0.0;
+    oz_final[2] = 1.0;
+    oz_final[3] = z_theta_hand - PI / 2;
+
+    //    Matrix Rz = iCub::ctrl::axis2dcm (oz); // from axis/angle to rotation matrix notation
+    Matrix Rx = iCub::ctrl::axis2dcm (ox);
+    Matrix Rz_final = iCub::ctrl::axis2dcm (oz_final);
+
+    Matrix R = Rz_final * Rx;
+    Vector vec_ang = iCub::ctrl::dcm2axis (R);
+    return vec_ang;
+  }
+
+  Vector
+  angleXZToVectorAngle (const double x_ang, const double z_ang)
+  {
+    Vector oz (4);
+    Vector ox (4);
+
+    oz[0] = 0.0;
+    oz[1] = 0.0;
+    oz[2] = 1.0;
+    oz[3] = z_ang;// / 180 * PI;
+
+    ox[0] = 1.0;
+    ox[1] = 0.0;
+    ox[2] = 0.0;
+    ox[3] = x_ang;// / 180 * PI;
+
+    Matrix Rz = iCub::ctrl::axis2dcm (oz); // from axis/angle to rotation matrix notation
+    Matrix Rx = iCub::ctrl::axis2dcm (ox);
+
+    Matrix R = Rz * Rx;
+    Vector poi_orient = iCub::ctrl::dcm2axis (R); // from rotation matrix back to the axis/angle notation
+
+    //    std::cout << poi_orient[0] << " " << poi_orient[1] << " " << poi_orient[2] << std::endl;
+
+    return poi_orient;
+  }
+
+  Vector
+  angleXYZToVectorAngle (const double x_ang, const double y_ang, const double z_ang)
+  {
+    Vector oz (4);
+    Vector oy (4);
+    Vector ox (4);
+
+    oz[0] = 0.0;
+    oz[1] = 0.0;
+    oz[2] = 1.0;
+    oz[3] = z_ang;// / 180 * PI;
+
+    oy[0] = 0.0;
+    oy[1] = 1.0;
+    oy[2] = 0.0;
+    oy[3] = y_ang;// / 180 * PI;
+
+    ox[0] = 1.0;
+    ox[1] = 0.0;
+    ox[2] = 0.0;
+    ox[3] = x_ang;// / 180 * PI;
+
+    Matrix Rz = iCub::ctrl::axis2dcm (oz); // from axis/angle to rotation matrix notation
+    Matrix Ry = iCub::ctrl::axis2dcm (oy);
+    Matrix Rx = iCub::ctrl::axis2dcm (ox);
+
+    Matrix R = Ry * Rz * Rx;
+//    Matrix R = Rz * Rx;
+    Vector poi_orient = iCub::ctrl::dcm2axis (R); // from rotation matrix back to the axis/angle notation
+
+    //    std::cout << poi_orient[0] << " " << poi_orient[1] << " " << poi_orient[2] << std::endl;
+
+    return poi_orient;
+  }
+
+  //reach point-of-interest with an offset of poi_off and in the orientation of poi_orient to
+  //shift this point in the same direction with an amount of poi_shift
+
+  //bb_pos and bb_dims specifies the bounding box properties of the object of interest
+  //push_dir is the angle(in radians). 0 -> right, PI/2 -> forward, PI -> left, 3*PI/2 -> backward
+  void
+  push (const Vector& bb_center, const Vector& bb_dims, double push_dir_angle, const double poi_shift, bool spin =
+      false)
+  {
+    bool f;
+
+    //just consider for now that pushes are done on the x-y plane, specifically on the table
+    Vector hand_normal (3);
+
+    //take the hypotenuse of the bounding box cross-section as the worst case scenario
+    //similar to a bounding circle actually (radius away from the center)
+    double poi_offset = sqrt (bb_dims[0] * bb_dims[0] + bb_dims[1] * bb_dims[1]) / 2.0 + 0.03;//0.03 for palm height
+
+    Vector poi_off (3);
+    poi_off[0] = 0.0;
+    poi_off[1] = 0.0;
+    poi_off[2] = 0.0;
+
+    //first convert the angle into simulation coordinate system
+    push_dir_angle += PI / 2;
+
+    //make sure that the angle is between [0, 2*PI]
+    if (push_dir_angle < 0)
+      push_dir_angle += 2 * PI;
+    std::cout << "push angle: " << push_dir_angle * 180 / PI << std::endl;
+
+    double des_hand_normal_ang = 0;
+    string hand_key;
+
+    if (PI / 4 <= push_dir_angle && push_dir_angle < 3 * PI / 4)
+    {
+      des_hand_normal_ang = push_dir_angle + PI;
+      hand_key = "open_hand";
+      std::cout << hand_key << std::endl;
+    }
+    else if (3 * PI / 4 <= push_dir_angle && push_dir_angle < 5 * PI / 4)
+    {
+      des_hand_normal_ang = push_dir_angle + PI / 2;
+      //      hand_key = "close_hand";
+      hand_key = "fist_hand";
+      std::cout << hand_key << std::endl;
+    }
+    else if (5 * PI / 4 <= push_dir_angle && push_dir_angle < 7 * PI / 4)
+    {
+      des_hand_normal_ang = push_dir_angle;
+      hand_key = "open_hand";
+      std::cout << hand_key << std::endl;
+    }
+    else
+    {
+      des_hand_normal_ang = push_dir_angle - PI / 2.0;
+      poi_off[1] = sin (push_dir_angle - PI / 2.0) * poi_offset + sin (push_dir_angle + PI) * (-0.035);//0.035 is the half of the palm size
+      poi_off[0] = cos (push_dir_angle - PI / 2.0) * poi_offset + cos (push_dir_angle + PI) * (-0.035);
+      hand_key = "perpendicular_hand";
+      std::cout << hand_key << std::endl;
+    }
+
+    hand_normal[0] = cos (des_hand_normal_ang);
+    hand_normal[1] = sin (des_hand_normal_ang);
+    hand_normal[2] = 0;
+
+    poi_off[0] += cos (push_dir_angle + PI) * poi_offset;// x component of the direction vector * reach offset
+    poi_off[1] += sin (push_dir_angle + PI) * poi_offset;// y component of the direction vector * reach offset
+
+    //Find the vector-angle representation of this normal
+    Vector vec_angle = normal2VectorAngle (hand_normal);
+
+    //    std::cout << bb_center[0] << " " << bb_center[1] << " " << bb_center[2] << std::endl;
+    //    std::cout << poi_off[0] << " " << poi_off[1] << " " << poi_off[2] << std::endl;
+    //    action->touch (bb_center, vec_angle, poi_off);
+
+    //first go above the point
+    poi_off[2] = bb_dims[2]/2 + 0.02;//0.02cm is object clearance factor
+    action->pushAction (bb_center + poi_off, vec_angle, hand_key);
+    action->checkActionsDone (f, true);
+
+    //now, get down to the table
+    poi_off[2] = -bb_dims[2] + 0.02;//0.02 table clearance factor
+    action->pushAction (bb_center + poi_off, vec_angle, hand_key);
+    action->checkActionsDone (f, true);
+
+    //it is time to push the object
+    Vector poi_sh (3);
+    poi_sh[0] = cos (push_dir_angle) * poi_shift;// x component of the direction vector * reach offset
+    poi_sh[1] = sin (push_dir_angle) * poi_shift;// y component of the direction vector * reach offset
+    if (spin)
+      poi_sh[2] = bb_dims[2];//enables spinning object
+    else
+      poi_sh[2] = 0.0;
+
+    action->pushAction (bb_center + poi_off + poi_sh, vec_angle, hand_key);
+    action->checkActionsDone (f, true);
+
+    //get arm directly up if spin is not activated, this enables robot to avoid colliding
+    //to the object while doing a homing action etc.
+    if(!spin)
+    {
+      poi_off[0] += cos (push_dir_angle+PI) * 0.02;
+      poi_off[1] += sin (push_dir_angle+PI) * 0.02;
+      poi_off[2] += bb_dims[2];
+    }
+
+    action->pushAction (bb_center + poi_off + poi_sh, vec_angle, hand_key);
+    action->checkActionsDone (f, true);
+  }
+
+  void
+  hide (Vector bb_center, Vector bb_dims)
+  {
+    Vector poi_off (3);
+    poi_off[0] = 0.0;
+    poi_off[1] = 0.0;
+    poi_off[2] = bb_dims[2] / 2 + 0.02;//half of the height + safety distance
+
+    Vector orient = angleXZToVectorAngle (PI / 2, PI);
+    action->pushAction (bb_center + poi_off, orient, "karate_hand");
+  }
+
+  void
+  pointTo (Vector point)
+  {
+    Vector left_shoulder (3);
+    left_shoulder[0] = 0.0;
+    left_shoulder[1] = -0.12;//to the left (crouch-left shoulder)
+    left_shoulder[2] = 0.25;// to the up (crouch-neck)
+
+    Vector shoulder_to_point = point - left_shoulder;
+    double delta_dist = sqrt (pow (shoulder_to_point[0], 2) + pow (shoulder_to_point[1], 2)
+        + pow (shoulder_to_point[2], 2));
+
+    //if the point is not reachable
+    if (delta_dist > 0.35)
+    {
+      Vector des_position = (point - left_shoulder) * 0.35 / delta_dist + left_shoulder;
+      Vector normalized_dir = (point - left_shoulder) / delta_dist;
+      std::cout
+          <<normalized_dir[0]<<" "
+          <<normalized_dir[1]<<" "
+          <<normalized_dir[2]<<std::endl;
+
+      double z_angle = atan2 (normalized_dir[1], normalized_dir[0]);
+      if(z_angle < 0)
+        z_angle+=2*PI;
+      std::cout<<z_angle/PI*180<<std::endl;
+      double y_angle = atan2 (normalized_dir[0], normalized_dir[2]);
+
+//      Vector des_orient = angleXZToVectorAngle(-PI/2, z_angle);
+
+      Vector des_orient = angleXYZToVectorAngle (-PI/2, -PI/6,  z_angle);
+//      Vector des_orient = angleXYZToVectorAngle (0 , -PI/6,  PI);
+
+      action->pushAction (des_position, des_orient, "point_hand");
+    }
+  }
+
+  void
+  release (Vector point, Vector bb_dims, Vector hand_orient)
+  {
+
+  }
+
+  void
+  fetch (Vector point, Vector bb_dims, Vector hand_orient)
+  {
+    //use grasp
+  }
+
+  void
+  testHandSequences ()
+  {
+    bool f;
+
+    action->pushAction ("close_hand");
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+
+    action->pushAction ("open_hand");
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+
+    action->pushAction ("close_hand");
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+
+    action->pushAction ("karate_hand");
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+  }
+
+  void
+  graspLiftAndRelease (Vector bb_center)
+  {
+    Vector xv (3);
+    xv[0] = 0.0;
+    xv[1] = 0.0;
+    xv[2] = -0.0;
+
+    //check if fingers contact
+    //    bb_center[0]+= 0.02;
+    bb_center[2] -= 0.05;
+
+    bool f;
+
+    // grasp (wait until it's done)
+    action->grasp (bb_center, graspOrien, graspDisp, xv);
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+
+    action->pushAction (bb_center + dLift, graspOrien);
+    action->checkActionsDone (f, true);
+
+    // release the object or just open the
+    // hand (wait until it's done)
+    action->pushAction ("open_hand");
+    action->checkActionsDone (f, true);
+    action->areFingersInPosition (f);
+  }
+
+  void
+  shake ()
+  {
+
+  }
+
+  // we don't need a thread since the actions library already
+  // incapsulates one inside dealing with all the tight time constraints
+  virtual bool
+  updateModule ()
+  {
+    // do it only once
+    if (firstRun)
+    {
+      init ();
+      firstRun = false;
+    }
+
+    Vector bb_dims (3);
+    bb_dims[0] = 0.03;
+    bb_dims[1] = 0.03;
+    bb_dims[2] = 0.03;
+
+    // get a target object position from a YARP port
+    Bottle *b = inPort.read (); // blocking call
+
+    if (b != NULL)
+    {
+      Vector bb_center (3);
+      bool f;
+
+      bb_center[0] = b->get (0).asDouble ();
+      bb_center[1] = b->get (1).asDouble ();
+      bb_center[2] = b->get (2).asDouble ();
+
+      Vector bb_dims (3);
+      bb_dims[0] = 0.06;
+      bb_dims[1] = 0.06;
+      bb_dims[2] = 0.06;
+
+//      push (bb_center, bb_dims, PI/2, 0.10);
+
+      pointTo(bb_center);
+
+      //      testHandSequences();
+
+      //      graspLiftAndRelease(bb_center);
+
+      // go home :) (wait until it's done, since
+      // we may use two arms that share the torso)
+      action->pushAction (home_x);
+      action->checkActionsDone (f, true);
+
+      // let the hand wave a bit around home position
+      // the waving will be disabled before commencing
+      // a new action
+      action->enableArmWaving (home_x);
+    }
+
+    /*
+     // get a target object position from a YARP port
+     Bottle *b = inPort.read (); // blocking call
+
+     if (b != NULL)
+     {
+     Vector xd (3);
+     bool f;
+
+     xd[0] = b->get (0).asDouble ();
+     xd[1] = b->get (1).asDouble ();
+     xd[2] = b->get (2).asDouble ();
+
+     // apply systematic offset
+     // due to uncalibrated kinematic
+     xd = xd + dOffs;
+
+     // safe thresholding
+     xd[0] = xd[0] > -0.1 ? -0.1 : xd[0];
+
+     Vector xv (3);
+     xv[0] = 0.0;
+     xv[1] = 0.0;
+     xv[2] = 0.01;
+
+     // grasp (wait until it's done)
+     action->grasp (xd, graspOrien, graspDisp, xv);
+     action->checkActionsDone (f, true);
+     action->areFingersInPosition (f);
+
+     action->pushAction (xd + dLift, graspOrien);
+     action->checkActionsDone (f, true);
+
+     // if fingers are not in position,
+     // it's likely that we've just grasped
+     // something, so lift it up!
+     //            if (!f)
+     //            {
+     //                cout<<"Wow, got something!"<<endl;
+     //
+     //                // lift the object (wait until it's done)
+     //                action->pushAction(xd+dLift,graspOrien);
+     //                action->checkActionsDone(f,true);
+     //            }
+     //            else
+     //                cout<<"Sorry :( ... nothing to grasp"<<endl;
+
+     // go home :) (wait until it's done, since
+     // we may use two arms that share the torso)
+     action->pushAction (home_x);
+     action->checkActionsDone (f, true);
+
+     // let the hand wave a bit around home position
+     // the waving will be disabled before commencing
+     // a new action
+     action->enableArmWaving (home_x);
+     }
+     */
+
+    return true;
+  }
+
+  bool
+  interruptModule ()
+  {
+    // since a call to checkActionsDone() blocks
+    // the execution until it's done, we need to
+    // take control and exit from the waiting state
+    action->syncCheckInterrupt (true);
+
+    inPort.interrupt ();
+    rpcPort.interrupt ();
+
+    return true;
+  }
+};
+
+int
+main (int argc, char *argv[])
+{
+  Network yarp;
+
+  if (!yarp.checkNetwork ())
+    return -1;
+
+  YARP_REGISTER_DEVICES(icubmod)
+
+  ResourceFinder rf;
+  rf.setVerbose (true);
+  rf.setDefaultContext ("actionPrimitivesExample/conf");
+  rf.setDefaultConfigFile ("config.ini");
+  rf.setDefault ("part", "left_arm");
+  rf.setDefault ("grasp_model_type", "tactile");
+  rf.setDefault ("grasp_model_file", "grasp_model.ini");
+  rf.setDefault ("hand_sequences_file", "hand_sequences.ini");
+  rf.setDefault ("name", "actionPrimitivesMod");
+  rf.configure ("ICUB_ROOT", argc, argv);
+
+  BehaviorManager mod;
+
+  return mod.runModule (rf);
+}
+

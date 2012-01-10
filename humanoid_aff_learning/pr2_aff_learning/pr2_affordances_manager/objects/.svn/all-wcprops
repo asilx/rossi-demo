@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_affordances_manager/objects
+END
+sphere.model
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_affordances_manager/objects/sphere.model
+END
+box.model
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_affordances_manager/objects/box.model
+END
+cylinder.model
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_affordances_manager/objects/cylinder.model
+END
+abc.world
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_affordances_manager/objects/abc.world
+END

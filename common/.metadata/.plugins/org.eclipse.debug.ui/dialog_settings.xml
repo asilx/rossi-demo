@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="false" key="EXT_FOLDER_LAST_SUBDIR_SETTING"/>
+	<item value="/opt/ros/electric/stacks/ros_comm/clients/cpp/roscpp/src/libros" key="EXT_FOLDER_LAST_PATH_SETTING"/>
+	<section name="org.eclipse.debug.ui.sourcelookup.SourceLookupDialog">
+		<item value="613" key="DIALOG_WIDTH"/>
+		<item value="493" key="DIALOG_Y_ORIGIN"/>
+		<item value="420" key="DIALOG_HEIGHT"/>
+		<item value="395" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+</section>

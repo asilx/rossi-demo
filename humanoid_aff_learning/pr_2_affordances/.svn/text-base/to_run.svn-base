@@ -1,0 +1,78 @@
+roscore
+
+# To launch an empty world, just including a PR2
+roslaunch pr2_gazebo pr2_empty_world.launch
+
+rosrun joint_states_listener joint_states_listener.py
+roslaunch pr2_tabletop_manipulation_launch pr2_tabletop_manipulation.launch
+rosrun pr2_pick_and_place_demos pick_and_place_demo.py
+
+# To run joint_state_listener
+cd ~/interconnection/workspace/to_do/Dropbox/kovan/pr_2_affordances/joint_states_listener/scripts
+python joint_states_listener_test.py
+
+# To run teleoperation utility
+rosrun pr2_keyboard_teleoperator pr2_keyboard_teleoperator.py
+
+# To print every joint angles with their names
+rostopic echo joint_states
+
+name: ['fl_caster_rotation_joint', 'fl_caster_l_wheel_joint', 'fl_caster_r_wheel_joint', 'fr_caster_rotation_joint', 'fr_caster_l_wheel_joint', 'fr_caster_r_wheel_joint', 'bl_caster_rotation_joint', 'bl_caster_l_wheel_joint', 'bl_caster_r_wheel_joint', 'br_caster_rotation_joint', 'br_caster_l_wheel_joint', 'br_caster_r_wheel_joint', 'torso_lift_joint', 'head_pan_joint', 'head_tilt_joint', 'laser_tilt_mount_joint', 'r_upper_arm_roll_joint', 'r_shoulder_pan_joint', 'r_shoulder_lift_joint', 'r_forearm_roll_joint', 'r_elbow_flex_joint', 'r_wrist_flex_joint', 'r_wrist_roll_joint', 'r_gripper_joint', 'r_gripper_l_finger_joint', 'r_gripper_r_finger_joint', 'r_gripper_r_finger_tip_j	oint', 'r_gripper_l_finger_tip_joint', 'l_upper_arm_roll_joint', 'l_shoulder_pan_joint', 'l_shoulder_lift_joint', 'l_forearm_roll_joint', 'l_elbow_flex_joint', 'l_wrist_flex_joint', 'l_wrist_roll_joint', 'l_gripper_joint', 'l_gripper_l_finger_joint', 'l_gripper_r_finger_joint', 'l_gripper_r_finger_tip_joint', 'l_gripper_l_finger_tip_joint']
+
+****
+right arm:
+    joint_names = ["r_shoulder_pan_joint",
+                   "r_shoulder_lift_joint",
+                    "r_upper_arm_roll_joint",
+                    "r_elbow_flex_joint",
+                    "r_forearm_roll_joint",
+                    "r_wrist_flex_joint",
+                    "r_wrist_roll_joint"]
+position: -2.135 0.803 -1.732 -1.905 -2.369 -1.680 1.398
+****
+    joint_names = ["r_gripper_joint",
+										"r_gripper_l_finger_joint", 
+										"r_gripper_r_finger_joint", 
+										"r_gripper_r_finger_tip_joint", 
+										"r_gripper_l_finger_tip_joint"]
+position: 0.000 0.003 0.003 0.003 0.003
+****								
+****
+left arm:
+    joint_names = ["l_shoulder_pan_joint",
+                   "l_shoulder_lift_joint",
+                    "l_upper_arm_roll_joint",
+                    "l_elbow_flex_joint",
+                    "l_forearm_roll_joint",
+                    "l_wrist_flex_joint",
+                    "l_wrist_roll_joint"]
+position: 2.135 0.803 1.732 -1.905 2.369 -1.680 1.398
+****
+    joint_names = ["l_gripper_joint",
+										"l_gripper_l_finger_joint", 
+										"l_gripper_r_finger_joint", 
+										"l_gripper_r_finger_tip_joint", 
+										"l_gripper_l_finger_tip_joint"]
+position: 0.000 0.003 0.003 0.003 0.003
+****
+****
+    joint_names = ["head_pan_joint",
+										"head_tilt_joint"]
+position: 0.000 0.835
+****
+    joint_names = ["torso_lift_joint"]
+position: 0.300		
+
+#To run pr2_right_arm_kinematics solver
+roslaunch pr2_learning_affordances pr2_learning_affordances.launch
+
+#To make the robot ready for experiments
+roscd pr2_learning_affordances/bin
+./pr2_learning_affordances 
+
+#To remote call the service via shell
+rosservice call /execute_cartesian_ik_trajectory -- "{header: { frame_id: /base_link}, poses: [{position: [0.6, -0.49, 0.63], orientation:[1, 0.0, 0.0, 1.0]}, {position: [0.6, -0.19, 0.63], orientation:[1, 0.0, 0.0, 1.0]},{position: [0.6, -0.36, 0.73], orientation: [0.65, -0.21, .38, .62]}]}"
+
+
+# This runs the simulator (including pr2_right_arm_kinematics solver) 
+roslaunch pr2_learning_affordances pr2_learning_affordances.launch

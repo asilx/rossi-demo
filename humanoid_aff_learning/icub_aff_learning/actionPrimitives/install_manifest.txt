@@ -1,0 +1,2 @@
+/usr/local/lib/libactionPrimitives.a
+/usr/local/include/iCub/action/actionPrimitives.h

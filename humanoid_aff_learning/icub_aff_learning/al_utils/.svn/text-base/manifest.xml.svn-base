@@ -1,0 +1,21 @@
+<package>
+  <description brief="al_utils">
+
+     al_utils
+
+  </description>
+  <author>kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/al_utils</url>
+  <depend package="pcl_ros"/>
+  <depend package="pcl"/>  
+  <depend package="opencv2"/>
+  <depend package="sensor_msgs"/>
+  <depend package="cv_bridge"/>
+  <depend package="arm_navigation_msgs"/>
+  <depend package="visualization_msgs"/>
+
+</package>
+
+

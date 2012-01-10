@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/49/branches/kadir/affordance_learning/al_robots/conf
+END
+self_filter.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/38/branches/kadir/affordance_learning/al_robots/conf/self_filter.yaml
+END
+icub_self_filter.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/52/branches/kadir/affordance_learning/al_robots/conf/icub_self_filter.yaml
+END
+human_self_filter.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/41/branches/kadir/affordance_learning/al_robots/conf/human_self_filter.yaml
+END

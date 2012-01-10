@@ -1,0 +1,18 @@
+<package>
+  <description brief="data_collector">
+
+     data_collector
+
+  </description>
+  <author>Kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/data_collector</url>
+  <depend package="roscpp"/>
+  <depend package="pcl"/>
+  <depend package="image_transport"/>
+  <depend package="cv_bridge"/>
+  <depend package="opencv2"/>
+</package>
+
+

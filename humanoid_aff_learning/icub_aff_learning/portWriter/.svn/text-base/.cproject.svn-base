@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject>
+<storageModule moduleId="org.eclipse.cdt.core.settings">
+<cconfiguration id="org.eclipse.cdt.core.default.config.1">
+<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.1" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
+<externalSettings/>
+<extensions>
+<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+</extensions>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping">
+<project-mappings/>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+<buildTargets>
+<target name=": rebuild_cache" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>rebuild_cache</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] tutorials" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>tutorials</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] tutorials/fast" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>tutorials/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/main.cpp.o" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>src/main.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/main.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>src/main.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/main.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/make</buildCommand>
+<buildArguments/>
+<buildTarget>src/main.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+</buildTargets>
+</storageModule>
+<storageModule moduleId="scannerConfiguration">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
+<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+<buildOutputProvider>
+<openAction enabled="true" filePath=""/>
+<parser enabled="true"/>
+</buildOutputProvider>
+<scannerInfoProvider id="specsFile">
+<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="/usr/bin/gcc" useDefault="true"/>
+<parser enabled="true"/>
+</scannerInfoProvider>
+</profile>
+<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+<buildOutputProvider>
+<openAction enabled="true" filePath=""/>
+<parser enabled="true"/>
+</buildOutputProvider>
+<scannerInfoProvider id="makefileGenerator">
+<runAction arguments="-f ${project_name}_scd.mk" command="/usr/bin/make" useDefault="true"/>
+<parser enabled="true"/>
+</scannerInfoProvider>
+</profile>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubDev/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/blobDescriptor/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/camCalib/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/colorSegmentation/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/cvBlobsLib/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/faceEyeDetector/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/faceTracker/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/fastFilt/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/salience/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iCubVis/spMap/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/opencv" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/logpolar/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/ctrlLib/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/skinDynLib/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iKin/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/Ipopt-3.10.1/include/coin" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/iDyn/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/learningMachine/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/perceptiveModels/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/actionPrimitives/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/libraries/pmp/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/examples/lib0/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/examples/lib1/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/iCub/main/src/examples/sharksWithLasers/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/generated_include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/libYARP_OS/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/libYARP_sig/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/libYARP_math/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/libYARP_dev/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/libYARP_name/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/yarpserver/include" kind="inc" path="" system="true"/>
+<pathentry include="/home/kadir/my_tools/icub_tools/yarp2/src/yarpmanager/libymanager/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/c++/4.5/backward" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/c++/4.5" kind="inc" path="" system="true"/>
+<pathentry excluding="**/CMakeFiles/" kind="out" path=""/>
+<pathentry kind="src" path=""/>
+</storageModule>
+</cconfiguration>
+</storageModule>
+<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+<project id="tutorials.null.1" name="tutorials"/>
+</storageModule>
+</cproject>

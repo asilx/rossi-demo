@@ -1,0 +1,14 @@
+<launch>
+
+  <param name="human_description" command="$(find xacro)/xacro.py '$(find al_robots)/defs/human.urdf.xacro'" />
+
+	<node pkg="robot_self_filter" type="self_filter" respawn="true" output="screen" name="self_filter">
+     <!--remap from="cloud_in" to="/pointcloud2_pr2_self_filtered" /-->
+     <remap from="robot_description" to="human_description" />     
+     <remap from="cloud_in" to="/pointcloud2_pr2_self_filtered" />
+     <remap from="cloud_out" to="/pointcloud2_self_filtered" />
+     <param name="sensor_frame" type="string" value="/head_kinect_optical_frame" />
+ 		 <param name="subsample_value" type="double" value=".01"/>
+		<rosparam file="$(find al_robots)/conf/human_self_filter.yaml" command="load" />
+	</node>
+</launch>

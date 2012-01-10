@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/robotcub/!svn/ver/12264/trunk/iCub/main/src/examples/actionPrimitivesExample/conf
+END
+config.ini
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/robotcub/!svn/ver/12261/trunk/iCub/main/src/examples/actionPrimitivesExample/conf/config.ini
+END
+hand_sequences.ini
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/robotcub/!svn/ver/12261/trunk/iCub/main/src/examples/actionPrimitivesExample/conf/hand_sequences.ini
+END
+grasp_model.ini
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/robotcub/!svn/ver/12264/trunk/iCub/main/src/examples/actionPrimitivesExample/conf/grasp_model.ini
+END

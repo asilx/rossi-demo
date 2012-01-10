@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/collada_urdf/src
+END
+collada_urdf.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/collada_urdf/src/collada_urdf.cpp
+END
+urdf_to_collada.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/collada_urdf/src/urdf_to_collada.cpp
+END

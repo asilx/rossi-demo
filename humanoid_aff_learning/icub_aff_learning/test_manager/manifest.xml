@@ -1,0 +1,18 @@
+<package>
+  <description brief="test_manager">
+
+     test_manager
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/test_manager</url>
+  <depend package="roscpp"/>
+  <depend package="tabletop_object_detector"/>
+  <depend package="tabletop_collision_map_processing"/>
+  <depend package="pcl_ros"/>
+
+</package>
+
+

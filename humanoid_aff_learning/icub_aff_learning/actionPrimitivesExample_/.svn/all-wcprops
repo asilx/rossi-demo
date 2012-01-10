@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/robotcub/!svn/ver/12273/trunk/iCub/main/src/examples/actionPrimitivesExample
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/robotcub/!svn/ver/12273/trunk/iCub/main/src/examples/actionPrimitivesExample/main.cpp
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/robotcub/!svn/ver/12273/trunk/iCub/main/src/examples/actionPrimitivesExample/CMakeLists.txt
+END

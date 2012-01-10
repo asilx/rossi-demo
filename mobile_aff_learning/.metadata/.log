@@ -1,0 +1,58 @@
+!SESSION 2011-09-22 13:33:54.159 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2011-09-22 13:47:51.314
+!MESSAGE Unable to load the repository jar:file:/home/kadir/Downloads/linuxtools-Update-incubation-0.3.0.zip!/
+!STACK 1
+org.eclipse.equinox.internal.provisional.p2.core.ProvisionException: Unable to read repository at jar:file:/home/kadir/Downloads/linuxtools-Update-incubation-0.3.0.zip!/content.xml.
+	at org.eclipse.equinox.internal.p2.metadata.repository.CacheManager.createCache(CacheManager.java:179)
+	at org.eclipse.equinox.internal.provisional.spi.p2.metadata.repository.SimpleMetadataRepositoryFactory.getLocalFile(SimpleMetadataRepositoryFactory.java:60)
+	at org.eclipse.equinox.internal.provisional.spi.p2.metadata.repository.SimpleMetadataRepositoryFactory.validateAndLoad(SimpleMetadataRepositoryFactory.java:99)
+	at org.eclipse.equinox.internal.provisional.spi.p2.metadata.repository.SimpleMetadataRepositoryFactory.load(SimpleMetadataRepositoryFactory.java:87)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:54)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:669)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:617)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.operations.ProvisioningUtil.loadMetadataRepository(ProvisioningUtil.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableMetadataRepositoryManager.doLoadRepository(QueryableMetadataRepositoryManager.java:55)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadRepository(QueryableRepositoryManager.java:195)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadAll(QueryableRepositoryManager.java:108)
+	at org.eclipse.equinox.internal.p2.ui.sdk.PreloadingRepositoryHandler$2.run(PreloadingRepositoryHandler.java:71)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:131)
+	at java.util.jar.JarFile.<init>(JarFile.java:150)
+	at java.util.jar.JarFile.<init>(JarFile.java:87)
+	at sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:90)
+	at sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:66)
+	at sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:86)
+	at sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:122)
+	at sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:150)
+	at org.eclipse.ecf.provider.filetransfer.browse.URLFileSystemBrowser.runRequest(URLFileSystemBrowser.java:111)
+	at org.eclipse.ecf.provider.filetransfer.browse.AbstractFileSystemBrowser$DirectoryJob.run(AbstractFileSystemBrowser.java:71)
+	... 1 more
+!SUBENTRY 1 org.eclipse.equinox.p2.repository 4 1002 2011-09-22 13:47:51.315
+!MESSAGE Unable to read repository at jar:file:/home/kadir/Downloads/linuxtools-Update-incubation-0.3.0.zip!/content.xml.
+!STACK 0
+java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:131)
+	at java.util.jar.JarFile.<init>(JarFile.java:150)
+	at java.util.jar.JarFile.<init>(JarFile.java:87)
+	at sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:90)
+	at sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:66)
+	at sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:86)
+	at sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:122)
+	at sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:150)
+	at org.eclipse.ecf.provider.filetransfer.browse.URLFileSystemBrowser.runRequest(URLFileSystemBrowser.java:111)
+	at org.eclipse.ecf.provider.filetransfer.browse.AbstractFileSystemBrowser$DirectoryJob.run(AbstractFileSystemBrowser.java:71)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.cdt.core 1 0 2011-09-22 13:51:55.879
+!MESSAGE Indexed 'experiment_test' (0 sources, 77 headers) in 1.88 sec: 2,237 declarations; 2,421 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)

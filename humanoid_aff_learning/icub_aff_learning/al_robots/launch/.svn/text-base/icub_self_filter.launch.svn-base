@@ -1,0 +1,38 @@
+<launch>
+
+  <include file="$(find swissranger_camera)/launch/sr_eth.launch"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find al_robots)/defs/icub.urdf.xacro'" />
+  <!-- node name="joint_state_publisher" pkg="al_robots" type="icub_js_pub" ></node> -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher">
+	<remap from="joint_states" to="icub_joint_states" />
+  </node>
+
+
+  <node pkg="point_cloud_converter" name="point_cloud_converter_preself" type="point_cloud_converter">
+        <remap from="/points_in" to="/swissranger/scan" />
+        <remap from="/points2_out" to="/swissranger/pointcloud2_raw" />
+  </node>
+
+  <node pkg="robot_self_filter" type="self_filter" respawn="true" output="screen" name="self_filter">
+    <remap from="cloud_in" to="/swissranger/pointcloud2_raw" />
+    <remap from="cloud_out" to="/swissranger/pointcloud2_self_filtered" />
+
+     <!-- The frame of the sensor used to obtain the data to be
+       filtered; This parameter is optional. If it is not specified,
+       shadow points will be considered outside -->
+     <param name="sensor_frame" type="string" value="/swissranger_link" />
+
+     <param name="min_sensor_dist" type="double" value="0.01" />
+
+     <!-- The padding to be added for the body parts the robot can see -->
+     <param name="self_see_padd" type="double" value="0.02" />
+
+     <!-- The scaling to be added for the body parts the robot can see -->
+     <param name="self_see_scale" type="double" value="1.0" />
+    
+         <!-- The names of the links the sensor can see -->
+     <!-- The names of the links the sensor can see -->
+		<rosparam file="$(find al_robots)/conf/icub_self_filter.yaml" command="load" />
+		<param name="subsample_value" type="double" value="0.0"/>
+	</node>
+</launch>

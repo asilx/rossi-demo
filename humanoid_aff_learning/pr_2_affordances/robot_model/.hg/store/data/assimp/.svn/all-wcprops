@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/assimp
+END
+assimp.patch.i
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/assimp/assimp.patch.i
+END
+_makefile.i
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/assimp/_makefile.i
+END
+define__arch__arm.patch.i
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/assimp/define__arch__arm.patch.i
+END
+manifest.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/assimp/manifest.xml.i
+END

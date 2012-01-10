@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench progressCount="17" version="2.0">
+<workbenchAdvisor/>
+<window height="1031" width="1646" x="0" y="24">
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar>
+<itemSize x="160"/>
+</perspectiveBar>
+<coolbarLayout locked="0">
+<coolItem id="group.file" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="138" y="30"/>
+<coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.cdt.ui.CElementCreationActionSet" itemType="typeToolBarContribution" x="156" y="30"/>
+<coolItem id="org.eclipse.cdt.ui.buildConfigActionSet" itemType="typeToolBarContribution" x="82" y="30"/>
+<coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="156" y="30"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="104" y="30"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="96" y="30"/>
+<coolItem id="group.nav" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="184" y="30"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.cdt.ui.editor.CEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.help" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page aggregateWorkingSetId="Aggregate for window 1321552422132" focus="true" label="experiment_manager - C/C++">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" partName="main.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/learning_manager/src/main.cpp" title="main.cpp" tooltip="learning_manager/src/main.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/learning_manager/src/main.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="577" selectionTopPixel="230"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="LearningManager.cpp" partName="LearningManager.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/learning_manager/src/LearningManager.cpp" title="LearningManager.cpp" tooltip="learning_manager/src/LearningManager.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/learning_manager/src/LearningManager.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="LearningManager.h" partName="LearningManager.h" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/learning_manager/include/learning_manager/LearningManager.h" title="LearningManager.h" tooltip="learning_manager/include/learning_manager/LearningManager.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/learning_manager/include/learning_manager/LearningManager.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="161" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.ui.DefaultTextEditor" name="CMakeLists.txt" partName="CMakeLists.txt" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/learning_manager/CMakeLists.txt" title="CMakeLists.txt" tooltip="learning_manager/CMakeLists.txt" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/learning_manager/CMakeLists.txt"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="test_perceptors.cpp" partName="test_perceptors.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/experiment_manager/src/test_perceptors.cpp" title="test_perceptors.cpp" tooltip="experiment_manager/src/test_perceptors.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/experiment_manager/src/test_perceptors.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5711" selectionTopPixel="1785"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" partName="main.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/aff_viz/src/main.cpp" title="main.cpp" tooltip="aff_viz/src/main.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/aff_viz/src/main.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5183" selectionTopPixel="2422"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="aff_labels_viz.cpp" partName="aff_labels_viz.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/experiment_manager/src/aff_labels_viz.cpp" title="aff_labels_viz.cpp" tooltip="experiment_manager/src/aff_labels_viz.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/experiment_manager/src/aff_labels_viz.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8529" selectionTopPixel="1513"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" partName="main.cpp" path="/home/kadir/interconnection/workspace/metu-ros-pkg/stacks/aff_learning/common/speech_manager/src/main.cpp" title="main.cpp" tooltip="speech_manager/src/main.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/speech_manager/src/main.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6701" selectionTopPixel="0"/>
+</editor>
+</editors>
+<views>
+<view id="org.eclipse.ui.navigator.ProjectExplorer" partName="Project Explorer">
+<viewState CommonNavigator.LINKING_ENABLED="0" CommonNavigator.LINKING_ENABLED.delayed="0" currentWorkingSetName="Aggregate for window 1321552422132" org.eclipse.cdt.ui.cview.groupincludes="false" org.eclipse.cdt.ui.editor.CUChildren="true" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0"/>
+</view>
+<view id="org.eclipse.ui.views.PropertySheet" partName="Properties"/>
+<view id="org.eclipse.cdt.make.ui.views.MakeView" partName="Make Targets"/>
+<view id="org.eclipse.ui.views.ProblemView" partName="Problems">
+<viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
+<expanded>
+<category IMemento.internal.id="Warnings"/>
+</expanded>
+<columnWidths org.eclipse.ui.ide.locationField="73" org.eclipse.ui.ide.markerType="514" org.eclipse.ui.ide.pathField="143" org.eclipse.ui.ide.resourceField="108" org.eclipse.ui.ide.severityAndDescriptionField="682"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.locationField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.markerType"/>
+</viewState>
+</view>
+<view id="org.eclipse.ui.console.ConsoleView" partName="Console">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.TaskList" partName="Tasks"/>
+<view id="org.eclipse.ui.views.ContentOutline" partName="Outline">
+<viewState/>
+</view>
+</views>
+<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.eclipse.cdt.ui.CPerspective">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.eclipse.cdt.internal.ui.CPerspectiveFactory" id="org.eclipse.cdt.ui.CPerspective" label="C/C++"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.tasks.ui.navigation"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.SearchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.CElementCreationActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.make.ui.makeTargetActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.launchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.buildConfigActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.NavigationActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.OpenActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.CodingActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.presentation"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
+<show_view_action id="org.eclipse.ui.console.ConsoleView"/>
+<show_view_action id="org.eclipse.search.ui.views.SearchView"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="org.eclipse.cdt.ui.CView"/>
+<show_view_action id="org.eclipse.ui.views.ResourceNavigator"/>
+<show_view_action id="org.eclipse.ui.views.PropertySheet"/>
+<show_view_action id="org.eclipse.ui.views.TaskList"/>
+<show_view_action id="org.eclipse.cdt.make.ui.views.MakeView"/>
+<show_view_action id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<show_view_action id="org.eclipse.cdt.ui.includeBrowser"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.ConvertToMakeWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewCWizard1"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewCWizard2"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewSourceFolderCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewFolderCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewSourceFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewHeaderFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewClassCreationWizard"/>
+<perspective_action id="org.eclipse.debug.ui.DebugPerspective"/>
+<perspective_action id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.ui.views.ProblemView"/>
+<view id="org.eclipse.ui.views.TaskList"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="org.eclipse.ui.views.PropertySheet"/>
+<view id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<fastViewBars>
+<fastViewBar fastViewLocation="131072" id="topRight" orientation="512" selectedTabId="org.eclipse.ui.views.ContentOutline" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ContentOutline" ratio="0.3"/>
+<view id="org.eclipse.cdt.make.ui.views.MakeView" ratio="0.3"/>
+</fastViews>
+</fastViewBar>
+</fastViewBars>
+<layout>
+<mainWindow>
+<info folder="true" part="topLeft">
+<folder activePageID="org.eclipse.ui.navigator.ProjectExplorer" appearance="2" expanded="2">
+<page content="org.eclipse.ui.navigator.ProjectExplorer" label="Project Explorer"/>
+<page content="org.eclipse.cdt.ui.CView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ResourceNavigator" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.75" ratioLeft="756" ratioRight="252" relationship="2" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.25" ratioLeft="252" ratioRight="756" relationship="2" relative="topLeft"/>
+<info folder="true" part="bottom" ratio="0.7492163" ratioLeft="478" ratioRight="160" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
+<page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
+<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<page content="org.eclipse.ui.views.PropertySheet" label="Properties"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+<part id="3"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="topRight" ratio="0.75" ratioLeft="567" ratioRight="189" relationship="2" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
+<page content="org.eclipse.cdt.make.ui.views.MakeView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/learning_manager/src/LearningManager.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/learning_manager/include/learning_manager/LearningManager.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" path="/learning_manager/manifest.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/learning_manager/src/main.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/experiment_manager/src/test_perceptors.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/aff_viz/src/main.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/experiment_manager/src/aff_labels_viz.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/speech_manager/src/main.cpp"/>
+</editors>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3389" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3411" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3418" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3490" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="687" y="25"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3490" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="566" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="1255" y="232"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3644" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="1492" y="11"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3644" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="3638" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="806" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2453" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="806" y="0"/>
+</item>
+<item historyLabel="manifest.xml" index="2">
+<position info="not_deleted" x="328" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="848" y="14"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="438" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="848" y="14"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="1316" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2581" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="1316" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="565" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2581" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="848" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="3">
+<position info="not_deleted" x="577" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="806" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2581" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2048" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="960" y="17"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2048" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="1197" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="777" y="27"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="1197" y="0"/>
+</item>
+<item historyLabel="LearningManager.cpp" index="0">
+<position info="not_deleted" x="2" y="0"/>
+</item>
+<item historyLabel="LearningManager.h" index="1">
+<position info="not_deleted" x="777" y="27"/>
+</item>
+<item historyLabel="test_perceptors.cpp" index="4">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="test_perceptors.cpp" index="4">
+<position info="not_deleted" x="14630" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="2297" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="2316" y="0"/>
+</item>
+<item historyLabel="test_perceptors.cpp" index="4">
+<position info="not_deleted" x="5711" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="2409" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="2407" y="0"/>
+</item>
+<item historyLabel="aff_labels_viz.cpp" index="6">
+<position info="not_deleted" x="5374" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="5">
+<position info="not_deleted" x="5183" y="0"/>
+</item>
+<item historyLabel="aff_labels_viz.cpp" index="6">
+<position info="not_deleted" x="5374" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="main.cpp" index="7">
+<position info="not_deleted" x="6974" y="0"/>
+</item>
+<item active="true" historyLabel="main.cpp" index="7">
+<position info="not_deleted" x="6973" y="0"/>
+</item>
+</navigationHistory>
+<input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/experiment_manager" type="4"/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="131072">
+<trimItem IMemento.internal.id="topRight"/>
+</trimArea>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" tooltip="speech_manager/src/main.cpp">
+<persistable path="/speech_manager/src/main.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="aff_labels_viz.cpp" tooltip="experiment_manager/src/aff_labels_viz.cpp">
+<persistable path="/experiment_manager/src/aff_labels_viz.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" tooltip="aff_viz/src/main.cpp">
+<persistable path="/aff_viz/src/main.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="test_perceptors.cpp" tooltip="experiment_manager/src/test_perceptors.cpp">
+<persistable path="/experiment_manager/src/test_perceptors.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="CMakeLists.txt" tooltip="learning_manager/CMakeLists.txt">
+<persistable path="/learning_manager/CMakeLists.txt"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="manifest.xml" tooltip="learning_manager/manifest.xml">
+<persistable path="/learning_manager/manifest.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="LearningManager.h" tooltip="learning_manager/include/learning_manager/LearningManager.h">
+<persistable path="/learning_manager/include/learning_manager/LearningManager.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="LearningManager.cpp" tooltip="learning_manager/src/LearningManager.cpp">
+<persistable path="/learning_manager/src/LearningManager.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" tooltip="learning_manager/src/main.cpp">
+<persistable path="/learning_manager/src/main.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" tooltip="experiment_manager/src/main.cpp">
+<persistable path="/experiment_manager/src/main.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.cpp" tooltip="feature_manager/src/main.cpp">
+<persistable path="/feature_manager/src/main.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="Perception.srv" tooltip="feature_manager/srv/Perception.srv">
+<persistable path="/feature_manager/srv/Perception.srv"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="test_look.cpp" tooltip="experiment_manager/src/test_look.cpp">
+<persistable path="/experiment_manager/src/test_look.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="CMakeLists.txt" tooltip="experiment_manager/CMakeLists.txt">
+<persistable path="/experiment_manager/CMakeLists.txt"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="featurizer.cpp" tooltip="feature_manager/src/featurizer.cpp">
+<persistable path="/feature_manager/src/featurizer.cpp"/>
+</file>
+</mruList>
+</workbench>

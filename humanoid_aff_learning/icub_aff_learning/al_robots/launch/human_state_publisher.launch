@@ -1,0 +1,15 @@
+  <launch>
+
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find al_robots)/defs/human.urdf.xacro'"/>
+	
+	<node pkg="robot_state_publisher" type="state_publisher" name="torso_box_st_pub" >
+	  <!--remap from="robot_description" to="torso_box_description" /-->
+	  <!--remap from="joint_states" to="torso_box_joint_states" /-->
+	</node>
+  
+    <!--node pkg="al_robots" type="human_js_pub" name="human_js_publisher" output="screen" >
+    </node-->  
+  
+    <!--node pkg="al_robots" type="human_rs_pub" name="human_rs_publisher" output="screen">
+    </node-->
+  </launch>

@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial
+END
+03-origins.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/03-origins.urdf.i
+END
+04-materials.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/04-materials.urdf.i
+END
+manifest.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/manifest.xml.i
+END
+07-physics.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/07-physics.urdf.i
+END
+08-macroed.urdf.xacro.i
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/08-macroed.urdf.xacro.i
+END
+mainpage.dox.i
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/mainpage.dox.i
+END
+_c_make_lists.txt.i
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/_c_make_lists.txt.i
+END
+01-myfirst.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/01-myfirst.urdf.i
+END
+xacrodisplay.launch.i
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/xacrodisplay.launch.i
+END
+_makefile.i
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/_makefile.i
+END
+06-flexible.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/06-flexible.urdf.i
+END
+02-multipleshapes.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/02-multipleshapes.urdf.i
+END
+display.launch.i
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/display.launch.i
+END
+urdf.vcg.i
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/urdf.vcg.i
+END
+gazebo.launch.i
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/gazebo.launch.i
+END
+r2d2.xacro.i
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/r2d2.xacro.i
+END
+05-visual.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf__tutorial/05-visual.urdf.i
+END

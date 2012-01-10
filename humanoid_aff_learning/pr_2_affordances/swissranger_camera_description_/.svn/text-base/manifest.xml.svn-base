@@ -1,0 +1,17 @@
+<package>
+  <description brief="swissranger_camera_description">
+
+     swissranger_camera_description
+
+  </description>
+  <author>Antons Rebguns</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/swissranger_camera_description</url>
+  <depend package="convex_decomposition"/>
+  <depend package="ivcon"/>
+  <depend package="urdf"/>
+
+</package>
+
+

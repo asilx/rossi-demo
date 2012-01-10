@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src
+END
+state__publisher.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src/state__publisher.cpp.i
+END
+robot__state__publisher.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 174
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src/robot__state__publisher.cpp.i
+END
+robot__state__publisher__node.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 180
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src/robot__state__publisher__node.cpp.i
+END
+joint__state__listener.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src/joint__state__listener.cpp.i
+END
+treefksolverposfull__recursive.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/robot__state__publisher/src/treefksolverposfull__recursive.cpp.i
+END

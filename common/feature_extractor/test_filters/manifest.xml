@@ -1,0 +1,14 @@
+<package>
+  <description brief="test_filters">
+
+     test_filters
+
+  </description>
+  <author>Kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/test_passthrough_filter</url>
+  <depend package="pcl"/>
+  <depend package="roscpp"/>
+
+</package>

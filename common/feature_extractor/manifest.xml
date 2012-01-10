@@ -1,0 +1,23 @@
+<package>
+  <description brief="feature_extractor">
+
+     feature_extractor
+
+  </description>
+  <author>Kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/feature_extractor</url>
+  <depend package="pcl"/>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="image_transport"/>
+  <depend package="roslib"/>
+  <depend package="eigen"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="visualization_msgs"/>>
+
+</package>
+
+

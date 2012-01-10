@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/.project
+END
+cmake_install.cmake
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/cmake_install.cmake
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/manifest.xml
+END
+.cproject
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/.cproject
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/mainpage.dox
+END
+.pydevproject
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/.pydevproject
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/Makefile
+END

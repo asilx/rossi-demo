@@ -1,0 +1,418 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro" 
+       name="icub">
+
+  <xacro:property name="M_PI" value="3.14159"/>
+
+  <xacro:macro name="black">
+    <material name="black">
+      <color rgba="0.1 0.1 0.1 0.9"/>
+    </material>
+  </xacro:macro>
+
+  <xacro:macro name="default_gazebo" params="name material">
+    <gazebo reference="${name}">
+      <material>${material}</material>
+      <selfCollide>false</selfCollide>
+      <turnGravityOff>True</turnGravityOff>
+    </gazebo>
+  </xacro:macro>
+  
+  <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+	       iyy="0.001" iyz="0.0"
+	       izz="0.001" />                     
+    </inertial>
+  </xacro:macro>
+
+  
+  <xacro:macro name="shape_cylinder" params="name l r xyz rpy mass material *rviz_color">
+    <link name="${name}">
+      <visual>	
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <cylinder length="${l}" radius="${r}" />
+	</geometry>
+	<xacro:insert_block name="rviz_color" />				
+      </visual>
+      <collision>
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <cylinder length="${l}" radius="${r}" />
+	</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+  </xacro:macro>
+  
+  <xacro:macro name="shape_sphere" params="name r xyz rpy mass material *rviz_color">
+    <link name="${name}">
+      <visual>	
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <sphere radius="${r}" />
+	</geometry>
+	<xacro:insert_block name="rviz_color" />				
+      </visual>
+      <collision>
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <sphere radius="${r}" />
+	</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+  </xacro:macro>	
+  
+  <xacro:macro name="shape_box" params="name lwh xyz rpy mass material *rviz_color">
+    <link name="${name}">
+      <visual>
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <box size="${lwh}" />
+	</geometry>
+	<xacro:insert_block name="rviz_color" />
+	<!--material name="red">
+	    <color rgba="0.8 0 0 1"/>
+	    </material-->
+      </visual>
+      <collision>
+	<origin xyz="${xyz}" rpy="${rpy}" />
+	<geometry>
+	  <box size="${lwh}" />
+	</geometry>
+      </collision>
+      <xacro:default_inertial mass="${mass}" />   
+    </link>
+    <xacro:default_gazebo name="${name}" material="${material}" />
+  </xacro:macro>
+  
+  <xacro:shape_box name="torso" lwh="0.2 0.16 0.26" xyz="0.0 0.0 -0.08" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+  
+  <!-- <xacro:shape_sphere name="head" r="0.10" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite"> -->
+  <!--   <xacro:blue /> -->
+  <!-- </xacro:shape_sphere> -->
+
+  <!-- <joint name="base_to_right_leg" type="fixed"> -->
+  <!--   <parent link="torso"/> -->
+  <!--   <child link="head"/> -->
+  <!--   <origin xyz="0.22 0 .25"/> -->
+  <!-- </joint> -->
+  
+  <!-- <xacro:shape_cylinder name="neck" l="0.28" r="0.05" xyz="0 0 0" rpy="${M_PI/2} 0 0" mass="5" material="Gazebo/FlatBlack"> -->
+  <!--   <xacro:black /> -->
+  <!-- </xacro:shape_cylinder> -->
+
+  <xacro:shape_sphere name="left_shoulder" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+  
+  <xacro:shape_sphere name="right_shoulder" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+  
+  <xacro:shape_cylinder name="right_upper_arm" l="0.15" r="0.02" xyz="0 0 -0.1" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_cylinder>
+
+  <xacro:shape_cylinder name="left_upper_arm" l="0.15" r="0.02" xyz="0 0 0.1" rpy="0 0 0" mass="5" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_cylinder>
+  
+  <xacro:shape_sphere name="left_elbow" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+  
+  <xacro:shape_sphere name="right_elbow" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="5" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+  
+  <xacro:shape_cylinder name="left_lower_arm" l="0.2" r="0.02" xyz="0  -0.1 0" rpy="${M_PI/2} 0 0" mass="5" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_cylinder>
+
+  
+  <xacro:shape_cylinder name="right_lower_arm" l="0.20" r="0.02" xyz="0 0.1 0" rpy="${M_PI/2} 0 0" mass="5" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_cylinder>
+  
+  <xacro:shape_sphere name="left_hand" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="1" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+   
+  <xacro:shape_sphere name="right_hand" r="0.03" xyz="0 0 0" rpy="0 0 0" mass="1" material="Gazebo/FlatWhite">
+    <xacro:blue />
+  </xacro:shape_sphere>
+  
+  <!-- I guess the order is pitch, roll, yaw. And it really matters -->
+  <!-- It should be roll pitch yaw as rpy suggests-->
+
+  
+  <xacro:shape_box name="base_link" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="torso_pitch" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="torso_roll" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="torso_yaw" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="right_shoulder_pitch" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="right_shoulder_roll" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="right_shoulder_yaw" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+      <xacro:shape_box name="right_wrist_pitch" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="right_wrist_yaw" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+  <xacro:shape_box name="right_wrist_yaw_2" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="left_shoulder_pitch" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="left_shoulder_roll" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="left_shoulder_yaw" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+      <xacro:shape_box name="left_wrist_pitch" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+    <xacro:shape_box name="left_wrist_yaw" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+
+  <xacro:shape_box name="left_wrist_yaw_2" lwh="0 0 0" xyz="0 0 0" rpy="0 0 0" mass="10" material="Gazebo/FlatBlack">
+    <xacro:black />
+  </xacro:shape_box>
+  
+
+
+  <joint name="base_dummy_0" type="fixed">
+    <parent link="base_link"/>
+    <child link="torso_pitch"/>
+    <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+    <!-- <origin xyz="0 0 0" rpy="${-M_PI/2} ${-M_PI/2} ${M_PI}" /> -->
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="torso_0" type="continuous">
+    <parent link="torso_pitch"/>
+    <child link="torso_roll"/>
+    <origin xyz="0 0 0" rpy="0 0 ${M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <joint name="torso_1" type="continuous">
+    <parent link="torso_roll"/>
+    <child link="torso_yaw"/>
+    <origin xyz="0.032 0 0" rpy="${M_PI/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <joint name="torso_2" type="continuous">
+    <parent link="torso_yaw"/>
+    <child link="torso"/>
+    <origin xyz="0 0 0" rpy="${M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  
+
+  <!-- Right Arm --> 
+  <joint name="right_arm_dummy_0" type="fixed">
+    <parent link="torso"/>
+    <child link="right_shoulder_pitch"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_0" type="continuous">
+    <parent link="right_shoulder_pitch"/>
+    <child link="right_shoulder_roll"/>
+    <origin xyz="-0.02336 0 -0.1433" rpy="${M_PI/2} 0 ${-105/180*M_PI}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_1" type="continuous">
+    <parent link="right_shoulder_roll"/>
+    <child link="right_shoulder_yaw"/>
+    <origin xyz="0 0 -0.10774" rpy="${M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_2" type="continuous">
+    <parent link="right_shoulder_yaw"/>
+    <child link="right_shoulder"/>
+    <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_dummy_1" type="fixed">
+    <parent link="right_shoulder"/>
+    <child link="right_upper_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  
+  <joint name="right_arm_3" type="continuous">
+    <parent link="right_upper_arm"/>
+    <child link="right_lower_arm"/>
+    <origin xyz="0 0 -0.15228" rpy="${-M_PI/2} 0 ${-105/180*M_PI}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_dummy_2" type="fixed">
+    <parent link="right_lower_arm"/>
+    <child link="right_elbow"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_4" type="continuous">
+    <parent link="right_elbow"/>
+    <child link="right_wrist_pitch"/>
+    <origin xyz="0.015 0  0" rpy="${M_PI/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_5" type="continuous">
+    <parent link="right_wrist_pitch"/>
+    <child link="right_wrist_yaw"/>
+    <origin xyz="0 0 -0.1373" rpy="${M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_6" type="continuous">
+    <parent link="right_wrist_yaw"/>
+    <child link="right_wrist_yaw_2"/>
+    <origin xyz="0 0 0 " rpy="0 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="right_arm_7" type="continuous">
+    <parent link="right_wrist_yaw_2"/>
+    <child link="right_hand"/>
+    <origin xyz="0.0625 0 0.016" rpy="${M_PI/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+
+  <!-- left Arm -->
+
+  <joint name="left_arm_dummy_0" type="fixed">
+    <parent link="torso"/>
+    <child link="left_shoulder_pitch"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_0" type="continuous">
+    <parent link="left_shoulder_pitch"/>
+    <child link="left_shoulder_roll"/>
+    <origin xyz="0.02336 0 -0.1433" rpy="${-M_PI/2} 0 ${105/180*M_PI}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_1" type="continuous">
+    <parent link="left_shoulder_roll"/>
+    <child link="left_shoulder_yaw"/>
+    <origin xyz="0 0 0.10774" rpy="${-M_PI/2} 0 ${M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_2" type="continuous">
+    <parent link="left_shoulder_yaw"/>
+    <child link="left_shoulder"/>
+    <origin xyz="0 0 0" rpy="${M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_dummy_1" type="fixed">
+    <parent link="left_shoulder"/>
+    <child link="left_upper_arm"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  
+  <joint name="left_arm_3" type="continuous">
+    <parent link="left_upper_arm"/>
+    <child link="left_lower_arm"/>
+    <origin xyz="0 0 0.15228" rpy="${-M_PI/2} 0 ${75/180*M_PI}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_dummy_2" type="fixed">
+    <parent link="left_lower_arm"/>
+    <child link="left_elbow"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_4" type="continuous">
+    <parent link="left_elbow"/>
+    <child link="left_wrist_pitch"/>
+    <origin xyz="-0.015 0  0" rpy="${M_PI/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_5" type="continuous">
+    <parent link="left_wrist_pitch"/>
+    <child link="left_wrist_yaw"/>
+    <origin xyz="0 0 0.1373" rpy="${M_PI/2} 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_6" type="continuous">
+    <parent link="left_wrist_yaw"/>
+    <child link="left_wrist_yaw_2"/>
+    <origin xyz="0 0 0 " rpy="0 0 ${-M_PI/2}" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="left_arm_7" type="continuous">
+    <parent link="left_wrist_yaw_2"/>
+    <child link="left_hand"/>
+    <origin xyz="-0.0625 0 0.016" rpy="${M_PI/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+</robot>
+

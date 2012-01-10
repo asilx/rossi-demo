@@ -1,0 +1,18 @@
+<package>
+  <description brief="speech_manager">
+
+     speech_manager
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/speech_manager</url>
+  <depend package="roscpp"/>
+  <depend package="rosconsole"/>
+  <depend package="aff_msgs"/>
+  <depend package="std_msgs"/>
+
+</package>
+
+

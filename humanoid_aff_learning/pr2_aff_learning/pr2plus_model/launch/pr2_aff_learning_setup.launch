@@ -1,0 +1,35 @@
+<launch>
+
+  <arg name="gui" default="true"/>
+	
+  <!--include file="$(find pr2_gazebo)/pr2_empty_world.launch"/-->
+
+  <!-- start gazebo with an empty plane -->
+  <param name="/use_sim_time" value="true" />
+
+  <group if="$(arg gui)">
+    <node name="gazebo" pkg="gazebo" type="gazebo" args="-s -1 -u $(find gazebo_worlds)/worlds/empty.world" 
+          respawn="false" output="screen"/>
+  </group>
+  <group unless="$(arg gui)">
+    <node name="gazebo" pkg="gazebo" type="gazebo" args="-g -s -1 -u $(find gazebo_worlds)/worlds/empty.world" 
+          respawn="false" output="screen"/>
+  </group>
+
+  <include file="$(find pr2plus_model)/launch/pr2_w_sr4k.launch" />
+
+  <!-- spawn table and tabletop object -->
+  <param name="table_description" 
+   command="$(find xacro)/xacro.py '$(find pr2_interactive_manipulation)/urdf/table.urdf.xacro'" />
+  <node name="spawn_table" pkg="gazebo" type="spawn_model" args="-urdf -param table_description -model table_1" 
+   respawn="false" output="screen" />
+  <!--node name="spawn_object" pkg="gazebo" type="spawn_model" 
+   args="-urdf -file $(find pr2_interactive_manipulation)/urdf/coke_can.urdf -model object_1 -x 0.7 -z 0.55" 
+   respawn="false" output="screen" /-->
+
+  <!-- parameters that give you reasonable physics as well as good speed -->
+  <!-- needed so that gripper joint stops on objects instead of oscillating forever -->
+  <node name="sor_pgs_iters" pkg="dynamic_reconfigure" type="dynparam" args="set gazebo sor_pgs_iters 50"/>
+  <node name="time_step" pkg="dynamic_reconfigure" type="dynparam" args="set gazebo time_step 0.002"/>
+
+</launch>

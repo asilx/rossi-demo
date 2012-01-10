@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <model:physical name="box">
+    <xyz>0.0 0.0 0.0</xyz>
+    <rpy>0.0 0.0 0.0</rpy>
+    <enableGravity>1</enableGravity>
+    <enableFriction>1</enableFriction>
+    <collide>all</collide>
+    <static>0</static>
+
+    <body name="body">
+      <xyz>0 0 0</xyz>
+      <rpy>0 0 0</rpy>
+
+      <geom:box name="box">
+        <xyz>0 0 0</xyz>
+        <rpy>0 0 0</rpy>
+        <size>0.1 0.2 0.3</size>
+        <mass>0.2</mass>
+        <laserFiducialId>-1</laserFiducialId>
+        <laserRetro>-1</laserRetro>
+        <visual>
+          <xyz>0 0 0</xyz>
+          <rpy>0 0 0</rpy>
+          <mesh>unit_box</mesh>
+          <material>Gazebo/Grey</material>
+          <castShadows>1</castShadows>
+          <scale>0.1 0.2 0.3</scale>
+        </visual>
+      </geom:box>
+    </body>
+  </model:physical>

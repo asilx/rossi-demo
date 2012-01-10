@@ -1,0 +1,9 @@
+roslaunch pr2plus_model pr2_aff_learning_setup.launch
+rosrun pr2_controller_manager pr2_controller_manager start torso_controller
+rosrun pr2_learning_affordances pr2_learning_affordances
+
+roslaunch tabletop_object_detector tabletop_segmentation.launch tabletop_segmentation_points_in:=/swissranger/pointcloud2_raw
+
+rosrun feature_factory feature_factory 
+
+rosrun workspace_detector workspace_detector

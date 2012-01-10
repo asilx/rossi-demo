@@ -1,0 +1,3 @@
+roslaunch pr2plus_model pr2_aff_learning_setup.launch
+rosrun pr2_controller_manager pr2_controller_manager start torso_controller
+rosrun pr2_learning_affordances pr2_learning_affordances

@@ -1,0 +1,18 @@
+<package>
+  <description brief="workspace_detector">
+
+     workspace_detector
+
+  </description>
+  <author>kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/workspace_detector</url>
+  <depend package="tabletop_object_detector"/>
+  <depend package="tabletop_collision_map_processing"/>
+  <depend package="roscpp"/>
+  <depend package="pcl_ros"/>
+
+</package>
+
+

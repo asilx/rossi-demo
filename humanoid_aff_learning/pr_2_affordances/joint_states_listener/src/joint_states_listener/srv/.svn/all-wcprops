@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/joint_states_listener/src/joint_states_listener/srv
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/joint_states_listener/src/joint_states_listener/srv/__init__.py
+END
+_ReturnJointStates.py
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/joint_states_listener/src/joint_states_listener/srv/_ReturnJointStates.py
+END

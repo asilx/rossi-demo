@@ -1,0 +1,33 @@
+digraph G {
+"/base_link" -> "/torso_pitch"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/torso" -> "/left_shoulder_pitch"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/left_shoulder" -> "/left_upper_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/left_lower_arm" -> "/left_elbow"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/torso" -> "/right_shoulder_pitch"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/right_shoulder" -> "/right_upper_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+"/right_lower_arm" -> "/right_elbow"[label="Broadcaster: /robot_state_publisher\nAverage rate: 50.195 Hz\nMost recent transform: -0.445 sec old \nBuffer length: 4.901 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/base_link";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/torso";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/left_shoulder";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/left_lower_arm";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/right_shoulder";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1325690254.350"[ shape=plaintext ] ;
+ }->"/right_lower_arm";
+}

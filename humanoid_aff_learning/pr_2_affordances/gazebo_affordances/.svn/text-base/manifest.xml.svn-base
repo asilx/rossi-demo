@@ -1,0 +1,17 @@
+<package>
+  <description brief="gazebo_affordances">
+
+     gazebo_affordances
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/gazebo_affordances</url>
+  <depend package="convex_decomposition"/>
+  <depend package="ivcon"/>
+  <depend package="urdf"/>
+
+</package>
+
+

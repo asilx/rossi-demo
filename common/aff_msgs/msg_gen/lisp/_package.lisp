@@ -1,0 +1,17 @@
+(cl:defpackage aff_msgs-msg
+  (:use )
+  (:export
+   "<EXPERIMENTSTATE>"
+   "EXPERIMENTSTATE"
+   "<FEATURES>"
+   "FEATURES"
+   "<MODULESTATES>"
+   "MODULESTATES"
+   "<OBJECTOFINTEREST>"
+   "OBJECTOFINTEREST"
+   "<SPEECH>"
+   "SPEECH"
+   "<WORKSPACEDETECTION>"
+   "WORKSPACEDETECTION"
+  ))
+

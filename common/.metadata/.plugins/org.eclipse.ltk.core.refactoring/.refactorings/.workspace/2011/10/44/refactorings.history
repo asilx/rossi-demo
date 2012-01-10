@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;feature_manager/srv_gen&apos;" deleteContents="false" description="Delete resource &apos;feature_manager/srv_gen&apos;" element1="/feature_manager/srv_gen" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1319406769517"/>
+</session>

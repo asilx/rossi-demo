@@ -1,0 +1,21 @@
+int8 DONT_ACT = -1
+int8 PUSH_RIGHT = 0
+int8 PUSH_LEFT =1
+int8 PUSH_FORWARD =2
+int8 PUSH_BACKWARD=3
+int8 LIFT=4
+int8 GRASP=5
+int8 HOME=6
+int8 POINT=7
+int8 HIDE=8
+int8 CANCEL=9
+int8 STOP=10
+int8 SHOW=11
+int8 TUCK_ARMS=12
+int8 task #action
+float32[] pushable_object_center
+float32[] pushable_object_size
+---
+#uint8 PROCESSING = 0
+uint8 DONE = 1
+uint8 feedback

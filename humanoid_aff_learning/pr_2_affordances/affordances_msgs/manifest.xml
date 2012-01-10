@@ -1,0 +1,16 @@
+<package>
+  <description brief="affordances_msgs">
+
+     affordances_msgs
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/affordances_msgs</url>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+
+</package>
+
+

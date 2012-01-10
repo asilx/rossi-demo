@@ -1,0 +1,12 @@
+<launch>
+      <param name="axis_vx" type="int" value="1"/>
+      <param name="axis_vw" type="int" value="0"/>
+      <param name="axis_vy" type="int" value="2"/>
+      <param name="axis_pan" type="int" value="3"/>
+      <param name="axis_tilt" type="int" value="4"/>
+      <param name="passthrough_button" type="int" value="1"/>
+      <param name="head_button" type="int" value="1"/>
+      
+      <node name="joy" pkg="joy" type="joy" />
+      <node name="p2os_teleop" pkg="p2os_teleop" type="p2os_teleop"/>
+</launch>

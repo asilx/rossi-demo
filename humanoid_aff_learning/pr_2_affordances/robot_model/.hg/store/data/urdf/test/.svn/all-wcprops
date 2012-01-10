@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test
+END
+pr2__desc__no__filename__in__mesh.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__no__filename__in__mesh.xml.i
+END
+pr2__desc__bracket.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__bracket.xml.i
+END
+pr2__desc__double__joint.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__double__joint.xml.i
+END
+pr2__desc__no__joint.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__no__joint.xml.i
+END
+no__visual.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/no__visual.urdf.i
+END
+memtest.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/memtest.cpp.i
+END
+fail__three__links__one__joint.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__three__links__one__joint.urdf.i
+END
+pr2__desc__explicit__world.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__explicit__world.xml.i
+END
+pr2__desc__explicit__world.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__explicit__world.urdf.i
+END
+fail__pr2__desc__double.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__double.urdf.i
+END
+fail__pr2__desc__two__trees.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__two__trees.urdf.i
+END
+fail__pr2__desc__bracket.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__bracket.urdf.i
+END
+fail__pr2__desc__no__filename__in__mesh.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__no__filename__in__mesh.urdf.i
+END
+test__robot__model__parser.launch.i
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/test__robot__model__parser.launch.i
+END
+pr2__desc__loop.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__loop.xml.i
+END
+pr2__desc__two__trees.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__two__trees.xml.i
+END
+pr2__desc__double.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__double.xml.i
+END
+parse__test.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/parse__test.cpp.i
+END
+pr2__desc__no__joint.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__no__joint.urdf.i
+END
+one__link.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/one__link.urdf.i
+END
+test__robot__model__parser.cpp.i
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/test__robot__model__parser.cpp.i
+END
+pr2__desc.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc.urdf.i
+END
+pr2__desc.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc.xml.i
+END
+fail__pr2__desc__parent__itself.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__parent__itself.urdf.i
+END
+fail__pr2__desc__no__joint2.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__no__joint2.urdf.i
+END
+two__links__one__joint.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/two__links__one__joint.urdf.i
+END
+singularity.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/singularity.urdf.i
+END
+pr2__desc__parent__itself.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__parent__itself.xml.i
+END
+pr2__desc__no__joint2.xml.i
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/pr2__desc__no__joint2.xml.i
+END
+fail__pr2__desc__loop.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__loop.urdf.i
+END
+fail__pr2__desc__double__joint.urdf.i
+K 25
+svn:wc:ra_dav:version-url
+V 164
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/.hg/store/data/urdf/test/fail__pr2__desc__double__joint.urdf.i
+END

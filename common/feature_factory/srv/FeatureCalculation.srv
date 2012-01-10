@@ -1,0 +1,11 @@
+bool calc_amplitude
+bool calc_confidence
+bool calc_distance
+bool calc_normals_azi
+bool calc_normals_zen
+---
+sensor_msgs/PointCloud2 f_distances
+sensor_msgs/PointCloud2 f_confidences
+sensor_msgs/PointCloud2 f_amplitudes
+sensor_msgs/PointCloud2 f_normals_azi
+sensor_msgs/PointCloud2 f_normals_zen

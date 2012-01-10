@@ -1,0 +1,10 @@
+<launch>
+	<!-- start simulation environment -->
+  <include file="$(find pr2_gazebo)/pr2_table_cup_world.launch"/>
+	
+  <!-- load ik -->
+  <!--include file="$(find pr2_arm_navigation_kinematics)/launch/pr2_ik_rarm_node.launch"/-->
+  
+  <!-- launch the action manager node -->
+  <node pkg="pr2_learning_affordances" type="pr2_learning_affordances" name="pr2_learning_affordances" output="screen"/>
+</launch>

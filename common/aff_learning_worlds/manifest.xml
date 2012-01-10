@@ -1,0 +1,19 @@
+<package>
+  <description brief="aff_learning_worlds">
+
+     aff_learning_worlds
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/aff_learning_worlds</url>
+  <depend package="urdf"/>
+  <depend package="xacro"/>
+  <depend package="sensor_msgs"/>
+  <depend package="roscpp"/>
+  <depend package="tf"/>
+
+</package>
+
+

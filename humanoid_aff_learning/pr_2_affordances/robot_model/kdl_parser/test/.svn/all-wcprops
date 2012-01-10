@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test
+END
+pr2_desc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/pr2_desc.xml
+END
+pr2_desc_vector.xml
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/pr2_desc_vector.xml
+END
+test_kdl_parser.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/test_kdl_parser.cpp
+END
+pr2_desc_bracket.xml
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/pr2_desc_bracket.xml
+END
+pr2_desc_bracket2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/pr2_desc_bracket2.xml
+END
+test_kdl_parser.launch
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr_2_affordances/robot_model/kdl_parser/test/test_kdl_parser.launch
+END

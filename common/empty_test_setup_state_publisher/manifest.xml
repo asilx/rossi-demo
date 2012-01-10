@@ -1,0 +1,17 @@
+<package>
+  <description brief="empty_test_setup_state_publisher">
+
+     empty_test_setup_state_publisher
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/empty_test_setup_state_publisher</url>
+  <depend package="sensor_msgs"/>
+  <depend package="roscpp"/>
+  <depend package="tf"/>
+
+</package>
+
+

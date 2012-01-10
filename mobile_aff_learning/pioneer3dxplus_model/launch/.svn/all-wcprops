@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/kadir/!svn/ver/17/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch
+END
+pioneer3dxplus.main.launch
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/kadir/!svn/ver/17/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/pioneer3dxplus.main.launch
+END
+things_to_run_on_ros
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/things_to_run_on_ros
+END
+teleop.launch
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/kadir/!svn/ver/13/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/teleop.launch
+END
+pioneer3dxplus.gazebo.launch
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/kadir/!svn/ver/12/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/pioneer3dxplus.gazebo.launch
+END
+pioneer3dxplus.base.launch
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/kadir/!svn/ver/17/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/pioneer3dxplus.base.launch
+END
+upload_pioneer3dxplus.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/upload_pioneer3dxplus.xml
+END
+pioneer3dxplus.launch
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/kadir/!svn/ver/13/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/pioneer3dxplus.launch
+END
+upload_pioneer3dxplus.gazebo.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/mobile_aff_learning/pioneer3dxplus_model/launch/upload_pioneer3dxplus.gazebo.xml
+END

@@ -1,0 +1,21 @@
+<package>
+  <description brief="al_robots">
+
+     al_robots
+
+  </description>
+  <author>kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/al_robots</url>
+  <depend package="roscpp"/>
+  <depend package="geometry_msgs"/>
+  <depend package="tf"/>
+  <depend package="urdf"/>
+  <depend package="robot_state_publisher"/>
+  <depend package="al_utils"/>
+  <depend package="gazebo_msgs"/>  
+
+</package>
+
+

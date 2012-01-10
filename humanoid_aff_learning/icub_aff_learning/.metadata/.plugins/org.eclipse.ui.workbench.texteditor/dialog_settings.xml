@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="342" key="DIALOG_WIDTH"/>
+		<item value="396" key="DIALOG_Y_ORIGIN"/>
+		<item value="618" key="DIALOG_X_ORIGIN"/>
+		<item value="510" key="DIALOG_HEIGHT"/>
+		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="wrap"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="angles" key="selection"/>
+		<list key="findhistory">
+			<item value="angles"/>
+			<item value="internal"/>
+			<item value="pub_internal"/>
+			<item value="r"/>
+			<item value="pub_propriceptive_features_"/>
+			<item value="pub"/>
+			<item value="pub_tabletop_2d_features_"/>
+			<item value="tabletop"/>
+		</list>
+		<list key="replacehistory">
+			<item value="pub_internal_features_"/>
+			<item value="raw"/>
+			<item value=""/>
+			<item value="request.arg"/>
+			<item value="nh-&gt;"/>
+			<item value="&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;willBeSent.boundingBoxes[y + x * 3]&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;= cvRect(minX, minY, maxX&#x0A;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;&#x09;- minX, maxY - minY);"/>
+			<item value="segmented_areas"/>
+			<item value="filtered_image"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="387" key="DIALOG_Y_ORIGIN"/>
+		<item value="686" key="DIALOG_X_ORIGIN"/>
+	</section>
+</section>

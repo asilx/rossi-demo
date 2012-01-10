@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.cdt.make.ui.MULTIPLE_INPUT_DIALOG_2">
+		<item value="628" key="org.eclipse.cdt.make.ui.DIALOG_WIDTH"/>
+		<item value="331" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_X"/>
+		<item value="51" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_Y"/>
+		<item value="460" key="org.eclipse.cdt.make.ui.DIALOG_HEIGHT"/>
+	</section>
+	<section name="org.eclipse.cdt.make.ui.ENVIRONMENT_TAB.NATIVE_ENVIROMENT_DIALOG">
+		<item value="362" key="org.eclipse.cdt.make.ui.DIALOG_WIDTH"/>
+		<item value="461" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_X"/>
+		<item value="490" key="org.eclipse.cdt.make.ui.DIALOG_ORIGIN_Y"/>
+		<item value="491" key="org.eclipse.cdt.make.ui.DIALOG_HEIGHT"/>
+	</section>
+</section>

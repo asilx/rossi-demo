@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/pr2_learning_affordances/srv
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/pr2_learning_affordances/srv/__init__.py
+END
+_ExecuteCartesianIKTrajectory.py
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/src/pr2_learning_affordances/srv/_ExecuteCartesianIKTrajectory.py
+END

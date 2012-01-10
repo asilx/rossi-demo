@@ -1,0 +1,9 @@
+\BOOKMARK [0][-]{chapter.1}{Software Architecture }{}
+\BOOKMARK [1][-]{section.1.1}{Introduction}{chapter.1}
+\BOOKMARK [2][-]{subsection.1.1.1}{Perception Module}{section.1.1}
+\BOOKMARK [3][-]{section*.2}{Tabletop 3D object segmentation and identification}{subsection.1.1.1}
+\BOOKMARK [3][-]{section*.3}{Tabletop 2D object segmentation and identification}{subsection.1.1.1}
+\BOOKMARK [3][-]{section*.4}{Feature Extraction and Visualization}{subsection.1.1.1}
+\BOOKMARK [2][-]{subsection.1.1.2}{Action Module}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.3}{Learning Module}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.4}{Experiment Module}{section.1.1}

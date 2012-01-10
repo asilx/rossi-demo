@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="swissranger_camera" type="swissranger_camera" name="swissranger" output="screen" respawn="false">
+        <!--param name="frame_id" value="swissranger_link" /-->
+        <param name="frame_id" value="base_link" />
+        <param name="auto_exposure" value="1" />
+    </node>
+</launch>

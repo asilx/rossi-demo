@@ -1,0 +1,2 @@
+/usr/bin/ar cr /home/kadir/my_tools/icub_tools/iCub/main/lib/libactionPrimitives.a  CMakeFiles/actionPrimitives.dir/src/actionPrimitives.o
+/usr/bin/ranlib /home/kadir/my_tools/icub_tools/iCub/main/lib/libactionPrimitives.a

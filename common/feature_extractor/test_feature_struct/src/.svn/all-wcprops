@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_feature_struct/src
+END
+subscriber.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_feature_struct/src/subscriber.cpp
+END
+publisher.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/kadir/!svn/ver/1/metu-ros-pkg/stacks/aff_learning/common/feature_extractor/test_feature_struct/src/publisher.cpp
+END

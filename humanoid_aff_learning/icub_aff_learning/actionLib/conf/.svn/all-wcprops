@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/kadir/!svn/ver/42/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/actionLib/conf
+END
+config.ini
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/kadir/!svn/ver/42/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/actionLib/conf/config.ini
+END
+hand_sequences.ini
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/kadir/!svn/ver/42/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/actionLib/conf/hand_sequences.ini
+END
+grasp_model.ini
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/kadir/!svn/ver/42/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/actionLib/conf/grasp_model.ini
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/include/pr2_learning_affordances
+END
+RobotTorso.h
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/include/pr2_learning_affordances/RobotTorso.h
+END
+RobotArm.h
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/kadir/!svn/ver/34/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/pr2_aff_learning/pr2_learning_affordances/include/pr2_learning_affordances/RobotArm.h
+END

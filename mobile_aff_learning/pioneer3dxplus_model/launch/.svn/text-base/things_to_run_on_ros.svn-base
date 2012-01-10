@@ -1,0 +1,3 @@
+rosrun p2os_dashboard p2os_dashboard
+rosrun p2os_driver p2os
+rosrun teleop_base teleop_base_keyboard base_controller/command:=cmd_vel

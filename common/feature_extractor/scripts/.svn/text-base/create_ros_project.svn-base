@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Creating an eclipse ROS project"
+make eclipse-project
+cmake -G"Eclipse CDT4 - Unix Makefiles"
+echo "include $(shell rospack find mk)/cmake.mk"

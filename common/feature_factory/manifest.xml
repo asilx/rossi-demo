@@ -1,0 +1,22 @@
+<package>
+  <description brief="feature_factory">
+
+     feature_factory
+
+  </description>
+  <author>kadir</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/feature_factory</url>
+  <depend package="roscpp"/>
+  <depend package="pcl_ros"/>
+  <depend package="sensor_msgs"/>
+  <depend package="visualization_msgs"/>
+  <depend package="image_transport"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="eigen"/>
+
+</package>
+
+

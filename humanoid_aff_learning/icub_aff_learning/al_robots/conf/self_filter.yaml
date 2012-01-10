@@ -1,0 +1,17 @@
+min_sensor_dist: .05
+self_see_default_padding: .05
+self_see_default_scale: 1.0
+self_see_links:
+  - name: torso_1
+  - name: head_1
+  - name: neck_1
+  - name: left_shoulder_1
+  - name: right_shoulder_1
+  - name: left_upper_arm
+  - name: right_upper_arm
+  - name: left_elbow_1
+  - name: right_elbow_1
+  - name: left_lower_arm
+  - name: right_lower_arm
+  - name: left_hand_1
+  - name: right_hand_1

@@ -1,0 +1,20 @@
+<package>
+  <description brief="pr2_learning_affordances">
+
+     pr2_learning_affordances
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/pr2_learning_affordances</url>
+  <depend package="move_arm_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="joint_trajectory_action"/>
+  <depend package="geometry_msgs"/>
+  <depend package="kinematics_msgs"/>
+  <depend package="tf"/>
+</package>
+
+

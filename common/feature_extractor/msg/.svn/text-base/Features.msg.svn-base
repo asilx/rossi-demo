@@ -1,0 +1,5 @@
+sensor_msgs/PointCloud2 distances
+sensor_msgs/PointCloud2 confidences
+sensor_msgs/PointCloud2 intensities
+sensor_msgs/PointCloud2 normals_azi
+sensor_msgs/PointCloud2 normals_zen

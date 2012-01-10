@@ -1,0 +1,17 @@
+<package>
+  <description brief="dynamic_tutorials">
+
+     dynamic_tutorials
+
+  </description>
+  <author>Kadir F. Uyanik</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/dynamic_tutorials</url>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="dynamic_reconfigure"/>
+
+</package>
+
+

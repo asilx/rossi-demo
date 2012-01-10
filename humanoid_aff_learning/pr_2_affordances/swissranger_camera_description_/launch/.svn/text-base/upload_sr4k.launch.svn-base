@@ -1,0 +1,9 @@
+<launch>
+    <!-- send pr2 urdf to param server -->
+    <param name="robot_description" command="$(find xacro)/xacro.py $(find swissranger_camera_description)/urdf/swissranger_camera.urdf.xacro" />
+    <!--node name="spawn_pr2_model" pkg="gazebo" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model pr2" respawn="false" output="screen" /-->
+
+    <!--param name="swissranger_description" command="$(find xacro)/xacro.py '$(find swissranger_camera_description)/urdf/swissranger_camera.urdf.xacro'" /-->
+    
+    <!--node name="spawn_swissranger" pkg="gazebo" type="spawn_model" args="-urdf -param swissranger_description -model swissranger_model" respawn="false" output="screen" /-->
+</launch>
