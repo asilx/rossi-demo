@@ -13,7 +13,7 @@ void BehaviorModule::getEEPosition() {
 
 	armPoseInfo.features[0] = pos[0]; // x;
 	armPoseInfo.features[1] = pos[2]; // y;
-	armPoseInfo.features[2] = pos[1]; // z;		
+	armPoseInfo.features[2] = pos[1]; // z;
 	armPoseInfo.features[3] = orient[0]; //xa;
 	armPoseInfo.features[4] = orient[1]; //ya;
 	armPoseInfo.features[5] = orient[2]; //za;
@@ -66,7 +66,7 @@ BehaviorModule::~BehaviorModule() {
 	delete armLogger;
 	delete headLogger;
 	delete tactileLogger;
-	delete[] armPoseInfo.features; ///++kadir: 
+	delete[] armPoseInfo.features; ///++kadir:
 	delete[] headPoseInfo.features;
 	delete[] tactileInfo.features;
 	// --Onur
@@ -82,21 +82,21 @@ void BehaviorModule::take() {
 
 	Bottle& btout = port_grasp_comm.prepare();
 	btout.clear();
-	
+
 	//now close hand
 	//std::cout<<" ooooohhhhhh called "<<std::endl;
 	//std::string s = "oh";
 	//btout.addString(s.c_str());
 	//port_grasp_comm.write();
 	//ros::Duration(3).sleep();//wait here for three second
-	
+
 	//std::cout<<" open hand called "<<std::endl;
-	
+
 	/*
 	bool f;
 	action->pushAction("open_hand");
 	action->checkActionsDone(f, true);
-	
+
 	ros::Duration(3).sleep();//wait here for three second
 	*/
 	ros::Time t1 = ros::Time::now();
@@ -126,27 +126,27 @@ void BehaviorModule::take() {
 				break;
 			}
 		}
-		
+
 		if(sth_in_palm)
 			std::cout<<"***** I got something! Press a key and enter to close the hand*****"<<std::endl;
 		else
 		{
-			// Otherwise, skip the remaining procedures. If  
+			// Otherwise, skip the remaining procedures. If
 			std::cout<<"***** I got nothing! Waiting...*****"<<std::endl;
 			continue;
 		}
 		int i;
 		//cin>>i;
-		
+
 		Bottle& btout2 = port_grasp_comm.prepare();
 		btout2.clear();
-	
+
 		std::string s = "gs";
 		btout2.addString(s.c_str());
 		port_grasp_comm.write();
 		hand_closed = true;
 		ros::Duration(3).sleep();//wait here for three second
-		
+
 		//now close hand
 //		btout.clear();
 //		std::string s = "gs";
@@ -175,10 +175,10 @@ BehaviorModule::drop(Vector point)
 	bool f;
 	action->pushAction(point, hand_orient);
 	action->checkActionsDone(f, true);
-	
+
 	Bottle& btout = port_grasp_comm.prepare();
 	btout.clear();
-	
+
 	//now close hand
 	std::string s = "oh";
 	btout.addString(s.c_str());
@@ -193,10 +193,10 @@ void BehaviorModule::give() {
 
 	//release(center, false);
   releaseUpward(center);
-	
+
 	Bottle& btout = port_grasp_comm.prepare();
 	btout.clear();
-	
+
 	//now open hand
 	std::string s = "oh";
 	btout.addString(s.c_str());
@@ -206,7 +206,7 @@ void BehaviorModule::give() {
 	bool f;
 	action->pushAction("open_hand");
 	action->checkActionsDone(f, true);
-	ros::Duration(3).sleep();//wait here for three second	
+	ros::Duration(3).sleep();//wait here for three second
 	*/
 }
 
@@ -215,7 +215,7 @@ void BehaviorModule::giveAfterTake() {
 	logTactileData();
 	int i;
 	std::cout << "Please take what I am holding" << std::endl;
-	
+
 	// TODO: tactile feedback here
 	// cin >> i;
 	give();
@@ -233,10 +233,10 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 		int i;
 		//cin>>i;
 		release(reach_point, false);
-	} 
+	}
 	else {
 		Vector reach_point = bb_center;
-		
+
 		reach_point[2] += bb_dims[2]/2+0.08;
 		reach_point[1] += 0.01;
 		reach_point[0] += 0.07;
@@ -244,122 +244,122 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 		int i;
 		//cin>>i;
 		release(reach_point, false);
-		
-		reach_point[2] -= 0.08;	
+
+		reach_point[2] -= 0.08;
 		release(reach_point, false);
-		
+
 		Bottle& btout = port_grasp_comm.prepare();
 					btout.clear();
-		
+
 					//		port_grasp_comm
-		
+
 					// Do the closing action
-		
+
 		std::cout << "Closing the hand..." << std::endl;
-		
+
 		std::string s = "gs";
 		btout.addString(s.c_str());
 		port_grasp_comm.write();
 		tuckArms();
-					
-					
+
+
 		Bottle& btout2 = port_grasp_comm.prepare();
 		btout2.clear();
-	
-		
+
+
 		std::string s2 = "oh";
 		btout2.addString(s2.c_str());
 		port_grasp_comm.write();
-		
-		
+
+
 		bool contactDetected = false;
 		double totalReading = 0.0;
-		bool isTouch = false; 
+		bool isTouch = false;
 		hysteresisCounter = 0;
-		//ofstream ifs; 
+		//ofstream ifs;
 		//ifs.open( "test.txt" , ifstream::app );
 		/*while (!isTouch && reach_point[2] > -0.20)
 		{
 			cout << "Now I am trying to touch the object" << endl;
 			cin >> i;
 			cout << i << endl;
-			reach_point[2] -= 0.005;	
+			reach_point[2] -= 0.005;
 			release(reach_point, false);
 			Bottle *b = tactileReader_in.read();
 			// bool sth_in_palm = false;
 			// now, b is supposed to contain 48 doubles of tactile information. fill this to tactileInfo.
 			//std::cout << "The tactile data was read as follows: " << std::endl;
-	
+
 			totalReading = 0.0;
 			// Currently, only reading tactile data from palm. Thus, i = 8.
-			for (int i = 8; i < 12; i++) 
+			for (int i = 8; i < 12; i++)
 			{
 				for (int j=0;j<12;j++)
 				{
 					totalReading += b->get(i*12+j).asDouble();
 					//std::cout<< b->get(i*12+j).asDouble()<<" ";
-			
+
 				}
 				//std::cout<<std::endl;
 			}
 			//ifs << totalReading << " ";
-	
+
 			// After reading:
-	
+
 			std::cout << "The palm tactile reading sum: " << totalReading << std::endl;
-	
-			// The threshold for contact detection (-2.5) was empirically chosen, while reading from compensated input. 
-			// Change 
+
+			// The threshold for contact detection (-2.5) was empirically chosen, while reading from compensated input.
+			// Change
 			contactDetected = totalReading > CONTACT_THRES;
-	
+
 			// Afterwards....
-		
+
 			if(contactDetected)
 			{
 				hysteresisCounter++;
 				std::cout << "Hysteresis increment to: " << hysteresisCounter << std::endl;
-		
+
 				if(hysteresisCounter >= HYSTERESIS_THRES)
-				{		
+				{
 					std::cout << "Contact was detected! Closing the hand" << std::endl;
-				
-				
-				
-				
+
+
+
+
 					Bottle& btout = port_grasp_comm.prepare();
 					btout.clear();
-		
+
 					//		port_grasp_comm
-		
+
 					// Do the closing action
-		
+
 					std::cout << "Closing the hand..." << std::endl;
-		
+
 					std::string s = "gs";
 					btout.addString(s.c_str());
 					port_grasp_comm.write();
 					reflexiveHandClosed = true;
 					isTouch = true;
 					tuckArms();
-					
-					
+
+
 					Bottle& btout2 = port_grasp_comm.prepare();
 					btout2.clear();
-	
-		
+
+
 					std::string s2 = "oh";
 					btout2.addString(s2.c_str());
 					port_grasp_comm.write();
-					
-					
+
+
 					/*
 					ros::Duration(5).sleep();//wait here for three second
 
 					openHand();
-	
-		
+
+
 					hand_closed = false;
-				
+
 					 // * /
 				}
 				//else
@@ -379,8 +379,8 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
 		}*/
 		//ifs << endl;
-		if (reach_point[2] <= -0.20) cout << " z limit exceeded " << endl; 
-		//ifs.close();	
+		if (reach_point[2] <= -0.20) cout << " z limit exceeded " << endl;
+		//ifs.close();
 	}
 }
 
@@ -398,7 +398,7 @@ void BehaviorModule::logTactileData() {
 	{
 		tactileInfo.features[4 + i%4] += 255.0 - b->get(i).asDouble();
 	}
-	
+
 	for (int i = 0; i < 8; i++) {
 		tactileInfo.features[i] = tactileInfo.features[i] / 12;
 	}
@@ -464,24 +464,24 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
 				== behavior_manager::Action::Request::PUSH_RIGHT) {
 			ROS_INFO("BehaviorModule:icub push right");
 			push2(center, size, 0, 0.15, true, false);
-			goToHomeFlag = true;			
+			goToHomeFlag = true;
 			openHand();
-			tuckArms();			
-			
+			tuckArms();
+
 		} else if (request.task
 				== behavior_manager::Action::Request::PUSH_FORWARD) {
 			ROS_INFO("icub push forward");
 			push2(center, size, PI / 2, 0.15, false, false);
 			goToHomeFlag = true;
-			openHand();			
-			
+			openHand();
+
 		} else if (request.task
 				== behavior_manager::Action::Request::PUSH_BACKWARD) {
 			//			push(center, size, -PI / 2, 0.15, false);
 			ROS_INFO("icub push backward");
 			goToHomeFlag = true;
 			openHand();
-						
+
 		} else if (request.task == behavior_manager::Action::Request::HOME) {
 			home();
 			ROS_INFO("icub home");
@@ -710,7 +710,8 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 	options_right.put("remote", ("/" + robotName + "/right_arm").c_str());
 
 	driver_left.open(options_left);
-	//driver_right.open(options_right);
+	// opened the following line
+	driver_right.open(options_right);
 
 	// ++Onur: Connection to head port...
 
@@ -771,9 +772,9 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 	igaze->bindNeckPitch(-38, 0);
 	igaze->bindNeckRoll(-5, 5);
 	igaze->bindNeckYaw(-30.0, 35.0);
-	
+
 	cout << "Llll" << endl;
-	
+
 
 	if (!ok) {
 		cerr << "error getting interfaces" << std::endl;
@@ -781,11 +782,11 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 	}
 	int n_jnts = 0;
 
-	
+
 	pos_ctrl_left->getAxes(&n_jnts);
 	positions_left_cmd.resize(n_jnts);
 	positions_left_enc.resize(n_jnts);
-	 
+
 
 	/*pos_ctrl_right->getAxes(&n_jnts);
 	positions_right_cmd.resize(n_jnts);
@@ -884,17 +885,17 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 	} else {
 		yarp::os::Network::connect("/icub/skin/lefthand", "/i:tactileListener");
 	}*/
-	
+
 	if (partUsed == "right_arm") {
 		yarp::os::Network::connect("/icub/skin/righthandcomp", "/i:tactileListener");
 	} else {
 		yarp::os::Network::connect("/icub/skin/lefthandcomp", "/i:tactileListener");
-	}	
+	}
 	openPorts = true;
 
 	// check whether the grasp model is calibrated,
 	// otherwise calibrate it and save the results
-	
+
 	/*
 	Model *model;
 	action->getGraspModel(model);
@@ -950,9 +951,10 @@ void BehaviorModule::init() {
 	}
 
 	port_grasp_comm.open("/o:graspComm");
-	
+
 	// bypassed for some reason. should be uncommented
-	
+
+	// change graspComm to left and right
 	ROS_INFO("waiting for tactileGrasp module to be opened !");
 	while (!Network::isConnected("/o:graspComm", "/tactGraspLeft/rpc:i") && nh.ok()) {
 		Network::connect("/o:graspComm", "/tactGraspLeft/rpc:i");
@@ -967,7 +969,7 @@ void BehaviorModule::init() {
 	action->enableContactDetection();
 	//  action->enableArmWaving (home_x);
 	reflexiveHandClosed = false;
-	
+
 }
 Vector BehaviorModule::vectorAngle2Normal(Vector vec_angle_rep) {
 	Matrix R = iCub::ctrl::axis2dcm(vec_angle_rep);
@@ -1175,18 +1177,18 @@ void BehaviorModule::push(const Vector& bb_center, const Vector& bb_dims,
 	hand_pos.resize(3);
 	hand_orient.resize(4);
 	action->getPose(hand_pos, hand_orient);
-	
-	
+
+
 
 } */
 
 void BehaviorModule::push2(const Vector& bb_center, const Vector& bb_dims,
 		double push_dir_angle, const double poi_shift, bool is_left_arm,
 		bool spin) {
-		
-		
-	
-			
+
+
+
+
 	double lim = -0.47;
 	cout<<"Will enter according to limit"<<endl;
 	cout<<"REACH_X_LIMIT"<<lim<<endl;
@@ -1303,9 +1305,9 @@ void BehaviorModule::push2(const Vector& bb_center, const Vector& bb_dims,
 
 
 	//++Onur
-	
+
 	openHand();
-	ros::Duration(2).sleep();	
+	ros::Duration(2).sleep();
 	// --Onur
 
 	//it is time to push the object
@@ -1321,75 +1323,75 @@ void BehaviorModule::push2(const Vector& bb_center, const Vector& bb_dims,
 			+ poi_off + poi_sh)[1] << " " << (bb_center + poi_off + poi_sh)[2]
 			<< " " << std::endl;
 
-	
+
 	Vector convergence(3);
-	
+
 	convergence[0] = poi_sh[0];///5.0;
 	convergence[1] = poi_sh[1]/3.0;
 	convergence[2] = poi_sh[2];
 
 	std::cout << "Moving little by little" << std::endl;
 	// move little by little
-	
+
 	double totalReading = 0.0;
-		
+
 	while(!reflexiveHandClosed)
 	{
 		totalReading = 0.0;
 		action->pushAction(bb_center + poi_off + convergence, vec_angle,hand_key);
 		action->checkActionsDone(f,true);
-		
+
 		//convergence[0] += poi_sh[0]/5.0;
 		convergence[1] += poi_sh[1]/3.0;
-		
+
 		Bottle *b = tactileReader_in.read();
 		// bool sth_in_palm = false;
 		// now, b is supposed to contain 48 doubles of tactile information. fill this to tactileInfo.
 		//std::cout << "The tactile data was read as follows: " << std::endl;
-	
-	
+
+
 		// Currently, only reading tactile data from palm. Thus, i = 8.
-		for (int i = 8; i < 12; i++) 
+		for (int i = 8; i < 12; i++)
 		{
 			for (int j=0;j<12;j++)
 			{
 				totalReading += b->get(i*12+j).asDouble();
 				//std::cout<< b->get(i*12+j).asDouble()<<" ";
-			
+
 			}
 			//std::cout<<std::endl;
-		}		
-		
+		}
+
 		std::cout << "Total reading so far: " << totalReading << std::endl;
-		
+
 		if(totalReading > CONTACT_THRES)
 		{
 			std::cout << "I am closing my hand!" << std::endl;
-			
+
 			Bottle& btout = port_grasp_comm.prepare();
 			btout.clear();
-	
+
 			//		port_grasp_comm
-	
+
 			// Do the closing action
-	
+
 			std::cout << "Closing the hand..." << std::endl;
-	
+
 			std::string s = "gs";
 			btout.addString(s.c_str());
 			port_grasp_comm.write();
 			reflexiveHandClosed = true;
-			
+
 		}
-		
-		
+
+
 		if(convergence[1] > 1.5*poi_sh[1])
 		{
 			std::cout << "I think I moved too much" << std::endl;
 			break;
 		}
-	}	
-	
+	}
+
 
 
 	std::cout << "&&&&&& do you verify the position &&&&&&" << std::endl;
@@ -1478,7 +1480,7 @@ void BehaviorModule::pointTo(Vector point) {
 	{
 		release (point, false);
 	}
-	
+
 	void
 	BehaviorModule::releaseDownward(Vector point)
 	{
@@ -1605,7 +1607,6 @@ void BehaviorModule::tuckArms() {
 		Network::disconnect(("/" + robotName + "left_arm/state:o").c_str(),
 				"/actionPrimitivesMod/left_arm/position/state:i");
 		//      driver_left.open (options_left);
-
 	}
 
 	if (right_arm_cart_solver_active) {
@@ -2270,7 +2271,7 @@ void BehaviorModule::openHand()
 	port_grasp_comm.write();
 
 	std::cout << "Done. Have a nice day!" << std::endl;
-	
+
 	reflexiveHandClosed = false;
 }
 
@@ -2320,72 +2321,72 @@ bool BehaviorModule::updateModule() {
 	bool contactDetected = false;
 	double totalReading = 0.0;
 
-	// Read tactile data	
-	
+	// Read tactile data
+
 	/*if(!reflexiveHandClosed)
 	{
-	
+
 		Bottle *b = tactileReader_in.read();
 		// bool sth_in_palm = false;
 		// now, b is supposed to contain 48 doubles of tactile information. fill this to tactileInfo.
 		//std::cout << "The tactile data was read as follows: " << std::endl;
-	
-	
+
+
 		// Currently, only reading tactile data from palm. Thus, i = 8.
-		for (int i = 8; i < 12; i++) 
+		for (int i = 8; i < 12; i++)
 		{
 			for (int j=0;j<12;j++)
 			{
 				totalReading += b->get(i*12+j).asDouble();
 				//std::cout<< b->get(i*12+j).asDouble()<<" ";
-			
+
 			}
 			//std::cout<<std::endl;
 		}
 
-	
+
 		// After reading:
-	
+
 		std::cout << "The palm tactile reading sum: " << totalReading << std::endl;
-	
-		// The threshold for contact detection (-2.5) was empirically chosen, while reading from compensated input. 
-		// Change 
+
+		// The threshold for contact detection (-2.5) was empirically chosen, while reading from compensated input.
+		// Change
 		contactDetected = totalReading > CONTACT_THRES;
-	
+
 		// Afterwards....
-		
+
 		if(contactDetected)
 		{
-		
+
 			if(hysteresisCounter >= HYSTERESIS_THRES)
-			{		
+			{
 				std::cout << "Contact was detected! Closing the hand" << std::endl;
-				
-				
-				
-				
+
+
+
+
 				Bottle& btout = port_grasp_comm.prepare();
 				btout.clear();
-		
+
 				//		port_grasp_comm
-		
+
 				// Do the closing action
-		
+
 				std::cout << "Closing the hand..." << std::endl;
-		
+
 				std::string s = "gs";
 				btout.addString(s.c_str());
 				port_grasp_comm.write();
 				reflexiveHandClosed = true;
-				
+
 				/*
 				ros::Duration(5).sleep();//wait here for three second
 
 				openHand();
-	
-		
+
+
 				hand_closed = false;
-				
+
 				// * /
 			}
 			else
@@ -2402,9 +2403,9 @@ bool BehaviorModule::updateModule() {
 				std::cout << "Hysteresis decrement to: " << hysteresisCounter << std::endl;
 			}
 		}
-	
+
 	}*/
-	
+
 	ros::spinOnce();
 	return true;
 }
