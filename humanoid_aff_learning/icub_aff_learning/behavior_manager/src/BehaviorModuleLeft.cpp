@@ -232,15 +232,16 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
     reach_point[2] += bb_dims[2]/2+0.08;
     reach_point[1] += 0.01;
-    reach_point[0] += 0.07;
+    reach_point[0] += 0.03;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
     reach_point[2] -= 0.08;
     release(reach_point, false);
+    Bottle& btout = port_grasp_comm_left.prepare();; 	
     if(chosen_arm == "left")
-      Bottle& btout = port_grasp_comm_left.prepare();
+	btout = port_grasp_comm_left.prepare();
     else
-      Bottle& btout = port_grasp_comm_right.prepare();
+        btout = port_grasp_comm_right.prepare();
     btout.clear();
 
     //		port_grasp_comm
@@ -256,11 +257,11 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
     else
       port_grasp_comm_right.write();
     tuckArms();
-
+    Bottle& btout2 = port_grasp_comm_left.prepare();;
     if(chosen_arm == "left")
-      Bottle& btout2 = port_grasp_comm_left.prepare();
+      btout2 = port_grasp_comm_left.prepare();
     else
-      Bottle& btout2 = port_grasp_comm_right.prepare();
+      btout2 = port_grasp_comm_right.prepare();
     btout2.clear();
 
 
@@ -324,7 +325,6 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       }
     }
     bool logFlag = true;
-    bool goToHomeFlag = false;
 
     // if (request.task == behavior_manager::Action::Request::PUSH_LEFT) {
     //   ROS_INFO("icub push left");
@@ -352,7 +352,8 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     //   goToHomeFlag = true;
     //   openHand();
 
-    } else if (request.task == behavior_manager::Action::Request::HOME) {
+    //} else 
+    if (request.task == behavior_manager::Action::Request::HOME) {
       home();
       ROS_INFO("icub home");
       logFlag = false;
@@ -360,12 +361,13 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       ROS_INFO("tuck arms");
       tuckArms();
       logFlag = false;
-    } else if (request.task
+    } /*else if (request.task
 	       == behavior_manager::Action::Request::LOOK_AT_REGION) {
       lookAtRegion(request.arg);
       ROS_INFO("look at region");
       logFlag = false;
-    } else if (request.task
+    }*/
+     else if (request.task
 	       == behavior_manager::Action::Request::LOOK_AT_POINT) {
       ROS_INFO("look at point");
       lookAtPoint(center);
@@ -383,11 +385,13 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
   //     upward[1] = center[1];
   //     upward[2] = center[2] + size[2] / 2;
   //     grasp2(upward);
-  //   } else if (request.task == behavior_manager::Action::Request::REACH) {
-  //     ROS_INFO("reach");
-  //     reach(center, size);
-  //     goToHomeFlag = true;
-  //   } else if (request.task == behavior_manager::Action::Request::TAKE) {
+  //   } 
+      else if (request.task == behavior_manager::Action::Request::REACH) {
+       ROS_INFO("reach");
+       reach(center, size);
+       //goToHomeFlag = true;
+     } 
+  //   else if (request.task == behavior_manager::Action::Request::TAKE) {
   //     ROS_INFO("take");
   //     take();
   //     goToHomeFlag = true;
@@ -395,7 +399,7 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
   //     ROS_INFO("give");
   //     giveAfterTake();
   //     goToHomeFlag = true;
-    } else if (request.task == behavior_manager::Action::Request::RELEASE) {
+    else if (request.task == behavior_manager::Action::Request::RELEASE) {
       ROS_INFO("release");
       release(center, false);
       logFlag = false;
@@ -597,7 +601,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_torso.view(encoders_torso);
 
 
-  chosen_arm = "left"
+  chosen_arm = "left";
   // needed for impedance controller
   //ok = ok && driver_right.view(ictrl);
   //ok = ok && driver_right.view(trq_ctrl_left);
@@ -703,11 +707,11 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   option.put("part", "right_arm");
   printf("Options for right arm \n %s\n", option.toString().c_str());
-  cout << "***** Instantiating primitives for right_arm" << partUsed << endl;
+  cout << "***** Instantiating primitives for right_arm" << endl;
   action_right = new ActionPrimitivesLayer2(option);
   option.put("part", "left_arm");
   printf("Options for left arm \n %s\n", option.toString().c_str());
-  cout << "***** Instantiating primitives for left_arm" << partUsed << endl;
+  cout << "***** Instantiating primitives for left_arm"<< endl;
   action_left = new ActionPrimitivesLayer2(option);
 
   if (!action_left->isValid()) {
@@ -812,7 +816,6 @@ void BehaviorModule::init() {
   action_left->enableContactDetection();
   action_right->enableContactDetection();
 
-  reflexiveHandClosed = false;
 }
 
 Vector BehaviorModule::vectorAngle2Normal(Vector vec_angle_rep) {
@@ -1323,10 +1326,20 @@ void BehaviorModule::release(Vector point, bool palm_upward) {
   //	else
   //		hand_orient = angleXZToVectorAngle(0, PI);
 
-  if (palm_upward)
-    hand_orient = angleXZToVectorAngle(PI, PI);
+  if(chosen_arm == "left")
+  {
+  	if (palm_upward)
+    		hand_orient = angleXZToVectorAngle(PI, PI);
+  	else
+   		hand_orient = angleXZToVectorAngle(0, PI);
+  }
   else
-    hand_orient = angleXZToVectorAngle(0, PI);
+  {
+  	if (palm_upward)
+    		hand_orient = angleXZToVectorAngle(0, PI);
+  	else
+   		hand_orient = angleXZToVectorAngle(PI, PI);
+  }
 
   bool f;
   std::cout<<"going to the location: "<<point[0]<<" "<<point[1]<<" "<<point[2]<<std::endl;
@@ -1338,6 +1351,7 @@ void BehaviorModule::release(Vector point, bool palm_upward) {
     cout << "Release action with left arm" << endl;
   }
   else{
+    //for right arm, orientation should be reversed
     action_right->pushAction(point, hand_orient);
     action_right->checkActionsDone(f, true);
     cout << "Release action with right arm" << endl;
@@ -1637,7 +1651,7 @@ void BehaviorModule::choseArm(double y_position){
 
   chosen_arm = "left";
   if (y_position <0.0){
-    chosen_arm = "left"'';
+    chosen_arm = "left";
     cout << "Left arm is chosen" << endl;
   }
   if (y_position >0.0){
@@ -1985,10 +1999,11 @@ void BehaviorModule::openHand()
 {
   std::cout << "Done. Now, opening the hand..." << std::endl;
   std::string s;
+  Bottle& btout2 = port_grasp_comm_left.prepare();;
   if (chosen_arm == "left")
-    Bottle& btout2 = port_grasp_comm_left.prepare();
+    btout2 = port_grasp_comm_left.prepare();
   else
-    Bottle& btout2 = port_grasp_comm_right.prepare();
+    btout2 = port_grasp_comm_right.prepare();
   btout2.clear();
   s = "oh";
   btout2.addString(s.c_str());
@@ -1997,7 +2012,7 @@ void BehaviorModule::openHand()
   else
     port_grasp_comm_right.write();
   std::cout << "Done. Have a nice day!" << std::endl;
-  reflexiveHandClosed = false;
+ 
 }
 
 // we don't need a thread since the actions library already

@@ -203,7 +203,7 @@ public:
 
 	/* void releaseDownward(Vector point); */
 
-	string chooseArm(double y_position){
+	void choseArm(double y_position);
 	/* void */
 	/* drop(Vector point); */
 
@@ -222,14 +222,14 @@ public:
 
 	void lookAtPoint(Vector bb_center);
 
-	void lookAtRegion(uint region_id);
+	//void lookAtRegion(uint region_id);
 
 	void lookAtFace();
 
 	/* void take(); */
 	/* void give(); */
 	/* void giveAfterTake(); */
-	/* void reach(Vector bb_center, Vector bb_dims); */
+	void reach(Vector bb_center, Vector bb_dims); 
 
 
 	/* int */
