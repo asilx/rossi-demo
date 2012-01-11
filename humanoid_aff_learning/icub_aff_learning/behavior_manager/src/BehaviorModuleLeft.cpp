@@ -48,6 +48,7 @@ using namespace std;
 // }
 
 // --Onur
+
 BehaviorModule::BehaviorModule(ros::NodeHandle& n) {
   nh = n;
   srv_action = nh.advertiseService("/action",
@@ -56,14 +57,13 @@ BehaviorModule::BehaviorModule(ros::NodeHandle& n) {
 }
 
 BehaviorModule::~BehaviorModule() {
-
   // ++Onur
-  delete armLogger;
-  delete headLogger;
-  delete tactileLogger;
-  delete[] armPoseInfo.features; ///++kadir:
-  delete[] headPoseInfo.features;
-  delete[] tactileInfo.features;
+  // delete armLogger;
+  // delete headLogger;
+  // delete tactileLogger;
+  // delete[] armPoseInfo.features; ///++kadir:
+  // delete[] headPoseInfo.features;
+  // delete[] tactileInfo.features;
   // --Onur
 }
 
@@ -217,6 +217,7 @@ BehaviorModule::~BehaviorModule() {
 
 void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
   //for right arm
+  choseArm(bb_center[1]);
   if (bb_center[0] < -0.45) {
     std::cout<< "obj detected to be out of range" << std::endl;
     Vector reach_point = bb_center;
@@ -224,8 +225,6 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
     reach_point[2] += bb_dims[2]/2 + 0.05;
     std::cout << "The limit: " << REACH_X_LIMIT << endl;
     std::cout << "Coordinates: " << bb_center[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
-    int i;
-    //cin>>i;
     release(reach_point, false);
   }
   else {
@@ -235,13 +234,13 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
     reach_point[1] += 0.01;
     reach_point[0] += 0.07;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
-    int i;
     release(reach_point, false);
-
     reach_point[2] -= 0.08;
     release(reach_point, false);
-
-    Bottle& btout = port_grasp_comm.prepare();
+    if(chosen_arm == "left")
+      Bottle& btout = port_grasp_comm_left.prepare();
+    else
+      Bottle& btout = port_grasp_comm_right.prepare();
     btout.clear();
 
     //		port_grasp_comm
@@ -252,23 +251,26 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
     std::string s = "gs";
     btout.addString(s.c_str());
-    port_grasp_comm.write();
+    if(chosen_arm == "left")
+      port_grasp_comm_left.write();
+    else
+      port_grasp_comm_right.write();
     tuckArms();
 
-
-    Bottle& btout2 = port_grasp_comm.prepare();
+    if(chosen_arm == "left")
+      Bottle& btout2 = port_grasp_comm_left.prepare();
+    else
+      Bottle& btout2 = port_grasp_comm_right.prepare();
     btout2.clear();
 
 
     std::string s2 = "oh";
     btout2.addString(s2.c_str());
-    port_grasp_comm.write();
+    if(chosen_arm == "left")
+      port_grasp_comm_left.write();
+    else
+      port_grasp_comm_right.write();
 
-
-    bool contactDetected = false;
-    double totalReading = 0.0;
-    bool isTouch = false;
-    hysteresisCounter = 0;
     if (reach_point[2] <= -0.20) cout << " z limit exceeded " << endl;
   }
 }
@@ -397,15 +399,16 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       ROS_INFO("release");
       release(center, false);
       logFlag = false;
-    } else if (request.task == behavior_manager::Action::Request::RELEASE_UPWARD) {
-      ROS_INFO("release upward");
-      releaseUpward(center);
-      logFlag = false;
-    } else if (request.task == behavior_manager::Action::Request::RELEASE_DOWNWARD) {
-      ROS_INFO("release downward");
-      drop(center);
-      logFlag = false;
     }
+ // else if (request.task == behavior_manager::Action::Request::RELEASE_UPWARD) {
+ //      ROS_INFO("release upward");
+ //      releaseUpward(center);
+ //      logFlag = false;
+ //    } else if (request.task == behavior_manager::Action::Request::RELEASE_DOWNWARD) {
+ //      ROS_INFO("release downward");
+ //      drop(center);
+ //      logFlag = false;
+ //    }
 
     // if (logFlag) {
     //   logTactileData();
@@ -523,43 +526,35 @@ void BehaviorModule::getArmDependentOptions(Bottle &b, Vector &_gOrien,
 bool BehaviorModule::configure(ResourceFinder &rf) {
 
   robotName = rf.find("robot").asString().c_str();
-
   std::cout << robotName << " is the name of our robot" << std::endl;
-  //	robotName = "icub";
+  // robotName = "icub";
 
-  graspOrien.resize(4);
-  graspDisp.resize(4);
-  dOffs.resize(3);
-  dLift.resize(3);
-  home_x.resize(3);
-
+  // no need for these since it is read using rf module
+  // ask if these values are used or other config files values are used
   // default values for arm-dependent quantities
-  graspOrien[0] = -0.171542;
-  graspOrien[1] = 0.124396;
-  graspOrien[2] = -0.977292;
-  graspOrien[3] = 3.058211;
+  // graspOrien[0] = -0.171542;
+  // graspOrien[1] = 0.124396;
+  // graspOrien[2] = -0.977292;
+  // graspOrien[3] = 3.058211;
 
-  graspDisp[0] = 0.0;
-  graspDisp[1] = 0.0;
-  graspDisp[2] = 0.05;
+  // graspDisp[0] = 0.0;
+  // graspDisp[1] = 0.0;
+  // graspDisp[2] = 0.05;
 
-  dOffs[0] = -0.03;
-  dOffs[1] = -0.07;
-  dOffs[2] = -0.02;
+  // dOffs[0] = -0.03;
+  // dOffs[1] = -0.07;
+  // dOffs[2] = -0.02;
 
-  dLift[0] = 0.0;
-  dLift[1] = 0.0;
-  dLift[2] = 0.15;
+  // dLift[0] = 0.0;
+  // dLift[1] = 0.0;
+  // dLift[2] = 0.15;
 
-  home_x[0] = -0.29;
-  home_x[1] = -0.21;
-  home_x[2] = 0.11;
+  // home_x[0] = -0.29;
+  // home_x[1] = -0.21;
+  // home_x[2] = 0.11;
 
-  action = NULL;
-
-  openPorts = false;
-  firstRun = true;
-  sim = false;
+  action_left = NULL;
+  action_right = NULL;
 
   options_left.put("device", "remote_controlboard");
   options_left.put("local", "/pos_ctrl_left_arm");
@@ -571,8 +566,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   driver_left.open(options_left);
   driver_right.open(options_right);
-
-
 
   options_head.put("device", "remote_controlboard");
   options_head.put("local", "/pos_ctrl_head");
@@ -586,11 +579,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   driver_torso.open(options_torso);
 
-
-
-
-  if (!driver_left.isValid() || /*!driver_right.isValid()
-				  ||*/ !driver_head.isValid() || !driver_torso.isValid()) {
+  if (!driver_left.isValid() || !driver_right.isValid() || !driver_head.isValid() || !driver_torso.isValid()) {
     cerr << "A device is not available. Here are the known devices:"
 	 << endl;
     cerr << Drivers::factory().toString().c_str() << endl;
@@ -599,28 +588,29 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   bool ok = true;
   ok = ok && driver_left.view(pos_ctrl_left);
-  //ok = ok && driver_right.view(pos_ctrl_right);
   ok = ok && driver_left.view(encoders_left);
-  //ok = ok && driver_right.view(encoders_right);
-  //ok = ok && driver_right.view(ictrl);
-  //ok = ok && driver_right.view(trq_ctrl_left);
-  //ok = ok && driver_right.view(trq_ctrl_right);
-
+  ok = ok && driver_right.view(pos_ctrl_right);
+  ok = ok && driver_right.view(encoders_right);
   ok = ok && driver_head.view(pos_ctrl_head);
   ok = ok && driver_head.view(encoders_head);
   ok = ok && driver_torso.view(pos_ctrl_torso);
   ok = ok && driver_torso.view(encoders_torso);
+
+
+  chosen_arm = "left"
+  // needed for impedance controller
+  //ok = ok && driver_right.view(ictrl);
+  //ok = ok && driver_right.view(trq_ctrl_left);
+  //ok = ok && driver_right.view(trq_ctrl_right);
 
   options_gaze.put("device", "gazecontrollerclient");
   options_gaze.put("remote", "/iKinGazeCtrl");
   options_gaze.put("local", "/client/gaze");
   driver_gaze.open(options_gaze);
   driver_gaze.view(igaze);
-  cout << "Llll2" << endl;
-  /*if (driver_gaze.isValid()) {
+  if (driver_gaze.isValid()) {
     ok = ok && driver_gaze.view(igaze);
-    }*/
-  cout << "Llll3" << endl;
+    }
   igaze->setTrackingMode(false);
   igaze->setEyesTrajTime(1.0);
   igaze->setNeckTrajTime(2.0);
@@ -628,24 +618,20 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   igaze->bindNeckRoll(-5, 5);
   igaze->bindNeckYaw(-30.0, 35.0);
 
-  cout << "Llll" << endl;
-
-
   if (!ok) {
     cerr << "error getting interfaces" << std::endl;
     exit(-1);
   }
-  int n_jnts = 0;
 
+  int n_jnts = 0;
 
   pos_ctrl_left->getAxes(&n_jnts);
   positions_left_cmd.resize(n_jnts);
   positions_left_enc.resize(n_jnts);
 
-
-  /*pos_ctrl_right->getAxes(&n_jnts);
-    positions_right_cmd.resize(n_jnts);
-    positions_right_enc.resize(n_jnts);*/
+  pos_ctrl_right->getAxes(&n_jnts);
+  positions_right_cmd.resize(n_jnts);
+  positions_right_enc.resize(n_jnts);
 
   pos_ctrl_head->getAxes(&n_jnts);
   positions_head_enc.resize(n_jnts);
@@ -655,11 +641,12 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   positions_torso_enc.resize(n_jnts);
   positions_torso_cmd.resize(n_jnts);
 
-  //  driver_left.close();
-  //  driver_right.close();
+  openPorts = false;
+  firstRun = true;
+  sim = false;
 
   string name = rf.find("name").asString().c_str();
-  setName(name.c_str());
+  // setName(name.c_str());
 
   string sim_or_real = rf.find("sim").asString().c_str();
   if (sim_or_real == "on")
@@ -667,11 +654,12 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   else
     sim = false;
 
-  string partUsed = rf.find("part").asString().c_str();
-  if ((partUsed != "left_arm") && (partUsed != "right_arm")) {
-    cout << "Invalid part requested!" << endl;
-    return false;
-  }
+  // both parts will be used
+  // string partUsed = rf.find("part").asString().c_str();
+  // if ((partUsed != "left_arm") && (partUsed != "right_arm")) {
+  //   cout << "Invalid part requested!" << endl;
+  //   return false;
+  // }
 
   Property config;
   config.fromConfigFile(rf.findFile("from").c_str());
@@ -694,7 +682,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   }
 
   option.put("local", name.c_str());
-  option.put("part", rf.find("part").asString().c_str());
   option.put("grasp_model_type",
 	     rf.find("grasp_model_type").asString().c_str());
   option.put("grasp_model_file", rf.findFile("grasp_model_file").c_str());
@@ -705,32 +692,56 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   // parsing arm dependent config options
   Bottle &bArm = config.findGroup("arm_dependent");
+
+  graspOrien.resize(4);
+  graspDisp.resize(4);
+  dOffs.resize(3);
+  dLift.resize(3);
+  home_x.resize(3);
+
   getArmDependentOptions(bArm, graspOrien, graspDisp, dOffs, dLift, home_x);
 
-  cout << "***** Instantiating primitives for " << partUsed << endl;
-  cout << "hebele hubele3 " << endl;
-  action = new ActionPrimitivesLayer2(option);
-  cout << "hebele hubele4" << endl;
-  if (!action->isValid()) {
-    delete action;
+  option.put("part", "right_arm");
+  printf("Options for right arm \n %s\n", option.toString().c_str());
+  cout << "***** Instantiating primitives for right_arm" << partUsed << endl;
+  action_right = new ActionPrimitivesLayer2(option);
+  option.put("part", "left_arm");
+  printf("Options for left arm \n %s\n", option.toString().c_str());
+  cout << "***** Instantiating primitives for left_arm" << partUsed << endl;
+  action_left = new ActionPrimitivesLayer2(option);
+
+  if (!action_left->isValid()) {
+    delete action_left;
+    cout << "Action_left is not valid" << endl;
     return false;
   }
-  cout << "hebele hubele " << endl;
-  deque<string> q = action->getHandSeqList();
-  cout << "***** List of available hand sequence keys:" << endl;
+  if (!action_right->isValid()) {
+    delete action_right;
+    cout << "Action_right is not valid" << endl;
+    return false;
+  }
+
+
+  deque<string> q = action_right->getHandSeqList();
+  cout << "***** List of available for right hand sequence keys:" << endl;
   for (size_t i = 0; i < q.size(); i++)
     cout << q[i] << endl;
 
-  string fwslash = "/";
-  inPort.open((fwslash + name + "/in").c_str());
-  rpcPort.open((fwslash + name + "/rpc").c_str());
-  port_simon_in.open("/simon_cmd:i");
-  port_grasp_out.open("/grasp_behavior:o");
-  tactileReader_in.open("/i:tactileListener");
-  attach(rpcPort);
+  q = action_left->getHandSeqList();
+  cout << "***** List of available for left hand sequence keys:" << endl;
+  for (size_t i = 0; i < q.size(); i++)
+    cout << q[i] << endl;
+
+  // string fwslash = "/";
+  // inPort.open((fwslash + name + "/in").c_str());
+  // rpcPort.open((fwslash + name + "/rpc").c_str());
+  // port_simon_in.open("/simon_cmd:i");
+  // port_grasp_out.open("/grasp_behavior:o");
+  // tactileReader_in.open("/i:tactileListener");
+  // attach(rpcPort);
 
   //string tactilePort = "/icub/skin/" + partUsed + "hand";
-  yarp::os::Network::connect("/grasp_behavior:o", "/i:grasper");
+  // yarp::os::Network::connect("/grasp_behavior:o", "/i:grasper");
 
   /*if (partUsed == "right_arm") {
     yarp::os::Network::connect("/icub/skin/righthand", "/i:tactileListener");
@@ -738,38 +749,36 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
     yarp::os::Network::connect("/icub/skin/lefthand", "/i:tactileListener");
     }*/
 
-  if (partUsed == "right_arm") {
-    yarp::os::Network::connect("/icub/skin/righthandcomp", "/i:tactileListener");
-  } else {
-    yarp::os::Network::connect("/icub/skin/lefthandcomp", "/i:tactileListener");
-  }
-  openPorts = true;
+  // yarp::os::Network::connect("/icub/skin/righthandcomp", "/i:tactileListenerRight");
+  // yarp::os::Network::connect("/icub/skin/lefthandcomp", "/i:tactileListenerLeft");
 
   // check whether the grasp model is calibrated,
   // otherwise calibrate it and save the results
 
-  armLogger = new DataLogger(partUsed.c_str(), "./", 7);
-  headLogger = new DataLogger("head", "./", 9);
+  // armLogger = new DataLogger(partUsed.c_str(), "./", 7);
+  // headLogger = new DataLogger("head", "./", 9);
 
-  string tact = "tactile_" + partUsed;
-  tactileLogger = new DataLogger(tact.c_str(), "./", 8);
-  armPoseInfo.features = new double[7];
-  headPoseInfo.features = new double[9];
-  tactileInfo.features = new double[8];
+  // string tact = "tactile_" + partUsed;
+  // tactileLogger = new DataLogger(tact.c_str(), "./", 8);
+  // armPoseInfo.features = new double[7];
+  // headPoseInfo.features = new double[9];
+  // tactileInfo.features = new double[8];
   // --Onur
-
   return true;
 }
 
 bool BehaviorModule::close() {
-  if (action != NULL)
-    delete action;
+  if (action_left != NULL)
+    delete action_left;
 
-  if (openPorts) {
-    inPort.close();
-    rpcPort.close();
-    driver_gaze.close();
-  }
+  if (action_right != NULL)
+    delete action_right;
+
+  // if (openPorts) {
+  //   inPort.close();
+  //   rpcPort.close();
+  //   driver_gaze.close();
+  // }
 
   return true;
 }
@@ -779,34 +788,33 @@ double BehaviorModule::getPeriod() {
 }
 
 void BehaviorModule::init() {
-  //	bool f;
 
-  if (sim) {
-    port_sim_rpc_out.open("/sim:o");
-    Network::connect("/sim:o", "/icubSim/world");
-  }
+  // if (sim) {
+  //   port_sim_rpc_out.open("/sim:o");
+  //   Network::connect("/sim:o", "/icubSim/world");
+  // }
 
-  port_grasp_comm.open("/o:graspComm");
+  port_grasp_comm_left.open("/o:graspCommLeft");
+  port_grasp_comm_right.open("/o:graspCommRight");
 
-  // bypassed for some reason. should be uncommented
-
-  // change graspComm to left and right
   ROS_INFO("waiting for tactileGrasp module to be opened !");
-  while (!Network::isConnected("/o:graspComm", "/tactGraspLeft/rpc:i") && nh.ok()) {
-    Network::connect("/o:graspComm", "/tactGraspLeft/rpc:i");
+  while (!Network::isConnected("/o:graspCommLeft", "/tactGraspLeft/rpc:i") && nh.ok()) {
+    Network::connect("/o:graspCommLeft", "/tactGraspLeft/rpc:i");
     ros::spinOnce();
   }
 
-  hysteresisCounter = 0;
-  ROS_INFO("OK, connected to the tactGrasp module! ");
-  //action->disableContactDetection();
-  //	action->pushAction(home_x, "open_hand");
-  //	action->checkActionsDone(f, true);
-  action->enableContactDetection();
-  //  action->enableArmWaving (home_x);
-  reflexiveHandClosed = false;
+  while (!Network::isConnected("/o:graspCommRight", "/tactGraspRight/rpc:i") && nh.ok()) {
+    Network::connect("/o:graspCommRight", "/tactGraspRight/rpc:i");
+    ros::spinOnce();
+  }
+  ROS_INFO("OK, connected to the tactGrasp modules! ");
 
+  action_left->enableContactDetection();
+  action_right->enableContactDetection();
+
+  reflexiveHandClosed = false;
 }
+
 Vector BehaviorModule::vectorAngle2Normal(Vector vec_angle_rep) {
   Matrix R = iCub::ctrl::axis2dcm(vec_angle_rep);
 
@@ -1309,7 +1317,7 @@ Vector BehaviorModule::angleXYZToVectorAngle(const double x_ang,
 
 void BehaviorModule::release(Vector point, bool palm_upward) {
   Vector hand_orient;
-
+  choseArm(point[1]);
   //	if (palm_upward)
   //		hand_orient = angleXZToVectorAngle(PI, PI);
   //	else
@@ -1323,13 +1331,18 @@ void BehaviorModule::release(Vector point, bool palm_upward) {
   bool f;
   std::cout<<"going to the location: "<<point[0]<<" "<<point[1]<<" "<<point[2]<<std::endl;
   //cin.get();
-  action->pushAction(point, hand_orient);
-  action->checkActionsDone(f, true);
-  // release the object or just open the
-  // hand (wait until it's done)
-  //action->pushAction("open_hand");
-  //action->areFingersInPosition(f);
-  //action->checkActionsDone(f, true);
+
+  if(chosen_arm == "left"){
+    action_left->pushAction(point, hand_orient);
+    action_left->checkActionsDone(f, true);
+    cout << "Release action with left arm" << endl;
+  }
+  else{
+    action_right->pushAction(point, hand_orient);
+    action_right->checkActionsDone(f, true);
+    cout << "Release action with right arm" << endl;
+  }
+
 }
 
 
@@ -1389,16 +1402,18 @@ void BehaviorModule::home(bool is_left_arm) {
   if (!is_left_arm)
     home_coords[1] *= -1;
 
-  action->pushAction(home_coords, home_orient, "open_hand");
-  action->checkActionsDone(f, true);
-
+  action_left->pushAction(home_coords, home_orient, "open_hand");
+  action_right->pushAction(home_coords, home_orient, "open_hand");
+  action_left->checkActionsDone(f, true);
+  action_right->checkActionsDone(f, true);
 }
 
 void BehaviorModule::tuckArms() {
 
   //	home();
 
-  action->pushAction("open_hand");
+  action_left->pushAction("open_hand");
+  action_right->pushAction("open_hand");
   ros::Duration(5).sleep();
 
   bool left_arm_cart_solver_active = false;
@@ -1464,15 +1479,15 @@ void BehaviorModule::tuckArms() {
   //	encoders_left->getEncoders(positions_left_enc.data());
   //	std::cout << " --------------- " << std::endl;
   encoders_left->getEncoders(positions_left_enc.data());
+  encoders_right->getEncoders(positions_right_enc.data());
   //	std::cout << " !!!!!!!!!!!!!!! " << std::endl;
 
   //assuming that both arms having the same #DOF
   for (int i = 0; i < positions_left_enc.size(); i++) {
-    //		pos_ctrl_left->setRefSpeed(i, 10.0);
     pos_ctrl_left->setRefSpeed(i, 10.0);
-
-    //		pos_ctrl_left->setRefAcceleration(i, 50.0);
+    pos_ctrl_right->setRefSpeed(i, 10.0);
     pos_ctrl_left->setRefAcceleration(i, 50.0);
+    pos_ctrl_right->setRefAcceleration(i, 50.0);
   }
   //set command positions
   //	Vector js;
@@ -1497,6 +1512,7 @@ void BehaviorModule::tuckArms() {
   for (int i = 7; i < js.size(); i++)
     js[i] = positions_left_enc[i];
   pos_ctrl_left->positionMove(js.data());
+  pos_ctrl_right->positionMove(js.data());
 
   bool done = false;
   //	while (!done && left_arm_cart_solver_active) {
@@ -1510,13 +1526,26 @@ void BehaviorModule::tuckArms() {
     Time::delay(0.001);
   }
 
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_right->checkMotionDone(&done);
+    Time::delay(0.001);
+  }
+
   js[0] = 10;
   pos_ctrl_left->positionMove(js.data());
+  pos_ctrl_right->positionMove(js.data());
   done = false;
   while (!done && left_arm_cart_solver_active) {
     pos_ctrl_left->checkMotionDone(&done);
     Time::delay(0.001);
   }
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_right->checkMotionDone(&done);
+    Time::delay(0.001);
+  }
+
   /*ictrl->setPositionMode(3);
     js[3] = 60;
     pos_ctrl_left->positionMove(js.data());
@@ -1529,9 +1558,7 @@ void BehaviorModule::tuckArms() {
   //finally connect cartesian solvers back
   //if (!sim) {
   if (left_arm_cart_solver_active) {
-
     //      driver_left.close();
-
     Network::connect(
 		     "/actionPrimitivesMod/left_arm/position/command:o",
 		     ("/" + robotName + "cartesianController/left_arm/command:i").c_str());
@@ -1543,7 +1570,6 @@ void BehaviorModule::tuckArms() {
 
   if (right_arm_cart_solver_active) {
     //      driver_right.close();
-
     Network::connect(
 		     "/actionPrimitivesMod/right_arm/position/command:o",
 		     ("/" + robotName + "cartesianController/right_arm/command:i").c_str());
@@ -1556,7 +1582,6 @@ void BehaviorModule::tuckArms() {
   //		//TODO for simulator
   //	}
 }
-
 
 void BehaviorModule::lookAtPoint(Vector bb_center) {
 
@@ -1606,6 +1631,19 @@ void BehaviorModule::lookAtFace() {
   }
   sleep(3);
   std::cout << "lookAtPoint finished!" << std::endl;
+}
+
+void BehaviorModule::choseArm(double y_position){
+
+  chosen_arm = "left";
+  if (y_position <0.0){
+    chosen_arm = "left"'';
+    cout << "Left arm is chosen" << endl;
+  }
+  if (y_position >0.0){
+    cout << "Right arm is chosen" << endl;
+    chosen_arm = "right";
+  }
 }
 
 // int BehaviorModule::voiceCommand(Vector bb_center, Vector bb_dims) {
@@ -1819,22 +1857,42 @@ void BehaviorModule::lookAtFace() {
 
 void BehaviorModule::testHandSequences() {
   bool f;
+  cout << "Starting testHandSequences" << endl ;
+  cout << "Checking Left Hand" << endl ;
+  action_left->pushAction("close_hand");
+  action_left->checkActionsDone(f, true);
+  action_left->areFingersInPosition(f);
 
-  action->pushAction("close_hand");
-  action->checkActionsDone(f, true);
-  action->areFingersInPosition(f);
+  action_left->pushAction("open_hand");
+  action_left->checkActionsDone(f, true);
+  action_left->areFingersInPosition(f);
 
-  action->pushAction("open_hand");
-  action->checkActionsDone(f, true);
-  action->areFingersInPosition(f);
+  action_left->pushAction("close_hand");
+  action_left->checkActionsDone(f, true);
+  action_left->areFingersInPosition(f);
 
-  action->pushAction("close_hand");
-  action->checkActionsDone(f, true);
-  action->areFingersInPosition(f);
+  action_left->pushAction("karate_hand");
+  action_left->checkActionsDone(f, true);
+  action_left->areFingersInPosition(f);
+  cout << "End of left hand check" << endl ;
+  cout << "Checking Right Hand" << endl ;
+  action_right->pushAction("close_hand");
+  action_right->checkActionsDone(f, true);
+  action_right->areFingersInPosition(f);
 
-  action->pushAction("karate_hand");
-  action->checkActionsDone(f, true);
-  action->areFingersInPosition(f);
+  action_right->pushAction("open_hand");
+  action_right->checkActionsDone(f, true);
+  action_right->areFingersInPosition(f);
+
+  action_right->pushAction("close_hand");
+  action_right->checkActionsDone(f, true);
+  action_right->areFingersInPosition(f);
+
+  action_right->pushAction("karate_hand");
+  action_right->checkActionsDone(f, true);
+  action_right->areFingersInPosition(f);
+  cout << "End of right hand check" << endl ;
+
 }
 
 // void BehaviorModule::createObject(int op_type, Vector& bb_center) {
@@ -1926,16 +1984,19 @@ void BehaviorModule::testHandSequences() {
 void BehaviorModule::openHand()
 {
   std::cout << "Done. Now, opening the hand..." << std::endl;
-
   std::string s;
-  Bottle& btout2 = port_grasp_comm.prepare();
+  if (chosen_arm == "left")
+    Bottle& btout2 = port_grasp_comm_left.prepare();
+  else
+    Bottle& btout2 = port_grasp_comm_right.prepare();
   btout2.clear();
   s = "oh";
   btout2.addString(s.c_str());
-  port_grasp_comm.write();
-
+  if (chosen_arm == "left")
+    port_grasp_comm_left.write();
+  else
+    port_grasp_comm_right.write();
   std::cout << "Done. Have a nice day!" << std::endl;
-
   reflexiveHandClosed = false;
 }
 
@@ -1975,10 +2036,9 @@ bool BehaviorModule::interruptModule() {
   // since a call to checkActionsDone() blocks
   // the execution until it's done, we need to
   // take control and exit from the waiting state
-  action->syncCheckInterrupt(true);
+  action_left->syncCheckInterrupt(true);
+  action_right->syncCheckInterrupt(true);
 
-  inPort.interrupt();
-  rpcPort.interrupt();
 
   return true;
 }
