@@ -109,15 +109,7 @@ protected:
 	ros::NodeHandle nh;
 	ros::ServiceServer srv_action;
 
-	/* BufferedPort<Bottle> port_sim_rpc_out; */
-	/* BufferedPort<Bottle> port_simon_in; */
-	/* BufferedPort<Bottle> port_grasp_out; */
-	/* BufferedPort<Bottle> tactileReader_in; */
-
-
 	Port rpcPort;
-	/* yarp::os::Semaphore menu_mutex; */
-
 
 	//ITorqueControl *trq_ctrl_left, *trq_ctrl_right;
 	//IControlMode* ictrl;
@@ -132,18 +124,6 @@ protected:
 
 	bool actionCallback(behavior_manager::Action::Request& request,
 			behavior_manager::Action::Response& response);
-
-	// ++Onur
-
-	/* DataLogger* armLogger, *headLogger, *tactileLogger; */
-	/* FeatureTuple armPoseInfo; */
-	/* FeatureTuple headPoseInfo; */
-	/* FeatureTuple tactileInfo; */
-	/* int actionTag; */
-
-	/* int hysteresisCounter; */
-	/* bool reflexiveHandClosed; */
-	// --Onur
 
 public:
 	BehaviorModule(ros::NodeHandle& n);
@@ -178,43 +158,11 @@ public:
 	angleXYZToVectorAngle(const double x_ang, const double y_ang,
 			const double z_ang);
 
-	//bb_pos and bb_dims specifies the bounding box properties of the object of interest
-	//push_dir is the angle(in radians). 0 -> right, PI/2 -> forward, PI -> left, 3*PI/2 -> backward
-	/* void */
-	/* push(const Vector& bb_center, const Vector& bb_dims, double push_dir_angle, */
-	/* 		const double poi_shift, bool spin = false); */
-
-	/* void */
-	/* push2(const Vector& bb_center, const Vector& bb_dims, */
-	/* 		double push_dir_angle, const double poi_shift, bool is_left_arm, */
-	/* 		bool spin = false); */
-
-	/* void */
-	/* lift(const double poi_shift); */
-
-	/* void */
-	/* hide(Vector bb_center, Vector bb_dims); */
-
 	void pointTo(Vector point);
 
 	void release(Vector point, bool palm_upward = true);
 
-	/* void releaseUpward(Vector point); */
-
-	/* void releaseDownward(Vector point); */
-
 	void choseArm(double y_position);
-	/* void */
-	/* drop(Vector point); */
-
-	/* void */
-	/* grasp(Vector bb_center); */
-
-	/* void */
-	/* graspLiftAndRelease(Vector bb_center, Vector bb_target_center, */
-	/* 		const double shift, bool palm_upward = false); */
-
-	/* void doReflexiveGrasp(); */
 
 	void home(bool is_left_arm = false);
 
@@ -222,44 +170,11 @@ public:
 
 	void lookAtPoint(Vector bb_center);
 
-	//void lookAtRegion(uint region_id);
-
 	void lookAtFace();
 
-	/* void take(); */
-	/* void give(); */
-	/* void giveAfterTake(); */
-	void reach(Vector bb_center, Vector bb_dims); 
-
-
-	/* int */
-	/* voiceCommand(Vector bb_center, Vector bb_dims); */
-
-	/* void */
-	/* manualCommand(Vector bb_center, Vector bb_dims); */
-
-	//from top or sides (left, right, back)
-	/* void */
-	/* fetch(Vector bb_center, Vector bb_dims, Vector hand_orient); */
-
-	/* void */
-	/* shake(const Vector dir, const double shake_off); */
-
-	/* void */
-	/* basket(Vector bb_center, Vector bb_dims); */
+	void reach(Vector bb_center, Vector bb_dims);
 
 	void testHandSequences();
-
-	/* void */
-	/* createObject(int op_type, Vector& bb_center); */
-
-	/* void */
-	/* deleteObject(); */
-
-	/* void grasp2(Vector bb_upward); */
-
-
-	//++Onur
 
 	void openHand();
 	// we don't need a thread since the actions library already
@@ -267,16 +182,6 @@ public:
 	virtual bool updateModule();
 
 	bool interruptModule();
-
-	/* // ++Onur */
-	/* void getEEPosition(); // hand end effector position */
-	/* void logPosData(uint8_t task_id); // */
-	/* void getHeadJoints(); */
-	/* void logTactileData(); */
-
-	//	void obtainAction();
-	// --Onur
-
 };
 
 #endif /* BEHAVIORMODULE_H_ */
