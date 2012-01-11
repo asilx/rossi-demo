@@ -110,7 +110,8 @@ protected:
 	ros::ServiceServer srv_action;
 
 	Port rpcPort;
-
+	Port emotP;
+	Bottle outBot;
 	//ITorqueControl *trq_ctrl_left, *trq_ctrl_right;
 	//IControlMode* ictrl;
 
@@ -177,6 +178,20 @@ public:
 	void testHandSequences();
 
 	void openHand();
+
+	void BehaviorModule::openEyeLids();
+
+	void BehaviorModule::closeEyeLids();
+
+	void BehaviorModule::happy();
+
+	void BehaviorModule::angry();
+
+	void BehaviorModule::sad();
+
+	void BehaviorModule::evil();
+
+	void BehaviorModule::neutral();
 	// we don't need a thread since the actions library already
 	// incapsulates one inside dealing with all the tight time constraints
 	virtual bool updateModule();

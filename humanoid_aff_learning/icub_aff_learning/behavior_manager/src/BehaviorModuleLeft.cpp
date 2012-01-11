@@ -39,9 +39,9 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
     release(reach_point, false);
     Bottle& btout = port_grasp_comm_left.prepare();;
     if(chosen_arm == "left")
-	btout = port_grasp_comm_left.prepare();
+      btout = port_grasp_comm_left.prepare();
     else
-        btout = port_grasp_comm_right.prepare();
+      btout = port_grasp_comm_right.prepare();
     btout.clear();
 
     // Do the closing action
@@ -107,31 +107,67 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       home();
       ROS_INFO("icub home");
       logFlag = false;
-    } else if (request.task == behavior_manager::Action::Request::TUCK_ARMS) {
+    }
+    else if (request.task == behavior_manager::Action::Request::TUCK_ARMS) {
       ROS_INFO("tuck arms");
       tuckArms();
       logFlag = false;
     }
-     else if (request.task
-	       == behavior_manager::Action::Request::LOOK_AT_POINT) {
+    else if (request.task == behavior_manager::Action::Request::LOOK_AT_POINT) {
       ROS_INFO("look at point");
       lookAtPoint(center);
       logFlag = false;
-    } else if (request.task
-	       == behavior_manager::Action::Request::LOOK_AT_FACE) {
+    }
+    else if (request.task == behavior_manager::Action::Request::LOOK_AT_FACE) {
       ROS_INFO("look at face");
       lookAtFace();
       logFlag = false;
     }
-      else if (request.task == behavior_manager::Action::Request::REACH) {
-       ROS_INFO("reach");
-       reach(center, size);
-     }
+    else if (request.task == behavior_manager::Action::Request::REACH) {
+      ROS_INFO("reach");
+      reach(center, size);
+    }
     else if (request.task == behavior_manager::Action::Request::RELEASE) {
       ROS_INFO("release");
       release(center, false);
       logFlag = false;
     }
+    else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
+      ROS_INFO("close eye lids");
+      closeEyeLids();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::OPEN_EYE_LIDS) {
+      ROS_INFO("open eye lids");
+      openEyeLids();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::HAPPY) {
+      ROS_INFO("happy");
+      happy();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::ANGRY) {
+      ROS_INFO("angry");
+      angry();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::SAD) {
+      ROS_INFO("sad");
+      sad();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::EVIL) {
+      ROS_INFO("evil");
+      evil();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::NEUTRAL) {
+      ROS_INFO("neutral");
+      neutral();
+      logFlag = false;
+    }
+
   }
   response.feedback = behavior_manager::Action::Response::DONE;
   return true;
@@ -216,6 +252,11 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   driver_torso.open(options_torso);
 
+  emotP.open("/local/emoInt");
+  Network::connect("/local/emoInt", "/icub/face/emotions/in");
+  // become neutral
+  neutral();
+
   if (!driver_left.isValid() || !driver_right.isValid() || !driver_head.isValid() || !driver_torso.isValid()) {
     cerr << "A device is not available. Here are the known devices:"
 	 << endl;
@@ -247,7 +288,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   driver_gaze.view(igaze);
   if (driver_gaze.isValid()) {
     ok = ok && driver_gaze.view(igaze);
-    }
+  }
   igaze->setTrackingMode(false);
   igaze->setEyesTrajTime(1.0);
   igaze->setNeckTrajTime(2.0);
@@ -495,19 +536,19 @@ void BehaviorModule::release(Vector point, bool palm_upward) {
   choseArm(point[1]);
 
   if(chosen_arm == "left")
-  {
-  	if (palm_upward)
-    		hand_orient = angleXZToVectorAngle(PI, PI);
-  	else
-   		hand_orient = angleXZToVectorAngle(0, PI);
-  }
+    {
+      if (palm_upward)
+	hand_orient = angleXZToVectorAngle(PI, PI);
+      else
+	hand_orient = angleXZToVectorAngle(0, PI);
+    }
   else
-  {
-  	if (palm_upward)
-    		hand_orient = angleXZToVectorAngle(0, PI);
-  	else
-   		hand_orient = angleXZToVectorAngle(PI, PI);
-  }
+    {
+      if (palm_upward)
+	hand_orient = angleXZToVectorAngle(0, PI);
+      else
+	hand_orient = angleXZToVectorAngle(PI, PI);
+    }
 
   bool f;
   std::cout<<"going to the location: "<<point[0]<<" "<<point[1]<<" "<<point[2]<<std::endl;
@@ -850,4 +891,68 @@ bool BehaviorModule::interruptModule() {
 
 
   return true;
+}
+
+void BehaviorModule::openEyeLids()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("eli");
+  outBot.addString("ang");
+
+  emotP.write(outBot);
+}
+
+void BehaviorModule::closeEyeLids()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("raw");
+  outBot.addString("S04");
+  emotP.write(outBot);
+}
+
+void BehaviorModule::happy()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("all");
+  outBot.addString("hap");
+  emotP.write(outBot);
+}
+
+void BehaviorModule::angry()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("all");
+  outBot.addString("ang");
+  emotP.write(outBot);
+}
+
+void BehaviorModule::sad()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("all");
+  outBot.addString("sad");
+  emotP.write(outBot);
+}
+
+void BehaviorModule::evil()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("all");
+  outBot.addString("evi");
+  emotP.write(outBot);
+}
+
+void BehaviorModule::neutral()
+{
+  outBot.clear();
+  outBot.addString("set");
+  outBot.addString("all");
+  outBot.addString("neu");
+  emotP.write(outBot);
 }
