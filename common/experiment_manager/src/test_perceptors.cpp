@@ -305,7 +305,7 @@ run ()
 		ros::service::call ("/action", srv_action.request, srv_action.response);
 		ROS_INFO("finished -tuck_arms- action");
   		
-  		msg_speech_in.speech_cmd = behavior_manager::Action::Request::REACH;
+  		msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_RIGHT;
   		msg_speech_in.speech_arg = 0;
   		firstRun = false;
   		
