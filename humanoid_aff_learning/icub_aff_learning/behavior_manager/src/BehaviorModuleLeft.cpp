@@ -25,17 +25,19 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
 		Vector hand_orient = angleXZToVectorAngle(3 * PI / 2, PI);
 		bool f;
     		//reach_point[2] += bb_dims[2]/2+0.08;
-    		reach_point[1] -= (bb_dims[2]/2 + 0.05);
+    		reach_point[1] -= (bb_dims[1]/2 + 0.05);
+    		reach_point[0] += 0.01;
+    		reach_point[2] += 0.03;
     		//reach_point[0] += 0.03;
     		std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		//release(reach_point, false);
-    		reach_point[2] += 0.08;
+    		reach_point[1] += 0.08;
     		//release(reach_point, false);
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
-    		reach_point[2] += 0.05;
+    		reach_point[1] += 0.1;
     		action_left->disableContactDetection();
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
@@ -52,26 +54,29 @@ void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
 	
 	if (bb_center[0] > -0.45)
 	{
-		sad();
+		evil();
 		Vector reach_point = bb_center;
-		Vector hand_orient = angleXZToVectorAngle(PI / 2, PI);
+		Vector hand_orient = angleXZToVectorAngle(3* PI / 2, PI);
 		bool f;
     		//reach_point[2] += bb_dims[2]/2+0.08;
-    		reach_point[1] += (bb_dims[2]/2 + 0.05);
+    		reach_point[1] += (bb_dims[1]/2 + 0.05);
+    		reach_point[0] += 0.01;
+    		reach_point[2] += 0.03;
     		//reach_point[0] += 0.03;
     		std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		//release(reach_point, false);
-    		reach_point[2] -= 0.08;
+    		reach_point[1] -= 0.08;
     		//release(reach_point, false);
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
-    		reach_point[2] -= 0.05;
+    		reach_point[1] -= 0.1;
     		action_right->disableContactDetection();
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		action_right->enableContactDetection();
+    		happy();
 	}
 
 
@@ -805,8 +810,8 @@ void BehaviorModule::tuckArms() {
       ictrl_right->setImpedancePositionMode(i);
     }*/
      
-  //ictrl_left->setTorqueMode(3);
-  //ictrl_right->setTorqueMode(3);
+  ictrl_left->setTorqueMode(3);
+  ictrl_right->setTorqueMode(3);
 
   for (int i = 7; i < js.size(); i++)
     js[i] = positions_left_enc[i];
@@ -826,11 +831,11 @@ void BehaviorModule::tuckArms() {
     Time::delay(0.001);
   }
   
-  /*for (int i = 0; i < 5; ++i)
+  for (int i = 0; i < 5; ++i)
     {
       ictrl_left->setPositionMode(i);
       ictrl_right->setPositionMode(i);
-    }*/
+    }
 
   js[3] = 60;
   pos_ctrl_left->positionMove(js.data());
