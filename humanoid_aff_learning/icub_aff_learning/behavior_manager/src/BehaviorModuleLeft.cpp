@@ -13,70 +13,6 @@ BehaviorModule::BehaviorModule(ros::NodeHandle& n) {
 BehaviorModule::~BehaviorModule() {
 
 }
-<<<<<<< HEAD
-
-
-void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
-  //for right arm
-  choseArm(bb_center[1]);
-  if (bb_center[0] < -0.45) {
-    std::cout<< "obj detected to be out of range" << std::endl;
-    Vector reach_point = bb_center;
-    reach_point[0] = -0.30; //+= bb_dims[0] / 2.0 + 0.09;//hand size
-    reach_point[2] += bb_dims[2]/2 + 0.05;
-    std::cout << "The limit: " << REACH_X_LIMIT << endl;
-    std::cout << "Coordinates: " << bb_center[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
-    release(reach_point, false);
-  }
-  else {
-    Vector reach_point = bb_center;
-
-    reach_point[2] += bb_dims[2]/2+0.08;
-    reach_point[1] += 0.01;
-    reach_point[0] += 0.03;
-    std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
-    release(reach_point, false);
-    reach_point[2] -= 0.08;
-    release(reach_point, false);
-    Bottle& btout = port_grasp_comm_left.prepare();;
-    if(chosen_arm == "left")
-      btout = port_grasp_comm_left.prepare();
-    else
-      btout = port_grasp_comm_right.prepare();
-    btout.clear();
-
-    // Do the closing action
-
-    std::cout << "Closing the hand..." << std::endl;
-
-    std::string s = "gs";
-    btout.addString(s.c_str());
-    if(chosen_arm == "left")
-      port_grasp_comm_left.write();
-    else
-      port_grasp_comm_right.write();
-    tuckArms();
-    Bottle& btout2 = port_grasp_comm_left.prepare();;
-    if(chosen_arm == "left")
-      btout2 = port_grasp_comm_left.prepare();
-    else
-      btout2 = port_grasp_comm_right.prepare();
-    btout2.clear();
-
-
-    std::string s2 = "oh";
-    btout2.addString(s2.c_str());
-    if(chosen_arm == "left")
-      port_grasp_comm_left.write();
-    else
-      port_grasp_comm_right.write();
-
-    if (reach_point[2] <= -0.20) cout << " z limit exceeded " << endl;
-  }
-}
-
-
-=======
 
 void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper) 
 {
@@ -233,7 +169,6 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 }
 
 
->>>>>>> asil/master
 bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
 				    behavior_manager::Action::Response& response) {
   if (request.task != behavior_manager::Action::Request::DONT_ACT) {
@@ -291,43 +226,6 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       release(center, false);
       logFlag = false;
     }
-<<<<<<< HEAD
-    else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
-      ROS_INFO("close eye lids");
-      closeEyeLids();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::OPEN_EYE_LIDS) {
-      ROS_INFO("open eye lids");
-      openEyeLids();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::HAPPY) {
-      ROS_INFO("happy");
-      happy();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::ANGRY) {
-      ROS_INFO("angry");
-      angry();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::SAD) {
-      ROS_INFO("sad");
-      sad();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::EVIL) {
-      ROS_INFO("evil");
-      evil();
-      logFlag = false;
-    }
-    else if (request.task == behavior_manager::Action::Request::NEUTRAL) {
-      ROS_INFO("neutral");
-      neutral();
-      logFlag = false;
-    }
-=======
     else if (request.task == behavior_manager::Action::Request::PUSH_LEFT) {
          ROS_INFO("icub push left");
          push_left(center, size, false);
@@ -384,7 +282,6 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     //   neutral();
     //   logFlag = false;
     // }
->>>>>>> asil/master
 
   }
   response.feedback = behavior_manager::Action::Response::DONE;
@@ -472,13 +369,8 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
 
   emotP.open("/local/emoInt");
   Network::connect("/local/emoInt", "/icub/face/emotions/in");
-<<<<<<< HEAD
-  // become neutral
-  neutral();
-=======
   // become happy
   happy();
->>>>>>> asil/master
 
   if (!driver_left.isValid() || !driver_right.isValid() || !driver_head.isValid() || !driver_torso.isValid()) {
     cerr << "A device is not available. Here are the known devices:"
@@ -496,15 +388,12 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_head.view(encoders_head);
   ok = ok && driver_torso.view(pos_ctrl_torso);
   ok = ok && driver_torso.view(encoders_torso);
-<<<<<<< HEAD
-=======
   ok = ok && driver_left.view(ictrl_left);
   ok = ok && driver_left.view(iimp_left);
   ok = ok && driver_left.view(itrq_left);
   ok = ok && driver_right.view(ictrl_right);
   ok = ok && driver_right.view(iimp_right);
   ok = ok && driver_right.view(itrq_right);
->>>>>>> asil/master
 
 
   chosen_arm = "left";
@@ -654,7 +543,6 @@ double BehaviorModule::getPeriod() {
 void BehaviorModule::init() {
   port_grasp_comm_left.open("/o:graspCommLeft");
   port_grasp_comm_right.open("/o:graspCommRight");
-<<<<<<< HEAD
 
   ROS_INFO("waiting for tactileGrasp module to be opened !");
   while (!Network::isConnected("/o:graspCommLeft", "/tactGraspLeft/rpc:i") && nh.ok()) {
@@ -668,21 +556,6 @@ void BehaviorModule::init() {
   }
   ROS_INFO("OK, connected to the tactGrasp modules! ");
 
-=======
-
-  ROS_INFO("waiting for tactileGrasp module to be opened !");
-  while (!Network::isConnected("/o:graspCommLeft", "/tactGraspLeft/rpc:i") && nh.ok()) {
-    Network::connect("/o:graspCommLeft", "/tactGraspLeft/rpc:i");
-    ros::spinOnce();
-  }
-
-  while (!Network::isConnected("/o:graspCommRight", "/tactGraspRight/rpc:i") && nh.ok()) {
-    Network::connect("/o:graspCommRight", "/tactGraspRight/rpc:i");
-    ros::spinOnce();
-  }
-  ROS_INFO("OK, connected to the tactGrasp modules! ");
-
->>>>>>> asil/master
   action_left->enableContactDetection();
   action_right->enableContactDetection();
 
@@ -727,7 +600,6 @@ Vector BehaviorModule::angleXZToVectorAngle(const double x_ang,
 					    const double z_ang) {
   Vector oz(4);
   Vector ox(4);
-<<<<<<< HEAD
 
   oz[0] = 0.0;
   oz[1] = 0.0;
@@ -779,59 +651,6 @@ Vector BehaviorModule::angleXYZToVectorAngle(const double x_ang,
   return poi_orient;
 }
 
-=======
-
-  oz[0] = 0.0;
-  oz[1] = 0.0;
-  oz[2] = 1.0;
-  oz[3] = z_ang;// / 180 * PI;
-
-  ox[0] = 1.0;
-  ox[1] = 0.0;
-  ox[2] = 0.0;
-  ox[3] = x_ang;// / 180 * PI;
-
-  Matrix Rz = iCub::ctrl::axis2dcm(oz); // from axis/angle to rotation matrix notation
-  Matrix Rx = iCub::ctrl::axis2dcm(ox);
-
-  Matrix R = Rz * Rx;
-  Vector poi_orient = iCub::ctrl::dcm2axis(R); // from rotation matrix back to the axis/angle notation
-
-  return poi_orient;
-}
-
-Vector BehaviorModule::angleXYZToVectorAngle(const double x_ang,
-					     const double y_ang, const double z_ang) {
-  Vector oz(4);
-  Vector oy(4);
-  Vector ox(4);
-
-  oz[0] = 0.0;
-  oz[1] = 0.0;
-  oz[2] = 1.0;
-  oz[3] = z_ang;// / 180 * PI;
-
-  oy[0] = 0.0;
-  oy[1] = 1.0;
-  oy[2] = 0.0;
-  oy[3] = y_ang;// / 180 * PI;
-
-  ox[0] = 1.0;
-  ox[1] = 0.0;
-  ox[2] = 0.0;
-  ox[3] = x_ang;// / 180 * PI;
-
-  Matrix Rz = iCub::ctrl::axis2dcm(oz); // from axis/angle to rotation matrix notation
-  Matrix Ry = iCub::ctrl::axis2dcm(oy);
-  Matrix Rx = iCub::ctrl::axis2dcm(ox);
-
-  Matrix R = Ry * Rz * Rx;
-  Vector poi_orient = iCub::ctrl::dcm2axis(R); // from rotation matrix back to the axis/angle notation
-
-  return poi_orient;
-}
-
->>>>>>> asil/master
 
 void BehaviorModule::release(Vector point, bool palm_upward) {
   Vector hand_orient;
@@ -874,7 +693,6 @@ void BehaviorModule::home(bool is_left_arm) {
   Vector home_orient = angleXZToVectorAngle(-2 * PI / 5, PI);
   Vector js, home_coords;
   js.resize(positions_torso_enc.size());
-<<<<<<< HEAD
 
   js[0] = 0;
   js[1] = 0;
@@ -892,25 +710,6 @@ void BehaviorModule::home(bool is_left_arm) {
   while (!dn)
     pos_ctrl_torso->checkMotionDone(&dn);
 
-=======
-
-  js[0] = 0;
-  js[1] = 0;
-  js[2] = 0;
-
-  pos_ctrl_torso->positionMove(0, 0);
-
-  dn = false;
-  while (!dn)
-    pos_ctrl_torso->checkMotionDone(0, &dn);
-
-  pos_ctrl_torso->positionMove(js.data());
-
-  dn = false;
-  while (!dn)
-    pos_ctrl_torso->checkMotionDone(&dn);
-
->>>>>>> asil/master
   home_coords = home_x;
   if (!is_left_arm)
     home_coords[1] *= -1;
@@ -984,12 +783,9 @@ void BehaviorModule::tuckArms() {
     pos_ctrl_right->setRefSpeed(i, 10.0);
     pos_ctrl_left->setRefAcceleration(i, 50.0);
     pos_ctrl_right->setRefAcceleration(i, 50.0);
-<<<<<<< HEAD
-=======
     //may change these values but damping and stiffnes should be adjusted accordingly for stability
     iimp_left->setImpedance(i, 0.111, 0.014);
     iimp_right->setImpedance(i, 0.111, 0.014);
->>>>>>> asil/master
   }
 
   //set command positions
@@ -1002,18 +798,11 @@ void BehaviorModule::tuckArms() {
   //js[1] = 40;//for simulator
   js[2] = -30;
   js[3] = 60;
-<<<<<<< HEAD
-  //js[3] = 0;
-=======
   //js[3] = 0; //for torque control
->>>>>>> asil/master
   js[4] = -60;
   js[5] = 0;
   js[6] = 20;
 
-<<<<<<< HEAD
-  //ictrl->setImpedancePositionMode(3);
-=======
   // enable for impedance control
   /*for (int i = 0; i < 5; ++i) 	// first four joints can be controlled by impedance control
     {
@@ -1024,17 +813,12 @@ void BehaviorModule::tuckArms() {
   ictrl_left->setTorqueMode(3);
   ictrl_right->setTorqueMode(3);
 
->>>>>>> asil/master
   for (int i = 7; i < js.size(); i++)
     js[i] = positions_left_enc[i];
   pos_ctrl_left->positionMove(js.data());
   pos_ctrl_right->positionMove(js.data());
 
   bool done = false;
-<<<<<<< HEAD
-
-=======
->>>>>>> asil/master
   done = false;
   while (!done && left_arm_cart_solver_active) {
     pos_ctrl_left->checkMotionDone(&done);
@@ -1046,10 +830,6 @@ void BehaviorModule::tuckArms() {
     pos_ctrl_right->checkMotionDone(&done);
     Time::delay(0.001);
   }
-<<<<<<< HEAD
-
-  js[0] = 10;
-=======
   
   for (int i = 0; i < 5; ++i)
     {
@@ -1058,7 +838,6 @@ void BehaviorModule::tuckArms() {
     }
 
   js[3] = 60;
->>>>>>> asil/master
   pos_ctrl_left->positionMove(js.data());
   pos_ctrl_right->positionMove(js.data());
   done = false;
@@ -1072,18 +851,6 @@ void BehaviorModule::tuckArms() {
     Time::delay(0.001);
   }
 
-<<<<<<< HEAD
-  /*ictrl->setPositionMode(3);
-    js[3] = 60;
-    pos_ctrl_left->positionMove(js.data());
-    done = false;
-    while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_left->checkMotionDone(&done);
-    Time::delay(0.001);
-    }*/
-
-=======
->>>>>>> asil/master
   //finally connect cartesian solvers back
   if (left_arm_cart_solver_active) {
     //      driver_left.close();
@@ -1109,21 +876,12 @@ void BehaviorModule::tuckArms() {
 }
 
 void BehaviorModule::lookAtPoint(Vector bb_center) {
-<<<<<<< HEAD
 
   int i;
   std::cout << bb_center[0] << " " << bb_center[1] << " " << bb_center[2]
 	    << std::endl;
   std::cout << "&&&&&& do you verify the position &&&&&&" << std::endl;
 
-=======
-
-  int i;
-  std::cout << bb_center[0] << " " << bb_center[1] << " " << bb_center[2]
-	    << std::endl;
-  std::cout << "&&&&&& do you verify the position &&&&&&" << std::endl;
-
->>>>>>> asil/master
   igaze->lookAtFixationPoint(bb_center);
   bool done = false;
   while (!done) {
@@ -1195,21 +953,12 @@ void BehaviorModule::testHandSequences() {
   action_right->pushAction("close_hand");
   action_right->checkActionsDone(f, true);
   action_right->areFingersInPosition(f);
-<<<<<<< HEAD
 
   action_right->pushAction("karate_hand");
   action_right->checkActionsDone(f, true);
   action_right->areFingersInPosition(f);
   cout << "End of right hand check" << endl ;
 
-=======
-
-  action_right->pushAction("karate_hand");
-  action_right->checkActionsDone(f, true);
-  action_right->areFingersInPosition(f);
-  cout << "End of right hand check" << endl ;
-
->>>>>>> asil/master
 }
 
 void BehaviorModule::openHand()
@@ -1241,7 +990,6 @@ bool BehaviorModule::updateModule() {
     init();
     firstRun = false;
   }
-<<<<<<< HEAD
 
   Vector bb_dims(3);
   bb_dims[0] = 0.06;
@@ -1259,25 +1007,6 @@ bool BehaviorModule::updateModule() {
   bool contactDetected = false;
   double totalReading = 0.0;
 
-=======
-
-  Vector bb_dims(3);
-  bb_dims[0] = 0.06;
-  bb_dims[1] = 0.06;
-  bb_dims[2] = 0.06;
-
-  // get a target object position from a YARP port
-
-  Vector bb_center(3);
-
-  bb_center[0] = -0.30;
-  bb_center[1] = 0.15;
-  bb_center[2] = 0.20;
-
-  bool contactDetected = false;
-  double totalReading = 0.0;
-
->>>>>>> asil/master
   ros::spinOnce();
   return true;
 }
