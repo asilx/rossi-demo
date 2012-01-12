@@ -14,10 +14,10 @@ BehaviorModule::~BehaviorModule() {
 
 }
 
-void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper) 
+void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
 {
 	choseArm(-1);
-	
+
 	if (bb_center[0] > -0.45)
 	{
 		evil();
@@ -42,16 +42,16 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		action_left->enableContactDetection();
-    		happy();   		
+    		happy();
 	}
 
 
 }
 
-void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper) 
+void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
 {
 	choseArm(1);
-	
+
 	if (bb_center[0] > -0.45)
 	{
 		evil();
@@ -245,8 +245,8 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
        openHand();
        tuckArms();
 
-    } 
-    
+    }
+
     // else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
     //   ROS_INFO("close eye lids");
     //   closeEyeLids();
@@ -789,67 +789,135 @@ void BehaviorModule::tuckArms() {
   }
 
   //set command positions
-  js.resize(positions_left_enc.size());
-  std::cout << " ************** " << js.size() << " ************** "
-	    << std::endl;
-  //js[0] = -15;
-  js[0] = 10;
-  js[1] = 20;
-  //js[1] = 40;//for simulator
-  js[2] = -30;
-  js[3] = 60;
-  //js[3] = 0; //for torque control
-  js[4] = -60;
-  js[5] = 0;
-  js[6] = 20;
+  // js.resize(positions_left_enc.size());
+  // std::cout << " ************** " << js.size() << " ************** "
+  // 	    << std::endl;
+  // //js[0] = -15;
+  // js[0] = 10;
+  // js[1] = 20;
+  // //js[1] = 40;//for simulator
+  // js[2] = -30;
+  // js[3] = 60;
+  // //js[3] = 0; //for torque control
+  // js[4] = -60;
+  // js[5] = 0;
+  // js[6] = 20;
 
-  // enable for impedance control
-  /*for (int i = 0; i < 5; ++i) 	// first four joints can be controlled by impedance control
+  // // enable for impedance control
+  // /*for (int i = 0; i < 5; ++i) 	// first four joints can be controlled by impedance control
+  //   {
+  //     ictrl_left->setImpedancePositionMode(i);
+  //     ictrl_right->setImpedancePositionMode(i);
+  //   }*/
+
+  // ictrl_left->setTorqueMode(3);
+  // ictrl_right->setTorqueMode(3);
+
+  // for (int i = 7; i < js.size(); i++)
+  //   js[i] = positions_left_enc[i];
+  // pos_ctrl_left->positionMove(js.data());
+  // pos_ctrl_right->positionMove(js.data());
+
+  // bool done = false;
+  // done = false;
+  // while (!done && left_arm_cart_solver_active) {
+  //   pos_ctrl_left->checkMotionDone(&done);
+  //   Time::delay(0.001);
+  // }
+
+  // done = false;
+  // while (!done && left_arm_cart_solver_active) {
+  //   pos_ctrl_right->checkMotionDone(&done);
+  //   Time::delay(0.001);
+  // }
+
+  // for (int i = 0; i < 5; ++i)
+  //   {
+  //     ictrl_left->setPositionMode(i);
+  //     ictrl_right->setPositionMode(i);
+  //   }
+
+  // js[3] = 60;
+  // pos_ctrl_left->positionMove(js.data());
+  // pos_ctrl_right->positionMove(js.data());
+  // done = false;
+  // while (!done && left_arm_cart_solver_active) {
+  //   pos_ctrl_left->checkMotionDone(&done);
+  //   Time::delay(0.001);
+  // }
+  // done = false;
+  // while (!done && left_arm_cart_solver_active) {
+  //   pos_ctrl_right->checkMotionDone(&done);
+  //   Time::delay(0.001);
+  // }
+
+  // for impedance control
+  int control_mode_left;
+  int control_mode_right;
+  for (int i = 0; i < 4; ++i)
     {
-      ictrl_left->setImpedancePositionMode(i);
-      ictrl_right->setImpedancePositionMode(i);
-    }*/
-     
-  ictrl_left->setTorqueMode(3);
-  ictrl_right->setTorqueMode(3);
-
-  for (int i = 7; i < js.size(); i++)
-    js[i] = positions_left_enc[i];
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
-
-  bool done = false;
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_left->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
-
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_right->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
-  
-  for (int i = 0; i < 5; ++i)
+      if (i == 3){
+	ictrl_left->setTorqueMode(i);
+	ictrl_right->setTorqueMode(i);
+      }
+      else
+	{
+	ictrl_left->setImpedancePositionMode(i);
+	ictrl_right->setImpedancePositionMode(i);
+	}
+      ictrl_left->getControlMode(i, &control_mode_left);
+      ictrl_right->getControlMode(i, &control_mode_right);
+    }
+  for (int i = 0; i < 4; ++i)
     {
-      ictrl_left->setPositionMode(i);
-      ictrl_right->setPositionMode(i);
+      wait = true;
+      while (wait){
+	ictrl_left->getControlMode(i, &control_mode);
+	ictrl_right->getControlMode(i, &control_mode);
+	if (i ==3)
+	  wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
+	else
+	  wait = !(control_mode == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
+
+	if (wait ==true)
+	  cout << "Control mode wrong" << endl;
+      }
     }
 
-  js[3] = 60;
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_left->checkMotionDone(&done);
-    Time::delay(0.001);
+  command=0;
+  command[0]=10;
+  command[1]=20;
+  command[2]=-30;
+  command[3]=0;
+  command[4]=-60;
+  command[5]=0;
+  command[6]=20;
+  pos_ctrl_left->positionMove(command.data());
+  pos_ctrl_right->positionMove(command.data());
+
+  bool done=false;
+
+  cout << "First set is done " << endl;
+  Time::delay(5.0);
+
+  cout << "Motion done " << endl;
+  command[3]=60;
+  ictrl_left->setImpedancePositionMode(3);
+  ictrl_right->setImpedancePositionMode(3);
+  wait = true;
+  while (wait){
+    ictrl_left->getControlMode(3, &control_mode_left);
+    ictrl_right->getControlMode(3, &control_mode_right);
+    wait = !(control_mode_left ==  VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right ==  VOCAB_CM_IMPEDANCE_POS);;
+
+    if (wait ==true)
+      cout << "Control mode wrong for joint 3 " << endl;
   }
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_right->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
+
+  cout << "Second command " << endl;
+  pos_ctrl_left->positionMove(command.data());
+  pos_ctrl_right->positionMove(command.data());
+
 
   //finally connect cartesian solvers back
   if (left_arm_cart_solver_active) {
