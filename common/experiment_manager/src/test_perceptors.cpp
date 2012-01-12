@@ -293,7 +293,7 @@ run ()
   {
   	if(firstRun)
   	{
-  		std::cout << "First run is about to commence. Press an integer key to continue" << std::endl;
+  		std::cout << "First run is about to commence. Press an integer key to continue (1: Reach, 2:Cover, 3:Push Left, 4:Push Right)" << std::endl;
   		std::cin >> in_x;		
   		exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
 		srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_FACE;
@@ -305,7 +305,13 @@ run ()
 		ros::service::call ("/action", srv_action.request, srv_action.response);
 		ROS_INFO("finished -tuck_arms- action");
   		
-  		msg_speech_in.speech_cmd = behavior_manager::Action::Request::REACH;
+  		if(in_x == 1)
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::REACH;
+  		else if (in_x == 2)
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_FORWARD;
+  		else if (in_x == 3)
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_LEFT;
+  		else msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_RIGHT;
   		msg_speech_in.speech_arg = 0;
   		firstRun = false;
   		
