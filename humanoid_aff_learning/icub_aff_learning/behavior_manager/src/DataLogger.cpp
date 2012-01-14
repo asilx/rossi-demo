@@ -22,26 +22,57 @@ void DataLogger::logSingleData(FeatureTuple* singleTuple, int label)
 	logSingleData(features,label);
 }
 
-void DataLogger::logSingleData(double* features,int index,int label)
+void DataLogger::logSingleData(std::vector<double> features,int index,int label)
 {	
 	stringstream fileSS, svm_fileSS;
 	
-	int languageTag = (label > 0) ? label : 1;
 	
-	time(&timeReading);
+	/* Old way of naming files. Not easily read & traced */
 	
-	fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".dat";
-	svm_fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".svm.data";
 	
+	/*
+		time(&timeReading);
+	
+		fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".dat";
+		svm_fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".svm.data";
+	*/
+	
+	/* 
+		In the new naming, the index is to be received as the experiment epoch id, which is incremented at each 
+		log attempt. By this way, the data can be easily tracked.
+		
+		label now means whether the stored information is of initial state(0) or final state(1)
+		
+		TODO: Adjust the coordination between the experiment epoch enumerations between 
+		feature manager, behavior manager, grasp module, and tabletop 2d segmentation. 
+		
+		FIXME: The epoch id is best distributed by experiment manager. It is now locally updated in behaviorModule.
+		
+	*/	
+
+	fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".dat";
+	svm_fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".svm.data";
+
 	ofstream rawfile, svmfile;
 	
 	rawfile.open ((fileSS.str()).c_str());
 	svmfile.open((svm_fileSS.str()).c_str());
 	
-	rawfile << languageTag;
-	svmfile << languageTag;
 	
-	for(int f = 0; f < featureCount; f++)
+	/* 
+		For the time being, the languageTag information is not needed. 
+		Hence, to improve readability, language tag is excluded from logging.
+		However, the produced svm file should be merged with the other svm files in which
+		the appropriate label is given.
+	*/
+	
+	/*
+		int languageTag = (label > 0) ? label : 1;
+		rawfile << languageTag;
+		svmfile << languageTag; 
+	*/
+	
+	for(int f = 0; f < features.size(); f++)
 	{
 	
 		rawfile << " " << features[f];
