@@ -1107,7 +1107,7 @@ bool BehaviorModule::determineLogState(int taskId)
 		taskId != behavior_manager::Action::Request::TUCK_ARMS &&
 		taskId != behavior_manager::Action::Request::LOOK_AT_POINT &&
 		taskId != behavior_manager::Action::Request::LOOK_AT_FACE
-		)
+		);
 }
 
 /*
@@ -1134,7 +1134,7 @@ void BehaviorModule::logJointAndForceData(int state)
 	IEncoders* encodersSource = 		(chosen_arm == "left" ? encoders_left : encoders_right);
 	Vector *encoderReadings =		(chosen_arm == "left" ? &positions_left_enc : &positions_left_enc);
 	
-	encorderSource->getAxes(&jointAxesCount);
+	encodersSource->getAxes(&jointAxesCount);
 	encoderReadings->resize(jointAxesCount);
 	encodersSource->getEncoders(encoderReadings->data());
 	
@@ -1147,7 +1147,7 @@ void BehaviorModule::logJointAndForceData(int state)
 	dampingInfo = new double[impedanceAxesCount];	
 
 	
-	for(int j = 0; j < )
+	for(int j = 0; j < impedanceAxesCount; j++)
 	{
 		// l 	getImpedance (int j, double *stiffness, double *damping)=0
 		impedanceSource->getImpedance(j, &stiffnessInfo[j], &dampingInfo[j]);
@@ -1171,7 +1171,7 @@ void BehaviorModule::logJointAndForceData(int state)
 	// Finally, joint encoders
 	for(int i = torqueAxesCount + 2*impedanceAxesCount; i < (torqueAxesCount + 2*impedanceAxesCount + jointAxesCount); i++)
 	{
-		featuresToLog[i] = encoderReadings[i - torqueAxesCount + 2*impedanceAxesCount];
+		featuresToLog[i] = encoderReadings->data()[i - torqueAxesCount + 2*impedanceAxesCount];
 	}
 	
 	behaviorModuleDataLogger->logSingleData(featuresToLog,experimentEpoch,state);

@@ -16,10 +16,11 @@ DataLogger::~DataLogger()
 {
 }
 
+// Obsolete function, will be removed.
 void DataLogger::logSingleData(FeatureTuple* singleTuple, int label)
 {
 	double *features = singleTuple->features;
-	logSingleData(features,label);
+	//logSingleData(features,0,label);
 }
 
 void DataLogger::logSingleData(std::vector<double> features,int index,int label)
