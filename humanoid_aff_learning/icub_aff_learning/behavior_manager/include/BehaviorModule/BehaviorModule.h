@@ -74,8 +74,8 @@ protected:
 	IPositionControl* pos_ctrl_torso;
 	IGazeControl* igaze;
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 	IControlMode *ictrl_left;
 	IImpedanceControl *iimp_left;
 	ITorqueControl *itrq_left;
@@ -84,7 +84,7 @@ protected:
 	ITorqueControl *itrq_right;
 
 
->>>>>>> asil/master
+//>>>>>>> asil/master
 	IEncoders* encoders_right;
 	IEncoders* encoders_left;
 	IEncoders *encoders_head;
@@ -127,6 +127,13 @@ protected:
 	//IControlMode* ictrl;
 
 
+	// ++Onur: Data Logging
+	DataLogger* behaviorModuleDataLogger;
+	int experimentEpoch;
+	std::vector<double> featuresToLog;	
+	// --Onur
+	
+	
 	aff_msgs::ExperimentState exp_state_;
 
 	ros::Publisher pub_internal_features_;
@@ -185,20 +192,20 @@ public:
 	void lookAtFace();
 
 	void reach(Vector bb_center, Vector bb_dims);
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 	
 	void push_right(Vector bb_center, Vector bb_dims, bool isUpper);
 	void push_left(Vector bb_center, Vector bb_dims, bool isUpper);
 	void cover(Vector bb_center, Vector bb_dims);
->>>>>>> asil/master
+//>>>>>>> asil/master
 
 	void testHandSequences();
 
 	void openHand();
 
-<<<<<<< HEAD
-	void BehaviorModule::openEyeLids();
+//<<<<<<< HEAD
+/*	void BehaviorModule::openEyeLids();
 
 	void BehaviorModule::closeEyeLids();
 
@@ -210,8 +217,8 @@ public:
 
 	void BehaviorModule::evil();
 
-	void BehaviorModule::neutral();
-=======
+	void BehaviorModule::neutral();*/
+//=======
 	void openEyeLids();
 
 	void closeEyeLids();
@@ -225,10 +232,16 @@ public:
 	void evil();
 
 	void neutral();
->>>>>>> asil/master
+//>>>>>>> asil/master
 	// we don't need a thread since the actions library already
 	// incapsulates one inside dealing with all the tight time constraints
 	virtual bool updateModule();
+
+	//++Onur
+	bool determineLogState(int taskId);
+	void logJointAndForceData();
+	
+	//--Onur
 
 	bool interruptModule();
 };
