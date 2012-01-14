@@ -239,7 +239,7 @@ public:
 
 	//++Onur
 	bool determineLogState(int taskId);
-	void logJointAndForceData();
+	void logJointAndForceData(int state);
 	
 	//--Onur
 
