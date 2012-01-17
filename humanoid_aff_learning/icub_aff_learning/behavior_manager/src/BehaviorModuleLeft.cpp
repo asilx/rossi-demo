@@ -171,13 +171,13 @@ void BehaviorModule::grasp(Vector bb_center, Vector bb_dims, bool isUpper)
 
         if(chosen_arm == "left")
         {
-          std::string s = "gs";
+          std::string s = "gc";
           btout_left.addString(s.c_str());
           port_grasp_comm_left.write();
         }
         else
         {
-          std::string s = "gs";
+          std::string s = "gc";
           btout_right.addString(s.c_str());
           port_grasp_comm_right.write();
         }
@@ -329,13 +329,13 @@ void BehaviorModule::drop()
         
         if(chosen_arm == "left")
         {
-          std::string s = "gs";
+          std::string s = "oh";
           btout_left.addString(s.c_str());
           port_grasp_comm_left.write();
         }
         else
         {
-          std::string s = "gs";
+          std::string s = "oh";
           btout_right.addString(s.c_str());
           port_grasp_comm_right.write();
         }
@@ -609,7 +609,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_right.view(itrq_right);
   ok = ok && driver_left.view(iamp_left);
   ok = ok && driver_left.view(ipid_left);
-  ok = ok && driver_rigth.view(iamp_right);
+  ok = ok && driver_right.view(iamp_right);
   ok = ok && driver_right.view(ipid_right);
 
 
@@ -1082,14 +1082,14 @@ void BehaviorModule::tuckArms() {
     if (control_mode_left == VOCAB_CM_IDLE)
       {
 	cout << "Left arm joint 3 is idle" << endl;
-	iamp_left->enableAmp(joint);
-	ipid_left->enablePid(joint);
+	iamp_left->enableAmp(3);
+	ipid_left->enablePid(3);
       }
     if (control_mode_right == VOCAB_CM_IDLE)
       {
 	cout << "Right arm joint 3 is idle" << endl;
-	iamp_right->enableAmp(joint);
-	ipid_right->enablePid(joint);
+	iamp_right->enableAmp(3);
+	ipid_right->enablePid(3);
       }
 
     if (wait ==true)

@@ -50,9 +50,13 @@ ros/macros.h
 ros/assert.h
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ros/assert.h
 
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/main.cpp
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/BehaviorModuleLeft.cpp
 BehaviorModule/BehaviorModule.h
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/BehaviorModule/BehaviorModule.h
+iostream
+-
+fstream
+-
 
 /opt/ros/electric/stacks/ros_comm/clients/cpp/roscpp/include/ros/advertise_options.h
 ros/forwards.h
