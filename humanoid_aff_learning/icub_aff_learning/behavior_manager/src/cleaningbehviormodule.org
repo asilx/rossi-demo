@@ -1,0 +1,73 @@
+* needed objects
+** for reach
+*** port_graasp_comm but create two if them fro left and right
+*** release function
+*** tuckarms function
+*** hysteresiscounter ??????
+** for actioncallback
+*** bbcenter
+*** bbdims
+** release !!change the name
+*** action
+** for home
+*** pos_ctrl_torso
+*** action
+** for tuck_arms
+*** action
+*** pos_ctrl_torso
+*** encoders_left and right
+*** pos_ctrl_left and right
+** for lookatpoint
+*** igaze
+** for lookatatface
+*** igaze
+** testHandSequences
+*** action
+** openhand
+*** port_grasp_comm
+** interruptmodules
+*** action
+* deleted objects
+* needed functions
+** reach
+** release but change the name of this functions
+** tuckarms modify ot to two arms
+** actioncallback
+** getarmdependentoptions
+** configure
+** close
+** getperiod
+** init
+** vectorangle2normal
+** normal2vectorangle
+** anglexyztovectorangle
+** home
+** lookatpoint
+** lootatregion
+** lookatface
+** testhandsequences
+** openhand
+** updatemodule
+** interruptmodule
+* deleted functions
+** getEEPoisition
+** logpodata
+** getHeadJoints
+** take
+** drop
+** give
+** giveaftertake
+** logtactiledata
+** grasp2
+** push
+** push2
+** lift
+** hide
+** pointto
+** grasp
+** voicecommand
+** manualcommand
+** fetch
+** shake
+** createobject
+** deleteobject

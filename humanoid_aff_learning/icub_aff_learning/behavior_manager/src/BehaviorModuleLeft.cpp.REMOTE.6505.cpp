@@ -14,10 +14,10 @@ BehaviorModule::~BehaviorModule() {
 
 }
 
-void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
+void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper) 
 {
 	choseArm(-1);
-
+	
 	if (bb_center[0] > -0.45)
 	{
 		evil();
@@ -40,20 +40,20 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		reach_point[1] += 0.1;
-    		action_left->enableContactDetectionLoose();
+    		action_left->disableContactDetection();
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		action_left->enableContactDetection();
-    		happy();
+    		happy();   		
 	}
 
 
 }
 
-void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
+void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper) 
 {
 	choseArm(1);
-
+	
 	if (bb_center[0] > -0.45)
 	{
 		evil();
@@ -76,7 +76,7 @@ void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		reach_point[1] -= 0.1;
-    		action_right->enableContactDetectionLoose();
+    		action_right->disableContactDetection();
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		action_right->enableContactDetection();
@@ -159,7 +159,7 @@ void BehaviorModule::grasp(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     	}
-
+    	
     	Bottle& btout_right = port_grasp_comm_right.prepare();
     	Bottle& btout_left = port_grasp_comm_left.prepare();
         btout_right.clear();
@@ -168,7 +168,7 @@ void BehaviorModule::grasp(Vector bb_center, Vector bb_dims, bool isUpper)
 
         std::cout << "Closing the hand..." << std::endl;
 
-
+        
         if(chosen_arm == "left")
         {
           std::string s = "gs";
@@ -192,7 +192,7 @@ void BehaviorModule::grasp(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     	}
-
+  
   }
 
 }
@@ -218,13 +218,13 @@ void BehaviorModule::pull(Vector bb_center, Vector bb_dims) {
     reach_point[0] -= 0.04;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
-
-
+    
+    
     if(chosen_arm == "right") reach_point[1] -= 0.04;
     else reach_point[1] += 0.04;
     reach_point[2] -= 0.1;
     release(reach_point, false);
-
+    
     Bottle& btout_right = port_grasp_comm_right.prepare();
     	Bottle& btout_left = port_grasp_comm_left.prepare();
         btout_right.clear();
@@ -233,7 +233,7 @@ void BehaviorModule::pull(Vector bb_center, Vector bb_dims) {
 
         std::cout << "Closing the hand..." << std::endl;
 
-
+        
         if(chosen_arm == "left")
         {
           std::string s = "gs";
@@ -247,17 +247,17 @@ void BehaviorModule::pull(Vector bb_center, Vector bb_dims) {
           port_grasp_comm_right.write();
         }
     Time::delay(3);
-
-
+ 
+    
     if(chosen_arm == "right") action_right->disableContactDetection();
     else action_left->disableContactDetection();
-
+    
     reach_point[0] += 0.05;
     release(reach_point, false);
-
+    
     if(chosen_arm == "right") action_right->enableContactDetection();
     else action_left->enableContactDetection();
-
+    
     reach_point[2] += 0.08;
     release(reach_point, false);
 
@@ -295,7 +295,7 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
         std::cout << "Closing the hand..." << std::endl;
 
-
+        
         if(chosen_arm == "left")
         {
           std::string s = "gs";
@@ -318,28 +318,20 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
 void BehaviorModule::drop()
 {
-    Bottle& btout_right = port_grasp_comm_right.prepare();
-    	Bottle& btout_left = port_grasp_comm_left.prepare();
-        btout_right.clear();
-	btout_left.clear();
-        // Do the closing action
+    Bottle& btout2 = port_grasp_comm_left.prepare();;
+    if(chosen_arm == "left")
+      btout2 = port_grasp_comm_left.prepare();
+    else
+      btout2 = port_grasp_comm_right.prepare();
+    btout2.clear();
 
-        std::cout << "Closing the hand..." << std::endl;
 
-        
-        if(chosen_arm == "left")
-        {
-          std::string s = "gs";
-          btout_left.addString(s.c_str());
-          port_grasp_comm_left.write();
-        }
-        else
-        {
-          std::string s = "gs";
-          btout_right.addString(s.c_str());
-          port_grasp_comm_right.write();
-        }
-    Time::delay(3);
+    std::string s2 = "oh";
+    btout2.addString(s2.c_str());
+    if(chosen_arm == "left")
+      port_grasp_comm_left.write();
+    else
+      port_grasp_comm_right.write();
     tuckArms();
 }
 
@@ -426,7 +418,7 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
        openHand();
        tuckArms();
 
-     }
+     } 
     else if (request.task
      	       == behavior_manager::Action::Request::COVER) {
        ROS_INFO("icub cover ");
@@ -434,7 +426,7 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
        //openHand();
        //tuckArms();
 
-    }
+    } 
     else if (request.task
      	       == behavior_manager::Action::Request::PUSH_FORWARD) {
        ROS_INFO("icub push forward");
@@ -459,7 +451,6 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
          ROS_INFO("icub drop");
          drop();
     }
-
     // else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
     //   ROS_INFO("close eye lids");
     //   closeEyeLids();
@@ -607,10 +598,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_right.view(ictrl_right);
   ok = ok && driver_right.view(iimp_right);
   ok = ok && driver_right.view(itrq_right);
-  ok = ok && driver_left.view(iamp_left);
-  ok = ok && driver_left.view(ipid_left);
-  ok = ok && driver_rigth.view(iamp_right);
-  ok = ok && driver_right.view(ipid_right);
 
 
   chosen_arm = "left";
@@ -1007,7 +994,66 @@ void BehaviorModule::tuckArms() {
 
   //set command positions
   js.resize(positions_left_enc.size());
+  /*std::cout << " ************** " << js.size() << " ************** "
+	    << std::endl;
+  //js[0] = -15;
+  js[0] = 10;
+  js[1] = 20;
+  //js[1] = 40;//for simulator
+  js[2] = -30;
+  js[3] = 60;
+  //js[3] = 0; //for torque control
+  js[4] = -60;
+  js[5] = 0;
+  js[6] = 20;
 
+  // enable for impedance control
+  for (int i = 0; i < 5; ++i) 	// first four joints can be controlled by impedance control
+    {
+      ictrl_left->setImpedancePositionMode(i);
+      ictrl_right->setImpedancePositionMode(i);
+    }
+     
+  ictrl_left->setTorqueMode(3);
+  ictrl_right->setTorqueMode(3);
+
+  for (int i = 7; i < js.size(); i++)
+    js[i] = positions_left_enc[i];
+  pos_ctrl_left->positionMove(js.data());
+  pos_ctrl_right->positionMove(js.data());
+
+  bool done = false;
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_left->checkMotionDone(&done);
+    Time::delay(0.001);
+  }
+
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_right->checkMotionDone(&done);
+    Time::delay(0.001);
+  }
+  
+  for (int i = 0; i < 5; ++i)
+    {
+      ictrl_left->setPositionMode(i);
+      ictrl_right->setPositionMode(i);
+    }
+
+  js[3] = 60;
+  pos_ctrl_left->positionMove(js.data());
+  pos_ctrl_right->positionMove(js.data());
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_left->checkMotionDone(&done);
+    Time::delay(0.001);
+  }
+  done = false;
+  while (!done && left_arm_cart_solver_active) {
+    pos_ctrl_right->checkMotionDone(&done);
+    Time::delay(0.001);
+  }*/
   bool wait;
   int control_mode_left;
   int control_mode_right;
@@ -1025,7 +1071,7 @@ void BehaviorModule::tuckArms() {
       ictrl_left->getControlMode(i, &control_mode_left);
       ictrl_right->getControlMode(i, &control_mode_right);
     }
-
+    
   for (int i = 0; i < 4; ++i)
     {
       wait = true;
@@ -1036,18 +1082,6 @@ void BehaviorModule::tuckArms() {
 	  wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
 	else
 	  wait = !(control_mode_left == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
-	if(control_mode_left == VOCAB_CM_IDLE){
-	  cout << "Control mode is idle for left arm joint " << i << endl;
-	  iamp_left->enableAmp(i);
-	  ipid_left->enablePid(i);
-	  cout << "Enabled left arm joint " << i << endl;
-	}
-	if(control_mode_right == VOCAB_CM_IDLE){
-	  cout << "Control mode is idle for right arm joint " << i << endl;
-	  iamp_right->enableAmp(i);
-	  ipid_right->enablePid(i);
-	  cout << "Enabled right arm joint " << i << endl;
-	}
 
 	if (wait ==true)
 	  cout << "Control mode wrong" << endl;
@@ -1079,27 +1113,14 @@ void BehaviorModule::tuckArms() {
     ictrl_left->getControlMode(3, &control_mode_left);
     ictrl_right->getControlMode(3, &control_mode_right);
     wait = !(control_mode_left ==  VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right ==  VOCAB_CM_IMPEDANCE_POS);;
-    if (control_mode_left == VOCAB_CM_IDLE)
-      {
-	cout << "Left arm joint 3 is idle" << endl;
-	iamp_left->enableAmp(joint);
-	ipid_left->enablePid(joint);
-      }
-    if (control_mode_right == VOCAB_CM_IDLE)
-      {
-	cout << "Right arm joint 3 is idle" << endl;
-	iamp_right->enableAmp(joint);
-	ipid_right->enablePid(joint);
-      }
 
     if (wait ==true)
-      cout << "Control mode wrong for joint " << endl;
+      cout << "Control mode wrong for joint 3 " << endl;
   }
 
   cout << "Second command " << endl;
   pos_ctrl_left->positionMove(js.data());
   pos_ctrl_right->positionMove(js.data());
-
 
   //finally connect cartesian solvers back
   if (left_arm_cart_solver_active) {
