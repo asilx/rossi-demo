@@ -293,17 +293,23 @@ run ()
   {
   	if(firstRun)
   	{
-  		std::cout << "First run is about to commence. Press an integer key to continue (1: Reach, 2:Cover, 3:Push Left, 4:Push Right)" << std::endl;
+  		std::cout << "First run is about to commence. Press an integer key to continue (1: Reach, 2:PULL, 3:Push Left, 4:Push Right" << std::endl;
+  		std::cout << "5:Push L Upper 6: Push R Upper 7: Grasp 8: Grasp Upper 9: Cover 10: Drop" << std::endl;
   		std::cin >> in_x;		
-  		exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
-		srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_FACE;
-		std::cout << "calling look at face action service" << std::endl;
-		ros::service::call ("/action", srv_action.request, srv_action.response);
-
-		ROS_INFO("calling -tuck_arms- action service");
-		srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
-		ros::service::call ("/action", srv_action.request, srv_action.response);
-		ROS_INFO("finished -tuck_arms- action");
+  		
+		
+		if (in_x != 10)
+		{
+			exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
+			srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_FACE;
+			std::cout << "calling look at face action service" << std::endl;
+			ros::service::call ("/action", srv_action.request, srv_action.response);
+		
+			ROS_INFO("calling -tuck_arms- action service");
+			srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
+			ros::service::call ("/action", srv_action.request, srv_action.response);
+			ROS_INFO("finished -tuck_arms- action");
+		}
   		
   		if(in_x == 1)
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::REACH;
@@ -311,7 +317,19 @@ run ()
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_FORWARD;
   		else if (in_x == 3)
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_LEFT;
-  		else msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_RIGHT;
+  		else if (in_x == 4) msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_RIGHT;
+  		else if (in_x == 5)
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_LEFT_UPPER;
+  		else if (in_x == 6) msg_speech_in.speech_cmd = behavior_manager::Action::Request::PUSH_RIGHT_UPPER;
+  		else if (in_x == 7) msg_speech_in.speech_cmd = behavior_manager::Action::Request::GRASP;
+  		else if (in_x == 8)
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::GRASP_UPPER;
+  		else if (in_x == 9) msg_speech_in.speech_cmd = behavior_manager::Action::Request::COVER;
+  		else if (in_x == 10)
+  		{
+  			exp_state_ = aff_msgs::ExperimentState::ACTION;
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::DROP;
+  		}
   		msg_speech_in.speech_arg = 0;
   		firstRun = false;
   		

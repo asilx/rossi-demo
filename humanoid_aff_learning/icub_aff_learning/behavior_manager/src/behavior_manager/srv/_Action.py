@@ -4,16 +4,19 @@ import struct
 
 
 class ActionRequest(roslib.message.Message):
-  _md5sum = "1e05f026524fd04c68df73732437aaa0"
+  _md5sum = "8c4e6ea0315fe17efc859933443da40a"
   _type = "behavior_manager/ActionRequest"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 DONT_ACT = -1
 int8 PUSH_RIGHT = 0
 int8 PUSH_LEFT =1
+int8 PUSH_RIGHT_UPPER = 24
+int8 PUSH_LEFT_UPPER = 25
 int8 PUSH_FORWARD =2
 int8 PUSH_BACKWARD=3
 int8 LIFT=4
 int8 GRASP=5
+int8 GRASP_UPPER=26
 int8 HOME=6
 int8 POINT=7
 int8 HIDE=8
@@ -30,6 +33,8 @@ int8 GIVE=18
 int8 RELEASE=19
 int8 RELEASE_UPWARD=20
 int8 RELEASE_DOWNWARD=21
+int8 COVER=22
+int8 DROP=23
 int8 task
 int8 arg
 float32[] pushable_object_center
@@ -40,10 +45,13 @@ float32[] pushable_object_size
   DONT_ACT = -1
   PUSH_RIGHT = 0
   PUSH_LEFT = 1
+  PUSH_RIGHT_UPPER = 24
+  PUSH_LEFT_UPPER = 25
   PUSH_FORWARD = 2
   PUSH_BACKWARD = 3
   LIFT = 4
   GRASP = 5
+  GRASP_UPPER = 26
   HOME = 6
   POINT = 7
   HIDE = 8
@@ -60,6 +68,8 @@ float32[] pushable_object_size
   RELEASE = 19
   RELEASE_UPWARD = 20
   RELEASE_DOWNWARD = 21
+  COVER = 22
+  DROP = 23
 
   __slots__ = ['task','arg','pushable_object_center','pushable_object_size']
   _slot_types = ['int8','int8','float32[]','float32[]']
@@ -318,6 +328,6 @@ _struct_I = roslib.message.struct_I
 _struct_B = struct.Struct("<B")
 class Action(roslib.message.ServiceDefinition):
   _type          = 'behavior_manager/Action'
-  _md5sum = '91e0834d6b7df68b0e128a66e059f005'
+  _md5sum = 'a02d4cd3abd10d03ab4da8e72191e483'
   _request_class  = ActionRequest
   _response_class = ActionResponse

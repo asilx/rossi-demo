@@ -56,10 +56,13 @@ struct ActionRequest_ {
   enum { DONT_ACT = -1 };
   enum { PUSH_RIGHT = 0 };
   enum { PUSH_LEFT = 1 };
+  enum { PUSH_RIGHT_UPPER = 24 };
+  enum { PUSH_LEFT_UPPER = 25 };
   enum { PUSH_FORWARD = 2 };
   enum { PUSH_BACKWARD = 3 };
   enum { LIFT = 4 };
   enum { GRASP = 5 };
+  enum { GRASP_UPPER = 26 };
   enum { HOME = 6 };
   enum { POINT = 7 };
   enum { HIDE = 8 };
@@ -76,6 +79,8 @@ struct ActionRequest_ {
   enum { RELEASE = 19 };
   enum { RELEASE_UPWARD = 20 };
   enum { RELEASE_DOWNWARD = 21 };
+  enum { COVER = 22 };
+  enum { DROP = 23 };
 
   ROS_DEPRECATED uint32_t get_pushable_object_center_size() const { return (uint32_t)pushable_object_center.size(); }
   ROS_DEPRECATED void set_pushable_object_center_size(uint32_t size) { pushable_object_center.resize((size_t)size); }
@@ -93,14 +98,14 @@ public:
   ROS_DEPRECATED const std::string __getDataType() const { return __s_getDataType_(); }
 
 private:
-  static const char* __s_getMD5Sum_() { return "1e05f026524fd04c68df73732437aaa0"; }
+  static const char* __s_getMD5Sum_() { return "8c4e6ea0315fe17efc859933443da40a"; }
 public:
   ROS_DEPRECATED static const std::string __s_getMD5Sum() { return __s_getMD5Sum_(); }
 
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "91e0834d6b7df68b0e128a66e059f005"; }
+  static const char* __s_getServerMD5Sum_() { return "a02d4cd3abd10d03ab4da8e72191e483"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -110,10 +115,13 @@ private:
   static const char* __s_getMessageDefinition_() { return "int8 DONT_ACT = -1\n\
 int8 PUSH_RIGHT = 0\n\
 int8 PUSH_LEFT =1\n\
+int8 PUSH_RIGHT_UPPER = 24\n\
+int8 PUSH_LEFT_UPPER = 25\n\
 int8 PUSH_FORWARD =2\n\
 int8 PUSH_BACKWARD=3\n\
 int8 LIFT=4\n\
 int8 GRASP=5\n\
+int8 GRASP_UPPER=26\n\
 int8 HOME=6\n\
 int8 POINT=7\n\
 int8 HIDE=8\n\
@@ -130,6 +138,8 @@ int8 GIVE=18\n\
 int8 RELEASE=19\n\
 int8 RELEASE_UPWARD=20\n\
 int8 RELEASE_DOWNWARD=21\n\
+int8 COVER=22\n\
+int8 DROP=23\n\
 int8 task\n\
 int8 arg\n\
 float32[] pushable_object_center\n\
@@ -215,7 +225,7 @@ public:
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "91e0834d6b7df68b0e128a66e059f005"; }
+  static const char* __s_getServerMD5Sum_() { return "a02d4cd3abd10d03ab4da8e72191e483"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -286,12 +296,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::behavior_manager::ActionRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "1e05f026524fd04c68df73732437aaa0";
+    return "8c4e6ea0315fe17efc859933443da40a";
   }
 
   static const char* value(const  ::behavior_manager::ActionRequest_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0x1e05f026524fd04cULL;
-  static const uint64_t static_value2 = 0x68df73732437aaa0ULL;
+  static const uint64_t static_value1 = 0x8c4e6ea0315fe17eULL;
+  static const uint64_t static_value2 = 0xfc859933443da40aULL;
 };
 
 template<class ContainerAllocator>
@@ -311,10 +321,13 @@ struct Definition< ::behavior_manager::ActionRequest_<ContainerAllocator> > {
     return "int8 DONT_ACT = -1\n\
 int8 PUSH_RIGHT = 0\n\
 int8 PUSH_LEFT =1\n\
+int8 PUSH_RIGHT_UPPER = 24\n\
+int8 PUSH_LEFT_UPPER = 25\n\
 int8 PUSH_FORWARD =2\n\
 int8 PUSH_BACKWARD=3\n\
 int8 LIFT=4\n\
 int8 GRASP=5\n\
+int8 GRASP_UPPER=26\n\
 int8 HOME=6\n\
 int8 POINT=7\n\
 int8 HIDE=8\n\
@@ -331,6 +344,8 @@ int8 GIVE=18\n\
 int8 RELEASE=19\n\
 int8 RELEASE_UPWARD=20\n\
 int8 RELEASE_DOWNWARD=21\n\
+int8 COVER=22\n\
+int8 DROP=23\n\
 int8 task\n\
 int8 arg\n\
 float32[] pushable_object_center\n\
@@ -439,7 +454,7 @@ template<>
 struct MD5Sum<behavior_manager::Action> {
   static const char* value() 
   {
-    return "91e0834d6b7df68b0e128a66e059f005";
+    return "a02d4cd3abd10d03ab4da8e72191e483";
   }
 
   static const char* value(const behavior_manager::Action&) { return value(); } 
@@ -459,7 +474,7 @@ template<class ContainerAllocator>
 struct MD5Sum<behavior_manager::ActionRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "91e0834d6b7df68b0e128a66e059f005";
+    return "a02d4cd3abd10d03ab4da8e72191e483";
   }
 
   static const char* value(const behavior_manager::ActionRequest_<ContainerAllocator> &) { return value(); } 
@@ -479,7 +494,7 @@ template<class ContainerAllocator>
 struct MD5Sum<behavior_manager::ActionResponse_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "91e0834d6b7df68b0e128a66e059f005";
+    return "a02d4cd3abd10d03ab4da8e72191e483";
   }
 
   static const char* value(const behavior_manager::ActionResponse_<ContainerAllocator> &) { return value(); } 
