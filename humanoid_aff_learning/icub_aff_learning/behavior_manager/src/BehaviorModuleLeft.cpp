@@ -1003,96 +1003,97 @@ void BehaviorModule::tuckArms() {
   bool wait;
   int control_mode_left;
   int control_mode_right;
-  for (int i = 0; i < 4; ++i)
-    {
-      if (i == 3){
-	ictrl_left->setTorqueMode(i);
-	ictrl_right->setTorqueMode(i);
-      }
-      else
-	{
-	ictrl_left->setImpedancePositionMode(i);
-	ictrl_right->setImpedancePositionMode(i);
+  if (skip){
+    for (int i = 0; i < 4; ++i)
+      {
+	if (i == 3){
+	  ictrl_left->setTorqueMode(i);
+	  ictrl_right->setTorqueMode(i);
 	}
-      ictrl_left->getControlMode(i, &control_mode_left);
-      ictrl_right->getControlMode(i, &control_mode_right);
-    }
-
-  for (int i = 0; i < 4; ++i)
-    {
-      wait = true;
-      while (wait){
+	else
+	  {
+	    ictrl_left->setImpedancePositionMode(i);
+	    ictrl_right->setImpedancePositionMode(i);
+	  }
 	ictrl_left->getControlMode(i, &control_mode_left);
 	ictrl_right->getControlMode(i, &control_mode_right);
-	if (i ==3)
-	  wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
-	else
-	  wait = !(control_mode_left == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
-	if(control_mode_left == VOCAB_CM_IDLE){
-	  cout << "Control mode is idle for left arm joint " << i << endl;
-	  iamp_left->enableAmp(i);
-	  ipid_left->enablePid(i);
-	  cout << "Enabled left arm joint " << i << endl;
+      }
+
+    for (int i = 0; i < 4; ++i)
+      {
+	wait = true;
+	while (wait){
+	  ictrl_left->getControlMode(i, &control_mode_left);
+	  ictrl_right->getControlMode(i, &control_mode_right);
+	  if (i ==3)
+	    wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
+	  else
+	    wait = !(control_mode_left == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
+	  if(control_mode_left == VOCAB_CM_IDLE){
+	    cout << "Control mode is idle for left arm joint " << i << endl;
+	    iamp_left->enableAmp(i);
+	    ipid_left->enablePid(i);
+	    cout << "Enabled left arm joint " << i << endl;
+	  }
+	  if(control_mode_right == VOCAB_CM_IDLE){
+	    cout << "Control mode is idle for right arm joint " << i << endl;
+	    iamp_right->enableAmp(i);
+	    ipid_right->enablePid(i);
+	    cout << "Enabled right arm joint " << i << endl;
+	  }
+
+	  if (wait ==true)
+	    cout << "Control mode wrong" << endl;
 	}
-	if(control_mode_right == VOCAB_CM_IDLE){
-	  cout << "Control mode is idle for right arm joint " << i << endl;
-	  iamp_right->enableAmp(i);
-	  ipid_right->enablePid(i);
-	  cout << "Enabled right arm joint " << i << endl;
+      }
+
+    js=0;
+    js[0]=10;
+    js[1]=20;
+    js[2]=-30;
+    js[3]=0;
+    js[4]=-60;
+    js[5]=0;
+    js[6]=20;
+    pos_ctrl_left->positionMove(js.data());
+    pos_ctrl_right->positionMove(js.data());
+
+    bool done=false;
+
+    cout << "First set is done " << endl;
+    Time::delay(5.0);
+
+    cout << "Motion done " << endl;
+    js[3]=70;
+    ictrl_left->setImpedancePositionMode(3);
+    ictrl_right->setImpedancePositionMode(3);
+    wait = true;
+    while (wait){
+      ictrl_left->getControlMode(3, &control_mode_left);
+      ictrl_right->getControlMode(3, &control_mode_right);
+      wait = !(control_mode_left ==  VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right ==  VOCAB_CM_IMPEDANCE_POS);;
+      if (control_mode_left == VOCAB_CM_IDLE)
+	{
+	  cout << "Left arm joint 3 is idle" << endl;
+	  iamp_left->enableAmp(joint);
+	  ipid_left->enablePid(joint);
+	}
+      if (control_mode_right == VOCAB_CM_IDLE)
+	{
+	  cout << "Right arm joint 3 is idle" << endl;
+	  iamp_right->enableAmp(joint);
+	  ipid_right->enablePid(joint);
 	}
 
-	if (wait ==true)
-	  cout << "Control mode wrong" << endl;
-      }
+      if (wait ==true)
+	cout << "Control mode wrong for joint 3" << endl;
     }
 
-  js=0;
-  js[0]=10;
-  js[1]=20;
-  js[2]=-30;
-  js[3]=0;
-  js[4]=-60;
-  js[5]=0;
-  js[6]=20;
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
+    cout << "Second command " << endl;
+    pos_ctrl_left->positionMove(js.data());
+    pos_ctrl_right->positionMove(js.data());
 
-  bool done=false;
-
-  cout << "First set is done " << endl;
-  Time::delay(5.0);
-
-  cout << "Motion done " << endl;
-  js[3]=70;
-  ictrl_left->setImpedancePositionMode(3);
-  ictrl_right->setImpedancePositionMode(3);
-  wait = true;
-  while (wait){
-    ictrl_left->getControlMode(3, &control_mode_left);
-    ictrl_right->getControlMode(3, &control_mode_right);
-    wait = !(control_mode_left ==  VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right ==  VOCAB_CM_IMPEDANCE_POS);;
-    if (control_mode_left == VOCAB_CM_IDLE)
-      {
-	cout << "Left arm joint 3 is idle" << endl;
-	iamp_left->enableAmp(joint);
-	ipid_left->enablePid(joint);
-      }
-    if (control_mode_right == VOCAB_CM_IDLE)
-      {
-	cout << "Right arm joint 3 is idle" << endl;
-	iamp_right->enableAmp(joint);
-	ipid_right->enablePid(joint);
-      }
-
-    if (wait ==true)
-      cout << "Control mode wrong for joint " << endl;
   }
-
-  cout << "Second command " << endl;
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
-
-
   //finally connect cartesian solvers back
   if (left_arm_cart_solver_active) {
     //      driver_left.close();
