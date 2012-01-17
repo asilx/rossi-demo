@@ -182,9 +182,12 @@ public:
 	void lookAtFace();
 
 	void reach(Vector bb_center, Vector bb_dims);
+	void drop();
 	
 	void push_right(Vector bb_center, Vector bb_dims, bool isUpper);
 	void push_left(Vector bb_center, Vector bb_dims, bool isUpper);
+	void grasp(Vector bb_center, Vector bb_dims, bool isUpper);
+	void pull(Vector bb_center, Vector bb_dims);
 	void cover(Vector bb_center, Vector bb_dims);
 
 	void testHandSequences();

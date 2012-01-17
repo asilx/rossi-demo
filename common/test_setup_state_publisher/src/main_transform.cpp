@@ -23,10 +23,14 @@ using namespace yarp::os;
 using namespace yarp::sig;
 using namespace yarp::math;
 
-#define CHANNEL209 "Channel105"
-#define CHANNEL210 "Channel106"
-#define CHANNEL211 "Channel107"
-#define CHANNEL212 "Channel108"
+//#define CHANNEL209 "Channel105"
+//#define CHANNEL210 "Channel106"
+//#define CHANNEL211 "Channel107"
+//#define CHANNEL212 "Channel108"
+
+const std::string CHANNEL209 =  "Channel105";
+const std::string CHANNEL211 =  "Channel107";
+const std::string CHANNEL212 = "Channel108";
 
 typedef struct ledVector
 {
@@ -62,6 +66,7 @@ bool tf_calculated = false;
 
 const int N_TRANSFORM = 10;
 
+
 Vector
 getCoordinatesByChannelName (const char* channelOfInterest)
 {
@@ -84,6 +89,8 @@ getCameraLedInfo (const Bottle& b)
   {
     LEDVector led;
     led.channelName = b.get (i).asString ();//channel name
+    if(led.channelName == "Channel102")
+		continue;
 
     //now convert led coordinates from KDL frame back to the iCub frame
     /*
@@ -113,10 +120,10 @@ getCameraLedInfo (const Bottle& b)
 void
 getTransformation (Vector& offset, Vector& rpy)
 {
-  Vector ch209 = getCoordinatesByChannelName (CHANNEL209);
+  Vector ch209 = getCoordinatesByChannelName (CHANNEL209.c_str());
   //  Vector ch210 = getCoordinatesByChannelName (CHANNEL210);
-  Vector ch211 = getCoordinatesByChannelName (CHANNEL211);
-  Vector ch212 = getCoordinatesByChannelName (CHANNEL212);
+  Vector ch211 = getCoordinatesByChannelName (CHANNEL211.c_str());
+  Vector ch212 = getCoordinatesByChannelName (CHANNEL212.c_str());
 
   //get camera casis coordinate system
 
@@ -232,9 +239,12 @@ class DataPort : public BufferedPort<Bottle>
     else
     {
       std::cout << "calculating average transform" << std::endl;
+      std::cout<<"translation: "<<avg_tranform.offset[0]<<" "<<avg_tranform.offset[1]<<" "<<avg_tranform.offset[2]<<std::endl;
+      std::cout<<"orientation: "<<avg_tranform.rpy[0]<<" "<<avg_tranform.rpy[1]<<" "<<avg_tranform.rpy[2]<<std::endl;
       avg_tf = new tf::StampedTransform (getTF (avg_tranform.offset, avg_tranform.rpy), ros::Time::now (),
-                                         "/base_link", "/swissranger_link");
-      this->close (); //close this connection
+                                         "/base_link", "/swissranger_link");                        
+	tf_calculated = true;                          
+      	this->close (); //close this connection
     }
   }
 /*
@@ -292,10 +302,10 @@ main (int argc, char* argv[])
   Network::connect ("/vzRawPout", "/i:vzListen");
 
   std::cout << "waiting for mocap to be connected" << std::endl;
-  while (!Network::isConnected ("/vzRawPout", "/i:vzListen") && n.ok ())
+  while (!tf_calculated && n.ok ())
   {
   }
-  std::cout << "mocap is connected, ready for led data..." << std::endl;
+  std::cout << "tf is calculated" << std::endl;
 
   static tf::TransformBroadcaster br;
 
@@ -306,8 +316,8 @@ main (int argc, char* argv[])
     {
       br.sendTransform (tf::StampedTransform (*avg_tf, ros::Time::now (), "/base_link", "/swissranger_link"));
     }
-    r.sleep ();
     ros::spinOnce ();
+    r.sleep ();
   }
   Network::fini ();
   delete avg_tf;
