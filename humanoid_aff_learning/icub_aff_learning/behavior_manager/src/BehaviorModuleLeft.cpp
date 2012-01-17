@@ -599,6 +599,10 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_right.view(ictrl_right);
   ok = ok && driver_right.view(iimp_right);
   ok = ok && driver_right.view(itrq_right);
+  ok = ok && driver_left.view(iamp_left);
+  ok = ok && driver_left.view(ipid_left);
+  ok = ok && driver_rigth.view(iamp_right);
+  ok = ok && driver_right.view(ipid_right);
 
 
   chosen_arm = "left";
@@ -995,76 +999,7 @@ void BehaviorModule::tuckArms() {
 
   //set command positions
   js.resize(positions_left_enc.size());
-  /*std::cout << " ************** " << js.size() << " ************** "
-	    << std::endl;
-  //js[0] = -15;
-  js[0] = 10;
-  js[1] = 20;
-  //js[1] = 40;//for simulator
-  js[2] = -30;
-  js[3] = 60;
-  //js[3] = 0; //for torque control
-  js[4] = -60;
-  js[5] = 0;
-  js[6] = 20;
 
-  // enable for impedance control
-  for (int i = 0; i < 5; ++i) 	// first four joints can be controlled by impedance control
-    {
-      ictrl_left->setImpedancePositionMode(i);
-      ictrl_right->setImpedancePositionMode(i);
-    }
-
-  ictrl_left->setTorqueMode(3);
-  ictrl_right->setTorqueMode(3);
-
-  for (int i = 7; i < js.size(); i++)
-    js[i] = positions_left_enc[i];
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
-
-  bool done = false;
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_left->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
-
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_right->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
-
-  for (int i = 0; i < 5; ++i)
-    {
-      wait = true;
-      while (wait){
-	ictrl_left->getControlMode(i, &control_mode);
-	ictrl_right->getControlMode(i, &control_mode);
-	if (i ==3)
-	  wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
-	else
-	  wait = !(control_mode == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
-
-	if (wait ==true)
-	  cout << "Control mode wrong" << endl;
-      }
-    }
-
-  js[3] = 60;
-  pos_ctrl_left->positionMove(js.data());
-  pos_ctrl_right->positionMove(js.data());
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_left->checkMotionDone(&done);
-    Time::delay(0.001);
-  }
-  done = false;
-  while (!done && left_arm_cart_solver_active) {
-    pos_ctrl_right->checkMotionDone(&done);
-    Time::delay(0.001);
-  }*/
   bool wait;
   int control_mode_left;
   int control_mode_right;
@@ -1093,6 +1028,18 @@ void BehaviorModule::tuckArms() {
 	  wait = !(control_mode_left == VOCAB_CM_TORQUE) && !(control_mode_right == VOCAB_CM_TORQUE);
 	else
 	  wait = !(control_mode_left == VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right == VOCAB_CM_IMPEDANCE_POS);
+	if(control_mode_left == VOCAB_CM_IDLE){
+	  cout << "Control mode is idle for left arm joint " << i << endl;
+	  iamp_left->enableAmp(i);
+	  ipid_left->enablePid(i);
+	  cout << "Enabled left arm joint " << i << endl;
+	}
+	if(control_mode_right == VOCAB_CM_IDLE){
+	  cout << "Control mode is idle for right arm joint " << i << endl;
+	  iamp_right->enableAmp(i);
+	  ipid_right->enablePid(i);
+	  cout << "Enabled right arm joint " << i << endl;
+	}
 
 	if (wait ==true)
 	  cout << "Control mode wrong" << endl;
@@ -1124,9 +1071,21 @@ void BehaviorModule::tuckArms() {
     ictrl_left->getControlMode(3, &control_mode_left);
     ictrl_right->getControlMode(3, &control_mode_right);
     wait = !(control_mode_left ==  VOCAB_CM_IMPEDANCE_POS) && !(control_mode_right ==  VOCAB_CM_IMPEDANCE_POS);;
+    if (control_mode_left == VOCAB_CM_IDLE)
+      {
+	cout << "Left arm joint 3 is idle" << endl;
+	iamp_left->enableAmp(joint);
+	ipid_left->enablePid(joint);
+      }
+    if (control_mode_right == VOCAB_CM_IDLE)
+      {
+	cout << "Right arm joint 3 is idle" << endl;
+	iamp_right->enableAmp(joint);
+	ipid_right->enablePid(joint);
+      }
 
     if (wait ==true)
-      cout << "Control mode wrong for joint 3 " << endl;
+      cout << "Control mode wrong for joint " << endl;
   }
 
   cout << "Second command " << endl;

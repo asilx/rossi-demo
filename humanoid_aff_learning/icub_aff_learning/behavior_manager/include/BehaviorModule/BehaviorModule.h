@@ -74,8 +74,11 @@ protected:
 	IPositionControl* pos_ctrl_torso;
 	IGazeControl* igaze;
 
-<<<<<<< HEAD
-=======
+	IAmplifierControl *iamp_left;
+	IPidControl *ipid_left;
+	IAmplifierControl *iamp_right;
+	IPidControl *ipid_right;
+
 	IControlMode *ictrl_left;
 	IImpedanceControl *iimp_left;
 	ITorqueControl *itrq_left;
@@ -83,8 +86,6 @@ protected:
 	IImpedanceControl *iimp_right;
 	ITorqueControl *itrq_right;
 
-
->>>>>>> asil/master
 	IEncoders* encoders_right;
 	IEncoders* encoders_left;
 	IEncoders *encoders_head;
@@ -185,39 +186,19 @@ public:
 	void lookAtFace();
 
 	void reach(Vector bb_center, Vector bb_dims);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
+
 	void drop();
->>>>>>> asil
-	
+
 	void push_right(Vector bb_center, Vector bb_dims, bool isUpper);
 	void push_left(Vector bb_center, Vector bb_dims, bool isUpper);
 	void grasp(Vector bb_center, Vector bb_dims, bool isUpper);
 	void pull(Vector bb_center, Vector bb_dims);
 	void cover(Vector bb_center, Vector bb_dims);
->>>>>>> asil/master
 
 	void testHandSequences();
 
 	void openHand();
 
-<<<<<<< HEAD
-	void BehaviorModule::openEyeLids();
-
-	void BehaviorModule::closeEyeLids();
-
-	void BehaviorModule::happy();
-
-	void BehaviorModule::angry();
-
-	void BehaviorModule::sad();
-
-	void BehaviorModule::evil();
-
-	void BehaviorModule::neutral();
-=======
 	void openEyeLids();
 
 	void closeEyeLids();
@@ -231,7 +212,7 @@ public:
 	void evil();
 
 	void neutral();
->>>>>>> asil/master
+
 	// we don't need a thread since the actions library already
 	// incapsulates one inside dealing with all the tight time constraints
 	virtual bool updateModule();
