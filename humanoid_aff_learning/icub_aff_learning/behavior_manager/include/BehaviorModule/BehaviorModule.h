@@ -115,6 +115,8 @@ protected:
 	/* Vector torques_right; */
 
 	string chosen_arm;
+	bool objectStatus;
+
 	BufferedPort<Bottle> port_grasp_comm_right;
 	BufferedPort<Bottle> port_grasp_comm_left;
 
@@ -123,7 +125,8 @@ protected:
 
 	Port rpcPort;
 	Port emotP;
-	Bottle outBot;
+	Port port_tactReader_left;
+	Port port_tactReader_right;
 	//ITorqueControl *trq_ctrl_left, *trq_ctrl_right;
 	//IControlMode* ictrl;
 
@@ -183,6 +186,8 @@ public:
 	void release(Vector point, bool palm_upward = true);
 
 	void choseArm(double y_position);
+
+	void checkObject();
 
 	void home(bool is_left_arm = false);
 

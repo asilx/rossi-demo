@@ -1,6 +1,7 @@
 #include "BehaviorModule/BehaviorModule.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 
@@ -778,7 +779,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
     return false;
   }
 
-
   deque<string> q = action_right->getHandSeqList();
   cout << "***** List of available for right hand sequence keys:" << endl;
   for (size_t i = 0; i < q.size(); i++)
@@ -790,8 +790,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
     cout << q[i] << endl;
 
 
-  //++Onur
-
   cout << "Data logger setup" << endl;
 
   //						file basename		path to save	featureCount(optional)
@@ -799,7 +797,6 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   experimentEpoch = 0;
 
   cout << "Data logger setup done" << endl;
-  //--Onur
 
   return true;
 }
@@ -821,6 +818,8 @@ double BehaviorModule::getPeriod() {
 void BehaviorModule::init() {
   port_grasp_comm_left.open("/o:graspCommLeft");
   port_grasp_comm_right.open("/o:graspCommRight");
+  port_tactReader_left.open("/i:BehaviorTactileLeft");
+  port_tactReader_right.open("/i:BehaviorTactileRight");
 
   ROS_INFO("waiting for tactileGrasp module to be opened !");
   while (!Network::isConnected("/o:graspCommLeft", "/tactGraspLeft/rpc:i") && nh.ok()) {
@@ -832,6 +831,17 @@ void BehaviorModule::init() {
     Network::connect("/o:graspCommRight", "/tactGraspRight/rpc:i");
     ros::spinOnce();
   }
+
+  while (!Network::isConnected("/icub/skin/righthandcomp", "/i:BehaviorTactileRight") && nh.ok()) {
+    Network::connect("/icub/skin/righthandcomp", "/i:BehaviorTactileRight");
+    ros::spinOnce();
+  }
+
+  while (!Network::isConnected("/icub/skin/lefthandcomp", "/i:BehaviorTactileLeft") && nh.ok()) {
+    Network::connect("/icub/skin/lefthandcomp", "/i:BehaviorTactileLeft");
+    ros::spinOnce();
+  }
+
   ROS_INFO("OK, connected to the tactGrasp modules! ");
 
   action_left->enableContactDetection();
@@ -1069,10 +1079,29 @@ void BehaviorModule::tuckArms() {
   //set command positions
   js.resize(positions_left_enc.size());
 
+  bool skip = true;
   bool wait;
   int control_mode_left;
   int control_mode_right;
-  if (skip){
+
+  js=0;
+  js[0]=10;
+  js[1]=20;
+  js[2]=-30;
+  js[3]=70;
+  js[4]=-60;
+  js[5]=0;
+  js[6]=20;
+
+  for (int i = 0; i < js.size(); ++i)
+    {
+      skip = skip && (abs(positions_left_enc[i] - js[i]) < 2);
+      skip = skip && (abs(positions_right_enc[i] - js[i]) < 2);
+      cout << "Joint " << i << "is not at wanted position" << endl;
+    }
+
+  if (!skip){
+    js[3]=0;
     for (int i = 0; i < 4; ++i)
       {
 	if (i == 3){
@@ -1115,7 +1144,7 @@ void BehaviorModule::tuckArms() {
 	  if (wait ==true)
 	    cout << "Control mode wrong" << endl;
 	}
-
+      }
     js=0;
     js[0]=10;
     js[1]=20;
@@ -1161,8 +1190,9 @@ void BehaviorModule::tuckArms() {
     cout << "Second command " << endl;
     pos_ctrl_left->positionMove(js.data());
     pos_ctrl_right->positionMove(js.data());
-
   }
+  else
+    cout << "Skipping tuck arms" << endl;
   //finally connect cartesian solvers back
   if (left_arm_cart_solver_active) {
     //      driver_left.close();
@@ -1230,6 +1260,44 @@ void BehaviorModule::choseArm(double y_position){
   if (y_position >0.0){
     cout << "Right arm is chosen" << endl;
     chosen_arm = "right";
+  }
+}
+
+void BehaviorModule::checkObject(){
+  objectStatus = false;
+  if(chosen_arm == "left"){
+    Bottle* points = port_tactReader_left.read();
+    double totalReading = 0;
+
+    for (int i = 0; i < 4; i++)
+      {
+	for (int j=0;j<12;j++)
+	  {
+	    totalReading += points->get(i*12+j).asDouble();
+	  }
+      }
+    cout << "total reading for left arm is " << totalReading << endl;
+    if(totalReading>30){
+      objectStatus = true;
+      cout << "left hand has an object" << endl;
+    }
+  }
+  if(chosen_arm == "right"){
+    Bottle* points = port_tactReader_right.read();
+    double totalReading = 0;
+
+    for (int i = 0; i < 4; i++)
+      {
+	for (int j=0;j<12;j++)
+	  {
+	    totalReading += points->get(i*12+j).asDouble();
+	  }
+      }
+    cout << "total reading for left arm is " << totalReading << endl;
+    if(totalReading>30){
+      objectStatus = true;
+      cout << "left hand has an object" << endl;
+    }
   }
 }
 
@@ -1339,7 +1407,7 @@ bool BehaviorModule::interruptModule() {
 /*
 	In some actions, logging should not be done. Such as HOME, TUCK_ARMS, LOOK_AT_POINT, LOOK_AT_FACE
 	Parameters:
-		taskId. Ranges within the enumeration behavior_manager::Action::Request
+		taskdI. Ranges within the enumeration behavior_manager::Action::Request
 
 
 */
