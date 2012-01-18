@@ -489,6 +489,11 @@ run ()
     }
     else if (exp_state_ == aff_msgs::ExperimentState::ACTION)
     {
+      yarp::os::Network::disconnect("/o:ReflexCommand", "/tactGraspRight/rpc:i");
+      yarp::os::Network::disconnect("/icub/skin/righthandcomp", "/i:ReflexTactile");
+      yarp::os::Network::disconnect("/o:ReflexCommand", "/tactGraspLeft/rpc:i");
+      yarp::os::Network::disconnect("/icub/skin/lefthandcomp", "/i:ReflexTactile");
+    
       say (info_acting);
       ROS_INFO("ACTION!\n");
 
@@ -527,6 +532,10 @@ run ()
       ROS_INFO ( "calling action service");
       ros::service::call ("/action", srv_action.request, srv_action.response);
       ROS_INFO ("finished action");
+      yarp::os::Network::connect("/o:ReflexCommand", "/tactGraspRight/rpc:i");
+      yarp::os::Network::connect("/icub/skin/righthandcomp", "/i:ReflexTactile");
+      yarp::os::Network::connect("/o:ReflexCommand", "/tactGraspLeft/rpc:i");
+      yarp::os::Network::connect("/icub/skin/lefthandcomp", "/i:ReflexTactile");
 
       //****************************************************
 

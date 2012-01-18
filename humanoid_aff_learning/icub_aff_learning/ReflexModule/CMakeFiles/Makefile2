@@ -47,10 +47,10 @@ RM = /usr/bin/cmake -E remove -f
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/asil/Desktop/ReflexModule
+CMAKE_SOURCE_DIR = /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/asil/Desktop/ReflexModule
+CMAKE_BINARY_DIR = /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule
 
 #=============================================================================
 # Target rules for target CMakeFiles/yarpy.dir
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/asil/Desktop/ReflexModule
 CMakeFiles/yarpy.dir/all:
 	$(MAKE) -f CMakeFiles/yarpy.dir/build.make CMakeFiles/yarpy.dir/depend
 	$(MAKE) -f CMakeFiles/yarpy.dir/build.make CMakeFiles/yarpy.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/Desktop/ReflexModule/CMakeFiles  1 2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/CMakeFiles  1 2
 	@echo "Built target yarpy"
 .PHONY : CMakeFiles/yarpy.dir/all
 
@@ -69,9 +69,9 @@ all: CMakeFiles/yarpy.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/yarpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asil/Desktop/ReflexModule/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/yarpy.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/asil/Desktop/ReflexModule/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/CMakeFiles 0
 .PHONY : CMakeFiles/yarpy.dir/rule
 
 # Convenience name for target.

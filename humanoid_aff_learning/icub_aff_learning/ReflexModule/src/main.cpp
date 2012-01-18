@@ -1,4 +1,6 @@
 #include "ReflexModule.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 #define DATA_PRECISION ROUGH
 
@@ -13,7 +15,7 @@ int main(int argc, char** argv)
 	yarp::os::ResourceFinder rf;
 	rf.setVerbose(true);
 
-	ReflexModule sr4k;
+	ReflexModule sr4k(isRight);
 
     return sr4k.runModule(rf);
 }
