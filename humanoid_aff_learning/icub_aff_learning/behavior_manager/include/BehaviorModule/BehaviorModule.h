@@ -200,6 +200,10 @@ public:
 	void reach(Vector bb_center, Vector bb_dims);
 
 	void drop();
+	
+	void take();
+	
+	void give();
 
 	void push_right(Vector bb_center, Vector bb_dims, bool isUpper);
 	void push_left(Vector bb_center, Vector bb_dims, bool isUpper);

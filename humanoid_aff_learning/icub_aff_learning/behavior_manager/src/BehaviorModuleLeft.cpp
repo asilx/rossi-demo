@@ -1569,3 +1569,95 @@ void BehaviorModule::neutral()
   outBot.addString("neu");
   emotP.write(outBot);
 }
+
+void BehaviorModule::take()
+{
+	choseArm(-1);
+	Vector point(3);
+	point[0] = -0.12;
+	point[1] = -005;
+	point[2] = 0;
+	release(point, false);
+	
+	Vector hand_orient;
+  	Vector current;
+  	action_right->getPose(current, hand_orient);
+  	if(chosen_arm == "right")
+  	{
+      		
+			hand_orient = angleXZToVectorAngle(0, PI);
+  	}
+  	else
+  	{
+      	
+			hand_orient = angleXZToVectorAngle(PI, PI);
+  	}
+  
+  	action_right->pushAction(current, hand_orient);
+  	Time::delay(2);
+  	
+  	Bottle& btout_right = port_grasp_comm_right.prepare();
+  	Bottle& btout_left = port_grasp_comm_left.prepare();
+  	btout_right.clear();
+  	btout_left.clear();
+  	// Do the closing action
+
+  	std::cout << "Closing the hand..." << std::endl;
+
+        
+  	if(chosen_arm == "left")
+  	{
+      		std::string s = "gc";
+      		btout_left.addString(s.c_str());
+      		port_grasp_comm_left.write();
+  	}
+  	else
+  	{
+      		std::string s = "gc";
+      		btout_right.addString(s.c_str());
+      		port_grasp_comm_right.write();
+  	}
+
+}
+
+void BehaviorModule::give()
+{
+  Vector hand_orient;
+  Vector current;
+  action_right->getPose(current, hand_orient);
+  if(chosen_arm == "right")
+  {
+      
+	hand_orient = angleXZToVectorAngle(0, PI);
+  }
+  else
+  {
+     
+	hand_orient = angleXZToVectorAngle(PI, PI);
+  }
+  
+  action_right->pushAction(current, hand_orient);
+  Time::delay(2);
+  Bottle& btout_right = port_grasp_comm_right.prepare();
+  Bottle& btout_left = port_grasp_comm_left.prepare();
+  btout_right.clear();
+  btout_left.clear();
+  // Do the closing action
+
+  std::cout << "Closing the hand..." << std::endl;
+
+        
+  if(chosen_arm == "left")
+  {
+      std::string s = "oh";
+      btout_left.addString(s.c_str());
+      port_grasp_comm_left.write();
+  }
+  else
+  {
+      std::string s = "oh";
+      btout_right.addString(s.c_str());
+      port_grasp_comm_right.write();
+  }
+
+}

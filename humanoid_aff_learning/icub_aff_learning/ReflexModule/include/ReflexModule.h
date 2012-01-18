@@ -30,13 +30,14 @@ public:
     virtual bool 	respond(const yarp::os::Bottle &command,yarp::os::Bottle &reply);
     virtual double 	getPeriod();
 
-	ReflexModule();
+	ReflexModule(int i);
 
 
 private:
 	yarp::os::BufferedPort<yarp::os::Bottle> _portFeat;
 	yarp::os::BufferedPort<yarp::os::Bottle> _portPC;
         bool isClosed;
+        int isRight;
 	
 };
 

@@ -46,14 +46,14 @@ bool ReflexModule::updateModule()
 	return true;
 }
 
-ReflexModule::ReflexModule()
+ReflexModule::ReflexModule(int i)
 {
-	
+	isRight = i;
 }
 
 double 	ReflexModule::getPeriod()
 {
-	return 0.5;
+	return 5;
 }
 
 bool 	ReflexModule::close()
@@ -77,6 +77,19 @@ bool	ReflexModule::configure(yarp::os::ResourceFinder &rf)
 {
 	_portFeat.open(getName("/o:ReflexCommand"));
 	_portPC.open(getName("/i:ReflexTactile"));
+	
+	
+	if(isRight)
+	{
+		yarp::os::Network::connect("/o:ReflexCommand", "/tactGraspRight/rpc:i");
+		yarp::os::Network::connect("/icub/skin/righthandcomp", "/i:ReflexTactile");
+	}
+	else
+	{
+		yarp::os::Network::connect("/o:ReflexCommand", "/tactGraspLeft/rpc:i");
+		yarp::os::Network::connect("/icub/skin/lefthandcomp", "/i:ReflexTactile");
+	}
+	
 	isClosed = false;
 	return true;
 }
