@@ -48,6 +48,8 @@ const bool filter_not_table_top_objects = true;
 const float object_center[] = {-0.3, -0.2, 0.0};
 const float object_dims[] = {0.06, 0.06, 0.06};
 
+bool sr4k_active = false; //false to enable kinect, o.w. sr4k
+
 // ++Onur
 
 // ++Asil: Modified by
@@ -817,8 +819,16 @@ pc2RcvdCallback (sensor_msgs::PointCloud2::ConstPtr pc2_msg)
 
   if (filter_point_cloud)
   {
-    tf_listener->lookupTransform ("/base_link", "/swissranger_link", ros::Time (0), tf_transform);
-    pcl_ros::transformPointCloud ("/base_link", tf_transform, *pc2_msg, pc2_);
+	  if(sr4k_active)
+	  {
+		tf_listener->lookupTransform ("/base_link", "/swissranger_link", ros::Time (0), tf_transform);
+		pcl_ros::transformPointCloud ("/base_link", tf_transform, *pc2_msg, pc2_);
+	  }
+	  else
+	  {
+		tf_listener->lookupTransform ("/base_footprint", "/camera_link", ros::Time (0), tf_transform);
+		pcl_ros::transformPointCloud ("/base_footprint", tf_transform, *pc2_msg, pc2_);
+	  }
 
     pcl::fromROSMsg (pc2_, *pc2_data_);
 
@@ -1265,8 +1275,16 @@ init ()
   {
     try
     {
-      tf_listener->waitForTransform ("/base_link", "/swissranger_link", ros::Time (0), ros::Duration (0.1));
-      tf_listener->lookupTransform ("/base_link", "/swissranger_link", ros::Time (0), tf_transform);
+		if(sr4k_active)
+		{
+			tf_listener->waitForTransform ("/base_link", "/swissranger_link", ros::Time (0), ros::Duration (0.1));
+			tf_listener->lookupTransform ("/base_link", "/swissranger_link", ros::Time (0), tf_transform);
+		}
+		else
+		{
+			tf_listener->waitForTransform ("/base_footprint", "/camera_link", ros::Time (0), ros::Duration (0.1));
+			tf_listener->lookupTransform ("/base_footprint", "/camera_link", ros::Time (0), tf_transform);			
+		}
       got_tf = true;
     }
     catch (tf::LookupException& e)
