@@ -128,6 +128,13 @@ protected:
 	//IControlMode* ictrl;
 
 
+	// ++Onur: Data Logging
+	DataLogger* behaviorModuleDataLogger;
+	int experimentEpoch;
+	std::vector<double> featuresToLog;
+	// --Onur
+
+
 	aff_msgs::ExperimentState exp_state_;
 
 	ros::Publisher pub_internal_features_;
@@ -199,6 +206,19 @@ public:
 
 	void openHand();
 
+/*	void BehaviorModule::openEyeLids();
+
+	void BehaviorModule::closeEyeLids();
+
+	void BehaviorModule::happy();
+
+	void BehaviorModule::angry();
+
+	void BehaviorModule::sad();
+
+	void BehaviorModule::evil();
+
+	void BehaviorModule::neutral();*/
 	void openEyeLids();
 
 	void closeEyeLids();
@@ -212,10 +232,15 @@ public:
 	void evil();
 
 	void neutral();
-
 	// we don't need a thread since the actions library already
 	// incapsulates one inside dealing with all the tight time constraints
 	virtual bool updateModule();
+
+	//++Onur
+	bool determineLogState(int taskId);
+	void logJointAndForceData(int state);
+
+	//--Onur
 
 	bool interruptModule();
 };

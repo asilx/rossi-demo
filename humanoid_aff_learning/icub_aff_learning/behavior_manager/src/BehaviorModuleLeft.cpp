@@ -14,7 +14,7 @@ BehaviorModule::~BehaviorModule() {
 
 }
 
-void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
+void BehaviorModule::push_right(Vector bbcenter, Vector bb_dims, bool isUpper)
 {
 	choseArm(-1);
 
@@ -24,7 +24,7 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
 		Vector reach_point = bb_center;
 		Vector hand_orient = angleXZToVectorAngle(3 * PI / 2, PI);
 		bool f;
-    		//reach_point[2] += bb_dims[2]/2+0.08;
+    		//reach_point[2] = bb_dims[2]/2+0.08;
     		reach_point[1] -= (bb_dims[1]/2 + 0.05);
     		//reach_point[0] += 0.01;
     		reach_point[2] += 0.05;
@@ -319,7 +319,7 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 void BehaviorModule::drop()
 {
     Bottle& btout2 = port_grasp_comm_left.prepare();;
-    if(chosen_arm == "left")
+    if(chosenarm == "left")
       btout2 = port_grasp_comm_left.prepare();
     else
       btout2 = port_grasp_comm_right.prepare();
@@ -362,27 +362,37 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
 	size[2] = bb_dims_[2];
       }
     }
-    bool logFlag = true;
+
+    bool logFlag = determineLogState(request.task);
+    bool restoreState = false;
+
+
+	if (logFlag)
+	{
+	    cout << "Logging initial configurations... " << endl;
+	    logJointAndForceData(0);
+	    cout << "...done" << endl;
+	}
 
     if (request.task == behavior_manager::Action::Request::HOME) {
       home();
       ROS_INFO("icub home");
-      logFlag = false;
+      //logFlag = false;
     }
     else if (request.task == behavior_manager::Action::Request::TUCK_ARMS) {
       ROS_INFO("tuck arms");
       tuckArms();
-      logFlag = false;
+      //logFlag = false;
     }
     else if (request.task == behavior_manager::Action::Request::LOOK_AT_POINT) {
       ROS_INFO("look at point");
       lookAtPoint(center);
-      logFlag = false;
+      //logFlag = false;
     }
     else if (request.task == behavior_manager::Action::Request::LOOK_AT_FACE) {
       ROS_INFO("look at face");
       lookAtFace();
-      logFlag = false;
+      //logFlag = false;
     }
     else if (request.task == behavior_manager::Action::Request::REACH) {
       ROS_INFO("reach");
@@ -391,19 +401,28 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     else if (request.task == behavior_manager::Action::Request::RELEASE) {
       ROS_INFO("release");
       release(center, false);
-      logFlag = false;
+      //logFlag = false;
     }
     else if (request.task == behavior_manager::Action::Request::PUSH_LEFT) {
          ROS_INFO("icub push left");
          push_left(center, size, false);
-         openHand();
-         tuckArms();
+
+       // ++Onur
+       restoreState = true;
+       //openHand();
+       //tuckArms();
+       // --Onur
+
     } else if (request.task
      	       == behavior_manager::Action::Request::PUSH_RIGHT) {
        ROS_INFO("BehaviorModule:icub push right");
        push_right(center, size, false);
-       openHand();
-       tuckArms();
+
+       // ++Onur
+       restoreState = true;
+       //openHand();
+       //tuckArms();
+       // --Onur
 
      }
      else if (request.task == behavior_manager::Action::Request::PUSH_LEFT_UPPER) {
@@ -452,6 +471,15 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
          drop();
     }
 
+       cover(center, size);
+
+       // ++Onur
+       restoreState = true;
+       //openHand();
+       //tuckArms();
+       // --Onur
+    }
+
     // else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
     //   ROS_INFO("close eye lids");
     //   closeEyeLids();
@@ -487,6 +515,26 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     //   neutral();
     //   logFlag = false;
     // }
+
+    //++Onur
+
+    if(logFlag)
+    {
+	cout << "Logging final configurations... " << endl;
+    	logJointAndForceData(1);
+    	experimentEpoch++;
+
+    	cout << "... done. NOTE: experimentEpoch incremented" << endl;
+    }
+
+    // If the state is to be restored, better do it after the joint configurations, etc. are all stored.
+    if(restoreState)
+    {
+    	openHand();
+    	tuckArms();
+    }
+
+    //--Onur
 
   }
   response.feedback = behavior_manager::Action::Response::DONE;
@@ -732,6 +780,19 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   cout << "***** List of available for left hand sequence keys:" << endl;
   for (size_t i = 0; i < q.size(); i++)
     cout << q[i] << endl;
+
+
+  //++Onur
+
+  cout << "Data logger setup" << endl;
+
+  //						file basename		path to save	featureCount(optional)
+  behaviorModuleDataLogger = new DataLogger(   "force_and_joint"  ,         ".", 	-1			);
+  experimentEpoch = 0;
+
+  cout << "Data logger setup done" << endl;
+  //--Onur
+
   return true;
 }
 
@@ -1264,6 +1325,110 @@ bool BehaviorModule::interruptModule() {
 
   return true;
 }
+
+//++Onur TODO
+
+/*
+	In some actions, logging should not be done. Such as HOME, TUCK_ARMS, LOOK_AT_POINT, LOOK_AT_FACE
+	Parameters:
+		taskId. Ranges within the enumeration behavior_manager::Action::Request
+
+
+*/
+bool BehaviorModule::determineLogState(int taskId)
+{
+
+	/*
+	Other candidates to exclude logging: (Onur: not sure if they will be exclusively called in actionCallback)
+		OPEN_EYE_LIDS
+		HAPPY
+		ANGRY
+		SAD
+		EVIL
+		NEUTRAL
+		CLOSE_EYE_LIDS
+
+	*/
+	return (
+		taskId != behavior_manager::Action::Request::HOME &&
+		taskId != behavior_manager::Action::Request::TUCK_ARMS &&
+		taskId != behavior_manager::Action::Request::LOOK_AT_POINT &&
+		taskId != behavior_manager::Action::Request::LOOK_AT_FACE
+		);
+}
+
+/*
+	Parameters:
+		state. 0 if the before-act information, 1 if after-act information is to be stored
+*/
+void BehaviorModule::logJointAndForceData(int state)
+{
+	// 1. specify the length of data ==> FIXED; use std::vector to overcome any size determination hassle.
+	// TODO 2. fill in the data to features (joints, torques, impedances), prefarably within this function
+	// 3. define an "experimentEpoch" instead of timestamps. DONE: see the comment in DataLogger::logSingleData for more information
+	//double* features;
+
+	// was not sure whether they are equal.
+	int 	torqueAxesCount 	= 0,
+		impedanceAxesCount	= 0,
+		jointAxesCount		= 0;
+
+	double *torqueInfo;
+	double *stiffnessInfo,*dampingInfo;
+
+	ITorqueControl *torqueSource = 		(chosen_arm == "left" ? itrq_left : itrq_right);
+	IImpedanceControl * impedanceSource = 	(chosen_arm == "left" ? iimp_left : iimp_right);
+	IEncoders* encodersSource = 		(chosen_arm == "left" ? encoders_left : encoders_right);
+	Vector *encoderReadings =		(chosen_arm == "left" ? &positions_left_enc : &positions_left_enc);
+
+	encodersSource->getAxes(&jointAxesCount);
+	encoderReadings->resize(jointAxesCount);
+	encodersSource->getEncoders(encoderReadings->data());
+
+	torqueSource->getAxes(&torqueAxesCount);
+	torqueInfo = new double[torqueAxesCount];
+	torqueSource->getTorques(torqueInfo);
+
+	impedanceSource->getAxes(&impedanceAxesCount);
+	stiffnessInfo = new double[impedanceAxesCount];
+	dampingInfo = new double[impedanceAxesCount];
+
+
+	for(int j = 0; j < impedanceAxesCount; j++)
+	{
+		// l 	getImpedance (int j, double *stiffness, double *damping)=0
+		impedanceSource->getImpedance(j, &stiffnessInfo[j], &dampingInfo[j]);
+	}
+
+	featuresToLog.resize(torqueAxesCount + 2*impedanceAxesCount + jointAxesCount);
+
+	// First torques...
+	for(int i = 0; i < torqueAxesCount; i++)
+	{
+		featuresToLog[i] = torqueInfo[i];
+	}
+
+	// Then stiffness, then damping
+	for(int i = torqueAxesCount; i < (torqueAxesCount + impedanceAxesCount); i++)
+	{
+		featuresToLog[i] = stiffnessInfo[(i-torqueAxesCount)];
+		featuresToLog[i+impedanceAxesCount] = dampingInfo[(i-torqueAxesCount)];
+	}
+
+	// Finally, joint encoders
+	for(int i = torqueAxesCount + 2*impedanceAxesCount; i < (torqueAxesCount + 2*impedanceAxesCount + jointAxesCount); i++)
+	{
+		featuresToLog[i] = encoderReadings->data()[i - torqueAxesCount + 2*impedanceAxesCount];
+	}
+
+	behaviorModuleDataLogger->logSingleData(featuresToLog,experimentEpoch,state);
+
+	delete [] torqueInfo;
+	delete [] stiffnessInfo;
+	delete [] dampingInfo;
+}
+
+//--Onur
 
 void BehaviorModule::openEyeLids()
 {

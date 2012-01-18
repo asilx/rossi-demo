@@ -2,7 +2,7 @@
 #define DATALOGGER_H_
 
 
-#include<sstream>
+#include <sstream>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -40,7 +40,8 @@ public:
 	DataLogger(const char* dataType, const char* path, int count); // additional featureCount
 	~DataLogger();
 	
-	void logSingleData(double* features,int index, int label = -1);
+	
+	void logSingleData(std::vector<double> features,int index, int label = -1);
 	void logSingleData(FeatureTuple* singleTuple, int label = -1);
 	
 	void logAllData(double**items, int itemCount);
