@@ -466,11 +466,10 @@ run ()
         std::cout<<"e.g.<0 1 4 -1> for <reachable takeable vanishable> object, -1 is for quitting."
             << std::endl;
 
-        int i = 0;
+        int i = -1;
         std::vector<std::string> aff_str_labels;
         do
         {
-          cin >> i;
           if (i < 5 && i >= 0)
           {
             aff_str_labels.push_back (affordance_labels[i]);

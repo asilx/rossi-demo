@@ -40,7 +40,7 @@ void BehaviorModule::push_right(Vector bbcenter, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		reach_point[1] += 0.1;
-    		action_left->disableContactDetection();
+    		action_left->enableContactDetectionLoose();
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		action_left->enableContactDetection();
@@ -76,7 +76,7 @@ void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		reach_point[1] -= 0.1;
-    		action_right->disableContactDetection();
+    		action_right->enableContactDetectionLoose();
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		action_right->enableContactDetection();
@@ -171,13 +171,13 @@ void BehaviorModule::grasp(Vector bb_center, Vector bb_dims, bool isUpper)
 
         if(chosen_arm == "left")
         {
-          std::string s = "gs";
+          std::string s = "gc";
           btout_left.addString(s.c_str());
           port_grasp_comm_left.write();
         }
         else
         {
-          std::string s = "gs";
+          std::string s = "gc";
           btout_right.addString(s.c_str());
           port_grasp_comm_right.write();
         }
@@ -318,21 +318,29 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
 
 void BehaviorModule::drop()
 {
-    Bottle& btout2 = port_grasp_comm_left.prepare();;
-    if(chosenarm == "left")
-      btout2 = port_grasp_comm_left.prepare();
-    else
-      btout2 = port_grasp_comm_right.prepare();
-    btout2.clear();
+  Bottle& btout_right = port_grasp_comm_right.prepare();
+  Bottle& btout_left = port_grasp_comm_left.prepare();
+  btout_right.clear();
+  btout_left.clear();
+  // Do the closing action
+
+  std::cout << "Closing the hand..." << std::endl;
 
 
-    std::string s2 = "oh";
-    btout2.addString(s2.c_str());
-    if(chosen_arm == "left")
+  if(chosen_arm == "left")
+    {
+      std::string s = "oh";
+      btout_left.addString(s.c_str());
       port_grasp_comm_left.write();
-    else
+    }
+  else
+    {
+      std::string s = "oh";
+      btout_right.addString(s.c_str());
       port_grasp_comm_right.write();
-    tuckArms();
+    }
+  Time::delay(3);
+  tuckArms();
 }
 
 
@@ -649,7 +657,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   ok = ok && driver_right.view(itrq_right);
   ok = ok && driver_left.view(iamp_left);
   ok = ok && driver_left.view(ipid_left);
-  ok = ok && driver_rigth.view(iamp_right);
+  ok = ok && driver_right.view(iamp_right);
   ok = ok && driver_right.view(ipid_right);
 
 
@@ -1080,6 +1088,7 @@ void BehaviorModule::tuckArms() {
 	ictrl_right->getControlMode(i, &control_mode_right);
       }
 
+
     for (int i = 0; i < 4; ++i)
       {
 	wait = true;
@@ -1106,7 +1115,6 @@ void BehaviorModule::tuckArms() {
 	  if (wait ==true)
 	    cout << "Control mode wrong" << endl;
 	}
-      }
 
     js=0;
     js[0]=10;
