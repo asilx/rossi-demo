@@ -175,6 +175,8 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     yarp::sig::Vector center(3);
     yarp::sig::Vector size(3);
 
+
+	experimentEpoch = request.experimentEpoch;
     if (!(request.task == behavior_manager::Action::Request::HOME
 	  || request.task == behavior_manager::Action::Request::TUCK_ARMS
 	  || request.task
@@ -311,11 +313,11 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     
     if(logFlag)
     {
-	cout << "Logging final configurations... " << endl;
+	//cout << "Logging final configurations... " << endl;
     	logJointAndForceData(1);
-    	experimentEpoch++;
+    	//experimentEpoch++;
     	
-    	cout << "... done. NOTE: experimentEpoch incremented" << endl;
+    	//cout << "... done. NOTE: experimentEpoch incremented" << endl;
     }
     
     // If the state is to be restored, better do it after the joint configurations, etc. are all stored.
