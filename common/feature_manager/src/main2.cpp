@@ -1129,7 +1129,7 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
         std::cout << dummy[j] << " ";
       }
 
-     featurize->featureLogger->logSingleData (dummy, i, request.arg); // Hence the ith cluster is stored as the request.arg_th object
+     featurize->featureLogger->logSingleData (dummy, request.experimentEpoch, request.task); // Hence the ith cluster is stored as the request.arg_th object
 
       /*if (featurize->isFinal ())
       {
@@ -1186,8 +1186,9 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
         }
         
         dummy[featureCount-1] = -1.0;
-        featurize->featureLogger->logSingleData(dummy,1000);
-        featurize->effectLogger->logSingleData(dummy,1000,1000);
+        //featurize->featureLogger->logSingleData(dummy,1000);
+	//dummy, request.experimentEpoch, request.task,request.arg_effect
+        featurize->effectLogger->logSingleData(dummy,request.experimentEpoch,request.task,request.arg_effect);
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
@@ -1214,7 +1215,7 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
           std::cout << dummy[j] << " ";
         }
 	
-        featurize->featureLogger->logSingleData (dummy, i); // store the final vector just in case!
+        //featurize->featureLogger->logSingleData (dummy, i); // store the final vector just in case!
         dummy = featurize->getEffectVector ();
 
 	dummy[featureCount -1 ] = 0.0; // It should be guaranteed that the object presence did not change!
@@ -1224,7 +1225,7 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
           std::cout << dummy[j] << " ";
         }
 //
-        featurize->effectLogger->logSingleData (dummy, i, request.arg_effect); // hence effect for the ith object with label request.arg!
+        featurize->effectLogger->logSingleData (dummy, request.experimentEpoch, request.task,request.arg_effect);
         featurize->setInitVector (); // just for future use, save the final features as the next initial features
         featurize->setFinal (false);
 ////
