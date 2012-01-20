@@ -3,6 +3,7 @@ uint8 EXTRACT_EFFECT = 1
 uint8 task
 int8 arg
 int8 arg2
+uint8 experimentEpoch
 ---
 #uint8 PROCESSING = 0
 #uint8 DONE = 1
