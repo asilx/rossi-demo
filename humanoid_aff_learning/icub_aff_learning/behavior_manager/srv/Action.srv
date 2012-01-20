@@ -25,6 +25,7 @@ int8 task #action
 int8 arg #action argument
 float32[] pushable_object_center
 float32[] pushable_object_size
+uint8 experimentEpoch
 ---
 #uint8 PROCESSING = 0
 uint8 DONE = 1
