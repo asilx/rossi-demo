@@ -40,6 +40,7 @@ public:
 	DataLogger(const char* dataType, const char* path, int count); // additional featureCount
 	~DataLogger();
 	
+	void logSingleData(double* features,int index,int label,int effectId);
 	void logSingleData(double* features,int index, int label = -1);
 	void logSingleData(FeatureTuple* singleTuple);
 	
