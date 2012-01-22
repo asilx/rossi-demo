@@ -110,6 +110,7 @@ CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/arm_navigatio
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/manifest.xml
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/manifest.xml
 CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/manifest.xml
+CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/al_srvs/manifest.xml
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/point_cloud_perception/point_cloud_converter/manifest.xml
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/vision_opencv/opencv2/manifest.xml
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/vision_opencv/cv_bridge/manifest.xml
@@ -145,6 +146,7 @@ CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/object_manipu
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
 CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
+CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/al_srvs/srv_gen/generated
 CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/generated
 CMakeFiles/test_look.dir/src/test_look.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/srv_gen/generated
 CMakeFiles/test_look.dir/src/test_look.o: /opt/ros/electric/stacks/common_msgs/diagnostic_msgs/msg_gen/generated

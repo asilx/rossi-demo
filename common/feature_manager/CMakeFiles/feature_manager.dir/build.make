@@ -406,6 +406,17 @@ feature_manager_EXTERNAL_OBJECTS =
 bin/feature_manager: CMakeFiles/feature_manager.dir/src/main.o
 bin/feature_manager: CMakeFiles/feature_manager.dir/src/featurizer.o
 bin/feature_manager: CMakeFiles/feature_manager.dir/src/DataLogger.o
+bin/feature_manager: /usr/lib/libopencv_contrib.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_legacy.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_objdetect.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_calib3d.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_features2d.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_video.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_highgui.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_ml.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_imgproc.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_flann.so.2.3.1
+bin/feature_manager: /usr/lib/libopencv_core.so.2.3.1
 bin/feature_manager: /usr/local/MATLAB/R2011a/bin/glnxa64/libeng.so
 bin/feature_manager: /usr/local/MATLAB/R2011a/bin/glnxa64/libmex.so
 bin/feature_manager: /usr/local/MATLAB/R2011a/bin/glnxa64/libmx.so

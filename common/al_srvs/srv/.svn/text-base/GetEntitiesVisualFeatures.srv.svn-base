@@ -1,0 +1,4 @@
+al_msgs/Entities entities
+---
+al_msgs/FeatureVector[] feature_vectors
+#if that entity is not feature-calculable, fill the vector with zeros

@@ -1,0 +1,5 @@
+al_msgs/FeatureVector feature_vector
+int8 effect_id
+---
+int8 behavior_id
+

@@ -11,6 +11,7 @@ SET(CMAKE_FORCE_UNIX_PATHS 1)
 # The C and CXX include file search paths:
 SET(CMAKE_C_INCLUDE_PATH
   "include"
+  "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/al_srvs/srv_gen/cpp/include"
   "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/srv_gen/cpp/include"
   "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/cpp/include"
   "/opt/ros/electric/stacks/vision_opencv/cv_bridge/include"

@@ -406,6 +406,17 @@ as_EXTERNAL_OBJECTS =
 bin/as: CMakeFiles/as.dir/src/main2.o
 bin/as: CMakeFiles/as.dir/src/featurizer.o
 bin/as: CMakeFiles/as.dir/src/DataLogger.o
+bin/as: /usr/lib/libopencv_contrib.so.2.3.1
+bin/as: /usr/lib/libopencv_legacy.so.2.3.1
+bin/as: /usr/lib/libopencv_objdetect.so.2.3.1
+bin/as: /usr/lib/libopencv_calib3d.so.2.3.1
+bin/as: /usr/lib/libopencv_features2d.so.2.3.1
+bin/as: /usr/lib/libopencv_video.so.2.3.1
+bin/as: /usr/lib/libopencv_highgui.so.2.3.1
+bin/as: /usr/lib/libopencv_ml.so.2.3.1
+bin/as: /usr/lib/libopencv_imgproc.so.2.3.1
+bin/as: /usr/lib/libopencv_flann.so.2.3.1
+bin/as: /usr/lib/libopencv_core.so.2.3.1
 bin/as: /usr/local/MATLAB/R2011a/bin/glnxa64/libeng.so
 bin/as: /usr/local/MATLAB/R2011a/bin/glnxa64/libmex.so
 bin/as: /usr/local/MATLAB/R2011a/bin/glnxa64/libmx.so

@@ -11,7 +11,8 @@
 #include "aff_msgs/ObjectOfInterest.h"
 #include "aff_msgs/Speech.h"
 #include "aff_msgs/ExperimentState.h"
-#include "feature_manager/Perception.h"
+//#include "feature_manager/Perception.h"
+#include "al_srvs/Perception.h"
 #include "tabletop_2D_segmentation/Perception2D.h"
 #include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/srv_gen/cpp/include/behavior_manager/Action.h"
 
@@ -94,7 +95,7 @@ ros::Publisher pub_exp_state_;
 ros::Subscriber sub_speech_cmd_;
 ros::Publisher pub_say_;
 
-feature_manager::Perception srv_perception;
+al_srvs::Perception srv_perception;
 tabletop_2D_segmentation::Perception2D srv_perception_2D;
 behavior_manager::Action srv_action;
 sound_play::SoundRequest msg_speech_out;
@@ -294,11 +295,11 @@ run ()
   	if(firstRun)
   	{
   		std::cout << "First run is about to commence. Press an integer key to continue (1: Reach, 2:PULL, 3:Push Left, 4:Push Right" << std::endl;
-  		std::cout << "5:Push L Upper 6: Push R Upper 7: Grasp 8: Grasp Upper 9: Cover 10: Drop" << std::endl;
+  		std::cout << "5:Push L Upper 6: Push R Upper 7: Grasp 8: Grasp Upper 9: Cover 10: Drop 11: Take 12:Give" << std::endl;
   		std::cin >> in_x;		
   		
 		
-		if (in_x != 10)
+		if (in_x != 10 && in_x != 11 && in_x != 12 && in_x != 13)
 		{
 			exp_state_ = aff_msgs::ExperimentState::PERCEPTION;
 			srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_FACE;
@@ -329,6 +330,21 @@ run ()
   		{
   			exp_state_ = aff_msgs::ExperimentState::ACTION;
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::DROP;
+  		}
+  		else if (in_x == 11)
+  		{
+  			exp_state_ = aff_msgs::ExperimentState::ACTION;
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::TAKE;
+  		}
+  		else if (in_x == 12)
+  		{
+  			exp_state_ = aff_msgs::ExperimentState::ACTION;
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::GIVE;
+  		}
+  		else if (in_x == 13)
+  		{
+  			exp_state_ = aff_msgs::ExperimentState::ACTION;
+  			msg_speech_in.speech_cmd = behavior_manager::Action::Request::DETECT_TOUCH;
   		}
   		msg_speech_in.speech_arg = 0;
   		firstRun = false;
@@ -428,7 +444,7 @@ run ()
       {
         say (info_percepting);
         ROS_INFO("calling perception 3D service");
-        srv_perception.request.task = feature_manager::Perception::Request::DO_PERCEPT;
+        srv_perception.request.task = al_srvs::Perception::Request::DO_PERCEPT;
         srv_perception.request.arg = msg_speech_in.speech_arg;//label of the object of interest
         object_id_ = srv_perception.request.arg;
         ros::service::call ("/perception", srv_perception.request, srv_perception.response);
@@ -628,7 +644,7 @@ run ()
 
       if (callVisualPerceptors)
       {
-        srv_perception.request.task = feature_manager::Perception::Request::EXTRACT_EFFECT;
+        srv_perception.request.task = al_srvs::Perception::Request::EXTRACT_EFFECT;
         if (msg_speech_in.speech_cmd != aff_msgs::Speech::DISAPPEARED)
           srv_perception.request.arg = object_id_;//label of the object
         else

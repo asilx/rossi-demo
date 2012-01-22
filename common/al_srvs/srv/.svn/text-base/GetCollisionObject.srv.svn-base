@@ -1,0 +1,4 @@
+string id
+bool latest_scene_required
+---
+arm_navigation_msgs/CollisionObject collision_object

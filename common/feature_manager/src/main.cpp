@@ -48,7 +48,7 @@ const bool filter_not_table_top_objects = true;
 const float object_center[] = {-0.3, -0.2, 0.0};
 const float object_dims[] = {0.06, 0.06, 0.06};
 
-bool sr4k_active = false; //false to enable kinect, o.w. sr4k
+bool sr4k_active = true; //false to enable kinect, o.w. sr4k
 
 // ++Onur
 
@@ -796,8 +796,8 @@ pcRcvdCallback (sensor_msgs::PointCloud::ConstPtr pc_msg)
 
   if (filter_point_cloud)
   {
-    outrem.setInputCloud (pc2_data_);
-    outrem.filter (*pc2_data_);
+    //outrem.setInputCloud (pc2_data_);
+    //outrem.filter (*pc2_data_);
   }
 
   pcl::toROSMsg (*pc2_data_, pc2_);
@@ -816,8 +816,8 @@ pc2RcvdCallback (sensor_msgs::PointCloud2::ConstPtr pc2_msg)
     pointcloud_rcvd = true;
 
   ros::Time t_now = ros::Time::now ();
-
-  if (filter_point_cloud)
+	//filter_point_cloud = false;
+  if (false/*filter_point_cloud*/)
   {
 	  if(sr4k_active)
 	  {
@@ -981,8 +981,8 @@ percept ()
       }
 
       //filter clusters
-      filterClusters (segmentation_call.response.clusters);
-      filterOutNonTableClusters (segmentation_call.response.clusters, segmentation_call.response.table);
+      //filterClusters (segmentation_call.response.clusters);
+      //filterOutNonTableClusters (segmentation_call.response.clusters, segmentation_call.response.table);
 
       //std::cout << "reindexing" << std::endl;
       getReindexedClusters (segmentation_call.response.clusters, indexed_clusters);
@@ -1295,16 +1295,16 @@ init ()
 
   // build the filter
   outrem.setRadiusSearch (0.03);
-  outrem.setMinNeighborsInRadius (45);
+  outrem.setMinNeighborsInRadius (1);
   cluster_outrem.setRadiusSearch (0.03);
-  cluster_outrem.setMinNeighborsInRadius (25);
+  cluster_outrem.setMinNeighborsInRadius (1); //25
 
   pass_through_x.setFilterFieldName ("x");
-  pass_through_x.setFilterLimits (-0.90, -0.1);
+  pass_through_x.setFilterLimits (-0.90, 0.0); // -0.1
   pass_through_y.setFilterFieldName ("y");
   pass_through_y.setFilterLimits (-0.8, 0.6);
   pass_through_z.setFilterFieldName ("z");
-  pass_through_z.setFilterLimits (-0.2, 0.5);
+  pass_through_z.setFilterLimits (-0.25, 0.5); // -0.2
 
   featurize = new featurizer::Featurizer (nh);
 

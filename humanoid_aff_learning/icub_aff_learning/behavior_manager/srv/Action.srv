@@ -26,6 +26,7 @@ int8 RELEASE_UPWARD=20
 int8 RELEASE_DOWNWARD=21
 int8 COVER=22
 int8 DROP=23
+int8 DETECT_TOUCH=27
 int8 task #action
 int8 arg #action argument
 float32[] pushable_object_center

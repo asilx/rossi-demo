@@ -13,8 +13,9 @@ rosbuild_init()
 
 find_package(YARP REQUIRED)
 rosbuild_find_ros_package(behavior_manager)
+rosbuild_find_ros_package(al_srvs)
 
-include_directories(${YARP_INCLUDE_DIRS} ${behavior_manager}_PACKAGE_PATH/srv_gen/cpp/include)
+include_directories(${YARP_INCLUDE_DIRS} ${behavior_manager}_PACKAGE_PATH/srv_gen/cpp/include ${al_srvs}_PACKAGE_PATH/srv_gen/cpp/include)
 
 
 #set the default path for built executables to the "bin" directory

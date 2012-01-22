@@ -1,11 +1,11 @@
-
+#include <yarp/os/Time.h>
 #include "ReflexModule.h"
 
 bool ReflexModule::updateModule()
 {
 	yarp::os::Bottle* points = _portPC.read();
 	double totalReading = 0;
-	for (int i = 8; i < 12; i++) 
+	for (int i = 0; i < 12; i++) 
 	{
 		for (int j=0;j<12;j++)
 		{
@@ -13,8 +13,8 @@ bool ReflexModule::updateModule()
 			
 		}
 	}
-	
-	if(totalReading > 30 && !isClosed)
+	cout << totalReading << endl;
+	if(totalReading > 20 && !isClosed)
 	{
 		isClosed = true;
 		yarp::os::Bottle& btout = _portFeat.prepare();
@@ -25,9 +25,10 @@ bool ReflexModule::updateModule()
 		std::string s = "gs";
 		btout.addString(s.c_str());
 		_portFeat.write();
+		yarp::os::Time::delay(3.0);
 	
 	}
-	else if(totalReading <= 30 && isClosed)
+	else if(totalReading <= 20 && isClosed)
 	{
 		isClosed = false;
 		
@@ -39,6 +40,7 @@ bool ReflexModule::updateModule()
 		std::string s = "oh";
 		btout.addString(s.c_str());
 		_portFeat.write();
+		yarp::os::Time::delay(3.0);
 	
 	}
 
@@ -53,7 +55,7 @@ ReflexModule::ReflexModule(int i)
 
 double 	ReflexModule::getPeriod()
 {
-	return 5;
+	return 1;
 }
 
 bool 	ReflexModule::close()

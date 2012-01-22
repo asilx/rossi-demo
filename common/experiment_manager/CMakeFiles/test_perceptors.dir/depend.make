@@ -4,8 +4,8 @@
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ObjectOfInterest.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/Speech.h
+CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/al_srvs/srv_gen/cpp/include/al_srvs/Perception.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: src/test_perceptors.cpp
-CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/srv_gen/cpp/include/feature_manager/Perception.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/srv_gen/cpp/include/behavior_manager/Action.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/cpp/include/tabletop_2D_segmentation/Perception2D.h
 CMakeFiles/test_perceptors.dir/src/test_perceptors.o: /opt/ros/electric/stacks/audio_common/sound_play/msg_gen/cpp/include/sound_play/SoundRequest.h

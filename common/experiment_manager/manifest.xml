@@ -10,6 +10,7 @@
   <url>http://ros.org/wiki/experiment_manager</url>
   <depend package="roscpp"/>
   <depend package="aff_msgs"/>
+  <depend package="al_srvs"/>  
   <depend package="feature_manager"/>
   <depend package="tabletop_2D_segmentation"/>
   <depend package="behavior_manager"/>

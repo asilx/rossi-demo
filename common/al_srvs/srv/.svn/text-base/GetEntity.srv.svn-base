@@ -1,0 +1,4 @@
+string id
+bool latest_scene_required
+---
+al_msgs/Entity entity

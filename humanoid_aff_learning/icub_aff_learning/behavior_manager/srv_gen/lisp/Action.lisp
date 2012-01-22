@@ -85,7 +85,8 @@
     (:RELEASE_UPWARD . 20)
     (:RELEASE_DOWNWARD . 21)
     (:COVER . 22)
-    (:DROP . 23))
+    (:DROP . 23)
+    (:DETECT_TOUCH . 27))
 )
 (cl:defmethod roslisp-msg-protocol:symbol-codes ((msg-type (cl:eql 'Action-request)))
     "Constants for message type 'Action-request"
@@ -116,7 +117,8 @@
     (:RELEASE_UPWARD . 20)
     (:RELEASE_DOWNWARD . 21)
     (:COVER . 22)
-    (:DROP . 23))
+    (:DROP . 23)
+    (:DETECT_TOUCH . 27))
 )
 (cl:defmethod roslisp-msg-protocol:serialize ((msg <Action-request>) ostream)
   "Serializes a message object of type '<Action-request>"
@@ -195,16 +197,16 @@
   "behavior_manager/ActionRequest")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Action-request>)))
   "Returns md5sum for a message object of type '<Action-request>"
-  "a02d4cd3abd10d03ab4da8e72191e483")
+  "15273ca2a759dcd8367407dc29b863d9")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Action-request)))
   "Returns md5sum for a message object of type 'Action-request"
-  "a02d4cd3abd10d03ab4da8e72191e483")
+  "15273ca2a759dcd8367407dc29b863d9")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Action-request>)))
   "Returns full string definition for message of type '<Action-request>"
-  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
+  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Action-request)))
   "Returns full string definition for message of type 'Action-request"
-  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
+  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Action-request>))
   (cl:+ 0
      1
@@ -267,10 +269,10 @@
   "behavior_manager/ActionResponse")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Action-response>)))
   "Returns md5sum for a message object of type '<Action-response>"
-  "a02d4cd3abd10d03ab4da8e72191e483")
+  "15273ca2a759dcd8367407dc29b863d9")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Action-response)))
   "Returns md5sum for a message object of type 'Action-response"
-  "a02d4cd3abd10d03ab4da8e72191e483")
+  "15273ca2a759dcd8367407dc29b863d9")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Action-response>)))
   "Returns full string definition for message of type '<Action-response>"
   (cl:format cl:nil "~%uint8 DONE = 1~%uint8 feedback~%~%~%~%"))

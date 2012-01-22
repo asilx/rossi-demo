@@ -1,0 +1,4 @@
+al_msgs/FeatureVector feature_vector
+int8 behavior_id #this assumes that behaviors are not parameterized, this to be changed later
+---
+al_msgs/Effect[] effects

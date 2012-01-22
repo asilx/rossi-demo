@@ -1,0 +1,5 @@
+al_msgs/FeatureVector feature_vector
+int8 behavior_id
+int8 effect_label
+---
+float32[] p_effects # returns currently learned results

@@ -105,6 +105,8 @@ protected:
 	Vector dOffs;
 	Vector dLift;
 	Vector home_x;
+	
+	bool isHandChangable;
 
 	bool openPorts;
 	bool firstRun;
@@ -116,6 +118,7 @@ protected:
 
 	string chosen_arm;
 	bool objectStatus;
+	bool objectPalmStatus;
 
 	BufferedPort<Bottle> port_grasp_comm_right;
 	BufferedPort<Bottle> port_grasp_comm_left;
@@ -125,8 +128,11 @@ protected:
 
 	Port rpcPort;
 	Port emotP;
-	Port port_tactReader_left;
-	Port port_tactReader_right;
+	yarp::os::BufferedPort<yarp::os::Bottle> port_tactReader_left;
+	yarp::os::BufferedPort<yarp::os::Bottle> port_tactReader_right;
+	yarp::os::BufferedPort<yarp::os::Bottle> ft_reader_right;
+	yarp::os::BufferedPort<yarp::os::Bottle> ft_reader_left;
+	Bottle outBot;
 	//ITorqueControl *trq_ctrl_left, *trq_ctrl_right;
 	//IControlMode* ictrl;
 
@@ -188,6 +194,8 @@ public:
 	void choseArm(double y_position);
 
 	void checkObject();
+	
+	void checkObjectAtPalm();
 
 	void home(bool is_left_arm = false);
 

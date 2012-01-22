@@ -10,14 +10,6 @@
 ReflexModule.h
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/src/ReflexModule.h
 
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/src/main.cpp
-ReflexModule.h
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/ReflexModule/src/ReflexModule.h
-stdlib.h
--
-stdio.h
--
-
 /usr/local/include/yarp/conf/api.h
 yarp/config/api.h
 -

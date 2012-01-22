@@ -4,7 +4,7 @@ import struct
 
 
 class ActionRequest(roslib.message.Message):
-  _md5sum = "8c4e6ea0315fe17efc859933443da40a"
+  _md5sum = "c42f6c8ce285f5d0e5bfbd8203510d87"
   _type = "behavior_manager/ActionRequest"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """int8 DONT_ACT = -1
@@ -35,6 +35,7 @@ int8 RELEASE_UPWARD=20
 int8 RELEASE_DOWNWARD=21
 int8 COVER=22
 int8 DROP=23
+int8 DETECT_TOUCH=27
 int8 task
 int8 arg
 float32[] pushable_object_center
@@ -70,6 +71,7 @@ float32[] pushable_object_size
   RELEASE_DOWNWARD = 21
   COVER = 22
   DROP = 23
+  DETECT_TOUCH = 27
 
   __slots__ = ['task','arg','pushable_object_center','pushable_object_size']
   _slot_types = ['int8','int8','float32[]','float32[]']
@@ -328,6 +330,6 @@ _struct_I = roslib.message.struct_I
 _struct_B = struct.Struct("<B")
 class Action(roslib.message.ServiceDefinition):
   _type          = 'behavior_manager/Action'
-  _md5sum = 'a02d4cd3abd10d03ab4da8e72191e483'
+  _md5sum = '15273ca2a759dcd8367407dc29b863d9'
   _request_class  = ActionRequest
   _response_class = ActionResponse

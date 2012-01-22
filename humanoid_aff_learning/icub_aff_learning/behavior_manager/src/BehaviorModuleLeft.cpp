@@ -15,7 +15,7 @@ BehaviorModule::~BehaviorModule() {
 
 }
 
-void BehaviorModule::push_right(Vector bbcenter, Vector bb_dims, bool isUpper)
+void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
 {
 	choseArm(-1);
 
@@ -34,7 +34,7 @@ void BehaviorModule::push_right(Vector bbcenter, Vector bb_dims, bool isUpper)
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
     		//release(reach_point, false);
-    		reach_point[1] += 0.08;
+    		reach_point[1] += 0.11;
     		if (isUpper) reach_point[2] += bb_dims[2]/2 - 0.05;
     		else  reach_point[2] -= bb_dims[2]/2;
     		//release(reach_point, false);
@@ -70,7 +70,7 @@ void BehaviorModule::push_left(Vector bb_center, Vector bb_dims, bool isUpper)
     		action_right->pushAction(reach_point, hand_orient);
     		action_right->checkActionsDone(f, true);
     		//release(reach_point, false);
-    		reach_point[1] -= 0.08;
+    		reach_point[1] -= 0.11;
     		if (isUpper) reach_point[2] += bb_dims[2]/2 - 0.05;
     		else  reach_point[2] -= bb_dims[2]/2;
     		//release(reach_point, false);
@@ -107,6 +107,38 @@ void BehaviorModule::cover(Vector bb_center, Vector bb_dims) {
     reach_point[0] += 0.03;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
+    
+    
+    if(isHandChangable)
+    {
+    	yarp::sig::Vector x(3); 
+    	yarp::sig::Vector o(3);
+    	if(chosen_arm == "right") 
+    	{
+    		action_right->getPose(x,o);
+    		
+    		if(!(abs(x[0]-reach_point[0]) < 0.05 && abs(x[1]-reach_point[1]) < 0.05 && abs(x[2]-reach_point[2]) < 0.05))
+    		{
+    			choseArm(bb_center[1]);
+    			release(reach_point, false);
+    		}
+    		
+    		
+    	}
+    	else
+    	{
+    		action_left->getPose(x,o);
+    		
+    		if(!(abs(x[0]-reach_point[0]) < 0.05 && abs(x[1]-reach_point[1]) < 0.05 && abs(x[2]-reach_point[2]) < 0.05))
+    		{
+    			choseArm(bb_center[1]);
+    			release(reach_point, false);
+    		}
+    	}
+    	
+    }
+    
+    
     reach_point[2] -= 0.08;
     release(reach_point, false);
   }
@@ -213,17 +245,17 @@ void BehaviorModule::pull(Vector bb_center, Vector bb_dims) {
   else {
     Vector reach_point = bb_center;
 
-    reach_point[2] += bb_dims[2]/2+0.08;
+    reach_point[2] += bb_dims[2]/2+0.13;
     if(chosen_arm == "right") reach_point[1] += 0.04;
     else reach_point[1] -= 0.04;
-    reach_point[0] -= 0.04;
+    reach_point[0] += 0.01;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
 
 
     if(chosen_arm == "right") reach_point[1] -= 0.04;
     else reach_point[1] += 0.04;
-    reach_point[2] -= 0.1;
+    reach_point[2] -= 0.11;
     release(reach_point, false);
 
     Bottle& btout_right = port_grasp_comm_right.prepare();
@@ -253,13 +285,14 @@ void BehaviorModule::pull(Vector bb_center, Vector bb_dims) {
     if(chosen_arm == "right") action_right->disableContactDetection();
     else action_left->disableContactDetection();
 
-    reach_point[0] += 0.05;
+    reach_point[0] += 0.07;
+    //reach_point[2] += 0.02;
     release(reach_point, false);
 
     if(chosen_arm == "right") action_right->enableContactDetection();
     else action_left->enableContactDetection();
 
-    reach_point[2] += 0.08;
+    reach_point[2] += 0.05;
     release(reach_point, false);
 
     if (reach_point[2] <= -0.20) cout << " z limit exceeded " << endl;
@@ -281,12 +314,12 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
   else {
     Vector reach_point = bb_center;
 
-    reach_point[2] += bb_dims[2]/2+0.08;
+    reach_point[2] += bb_dims[2]/2+0.11;
     reach_point[1] += 0.01;
     reach_point[0] += 0.03;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
-    reach_point[2] -= 0.08;
+    reach_point[2] -= 0.11;
     release(reach_point, false);
     Bottle& btout_right = port_grasp_comm_right.prepare();
     	Bottle& btout_left = port_grasp_comm_left.prepare();
@@ -372,7 +405,7 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       }
     }
 
-    bool logFlag = determineLogState(request.task);
+    bool logFlag = false;
     bool restoreState = false;
 
 
@@ -437,14 +470,16 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
      else if (request.task == behavior_manager::Action::Request::PUSH_LEFT_UPPER) {
          ROS_INFO("icub push left");
          push_left(center, size, true);
-         openHand();
-         tuckArms();
+         restoreState = true;
+         //openHand();
+         //tuckArms();
     } else if (request.task
      	       == behavior_manager::Action::Request::PUSH_RIGHT_UPPER) {
        ROS_INFO("BehaviorModule:icub push right");
        push_right(center, size, true);
-       openHand();
-       tuckArms();
+       restoreState = true;
+       //openHand();
+       //tuckArms();
 
      }
     else if (request.task
@@ -479,51 +514,22 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
          ROS_INFO("icub drop");
          drop();
     }
-
-       cover(center, size);
-
-       // ++Onur
-       restoreState = true;
-       //openHand();
-       //tuckArms();
-       // --Onur
+     else if (request.task == behavior_manager::Action::Request::TAKE) {
+       ROS_INFO("take!!");
+       take();
+      logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::GIVE) {
+       ROS_INFO("give!!");
+       give();
+       logFlag = false;
+    }
+    else if (request.task == behavior_manager::Action::Request::DETECT_TOUCH) {
+       ROS_INFO("check object");
+       checkObject();
+       logFlag = false;
     }
 
-    // else if (request.task == behavior_manager::Action::Request::CLOSE_EYE_LIDS) {
-    //   ROS_INFO("close eye lids");
-    //   closeEyeLids();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::OPEN_EYE_LIDS) {
-    //   ROS_INFO("open eye lids");
-    //   openEyeLids();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::HAPPY) {
-    //   ROS_INFO("happy");
-    //   happy();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::ANGRY) {
-    //   ROS_INFO("angry");
-    //   angry();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::SAD) {
-    //   ROS_INFO("sad");
-    //   sad();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::EVIL) {
-    //   ROS_INFO("evil");
-    //   evil();
-    //   logFlag = false;
-    // }
-    // else if (request.task == behavior_manager::Action::Request::NEUTRAL) {
-    //   ROS_INFO("neutral");
-    //   neutral();
-    //   logFlag = false;
-    // }
 
     //++Onur
 
@@ -820,6 +826,8 @@ void BehaviorModule::init() {
   port_grasp_comm_right.open("/o:graspCommRight");
   port_tactReader_left.open("/i:BehaviorTactileLeft");
   port_tactReader_right.open("/i:BehaviorTactileRight");
+  ft_reader_left.open("/i:BehaviorFTLeft");
+  ft_reader_right.open("/i:BehaviorFTRight");
 
   ROS_INFO("waiting for tactileGrasp module to be opened !");
   while (!Network::isConnected("/o:graspCommLeft", "/tactGraspLeft/rpc:i") && nh.ok()) {
@@ -841,6 +849,16 @@ void BehaviorModule::init() {
     Network::connect("/icub/skin/lefthandcomp", "/i:BehaviorTactileLeft");
     ros::spinOnce();
   }
+  
+  /*while (!Network::isConnected("/icub/skin/lefthandcomp", "/i:BehaviorFTLeft") && nh.ok()) {
+    Network::connect("/icub/skin/lefthandcomp", "/i:BehaviorFTLeft");
+    ros::spinOnce();
+  }
+  
+  while (!Network::isConnected("/icub/skin/lefthandcomp", "/i:BehaviorFTRight") && nh.ok()) {
+    Network::connect("/icub/skin/lefthandcomp", "/i:BehaviorFTRight");
+    ros::spinOnce();
+  }*/
 
   ROS_INFO("OK, connected to the tactGrasp modules! ");
 
@@ -942,7 +960,7 @@ Vector BehaviorModule::angleXYZToVectorAngle(const double x_ang,
 
 void BehaviorModule::release(Vector point, bool palm_upward) {
   Vector hand_orient;
-  choseArm(point[1]);
+  //choseArm(point[1]);
 
   if(chosen_arm == "left")
     {
@@ -1085,11 +1103,11 @@ void BehaviorModule::tuckArms() {
   int control_mode_right;
 
   js=0;
-  js[0]=10;
-  js[1]=20;
-  js[2]=-30;
-  js[3]=70;
-  js[4]=-60;
+  js[0]=-1;
+  js[1]=57;
+  js[2]=10;
+  js[3]=15;
+  js[4]=6;
   js[5]=0;
   js[6]=20;
 
@@ -1146,13 +1164,13 @@ void BehaviorModule::tuckArms() {
 	}
       }
     js=0;
-    js[0]=10;
-    js[1]=20;
-    js[2]=-30;
-    js[3]=0;
-    js[4]=-60;
-    js[5]=0;
-    js[6]=20;
+  js[0]=-1;
+  js[1]=57;
+  js[2]=10;
+  js[3]=0;
+  js[4]=6;
+  js[5]=0;
+  js[6]=20;
     pos_ctrl_left->positionMove(js.data());
     pos_ctrl_right->positionMove(js.data());
 
@@ -1162,7 +1180,7 @@ void BehaviorModule::tuckArms() {
     Time::delay(5.0);
 
     cout << "Motion done " << endl;
-    js[3]=70;
+    js[3]=10;
     ictrl_left->setImpedancePositionMode(3);
     ictrl_right->setImpedancePositionMode(3);
     wait = true;
@@ -1173,14 +1191,14 @@ void BehaviorModule::tuckArms() {
       if (control_mode_left == VOCAB_CM_IDLE)
 	{
 	  cout << "Left arm joint 3 is idle" << endl;
-	  iamp_left->enableAmp(joint);
-	  ipid_left->enablePid(joint);
+	  iamp_left->enableAmp(3);
+	  ipid_left->enablePid(3);
 	}
       if (control_mode_right == VOCAB_CM_IDLE)
 	{
 	  cout << "Right arm joint 3 is idle" << endl;
-	  iamp_right->enableAmp(joint);
-	  ipid_right->enablePid(joint);
+	  iamp_right->enableAmp(3);
+	  ipid_right->enablePid(3);
 	}
 
       if (wait ==true)
@@ -1252,15 +1270,55 @@ void BehaviorModule::lookAtFace() {
 
 void BehaviorModule::choseArm(double y_position){
 
-  chosen_arm = "left";
-  if (y_position <0.0){
-    chosen_arm = "left";
-    cout << "Left arm is chosen" << endl;
+  /*chosen_arm = "left";
+  
+  if(y_position <= 0.12 && y_position >= -0.12)
+  {
+  	if (isHandChangable)
+  	{
+  		if (y_position >= 0.0)
+  		{
+    			chosen_arm = "left";
+    			cout << "Left arm is chosen" << endl;
+  		}
+  		if (y_position < 0.0)
+  		{
+    			cout << "Right arm is chosen" << endl;
+    			chosen_arm = "right";
+  		}
+  	}
+  	else
+  	{
+  		if (y_position <= 0.0)
+  		{
+    			chosen_arm = "left";
+    			cout << "Left arm is chosen" << endl;
+  		}
+  		if (y_position >0.0)
+  		{
+    			cout << "Right arm is chosen" << endl;
+    			chosen_arm = "right";
+  		}
+  	}
+  
+  	isHandChangable = true;
+  
   }
-  if (y_position >0.0){
-    cout << "Right arm is chosen" << endl;
-    chosen_arm = "right";
-  }
+  else
+  {
+  	isHandChangable = false;
+  */
+  	if (y_position <= 0.0)
+  	{
+    		chosen_arm = "left";
+    		cout << "Left arm is chosen" << endl;
+  	}
+  	if (y_position > 0.0)
+  	{
+    		cout << "Right arm is chosen" << endl;
+    		chosen_arm = "right";
+  	}
+  //}
 }
 
 void BehaviorModule::checkObject(){
@@ -1296,6 +1354,44 @@ void BehaviorModule::checkObject(){
     cout << "total reading for left arm is " << totalReading << endl;
     if(totalReading>30){
       objectStatus = true;
+      cout << "left hand has an object" << endl;
+    }
+  }
+}
+
+void BehaviorModule::checkObjectAtPalm(){
+  objectPalmStatus = false;
+  if(chosen_arm == "left"){
+    Bottle* points = port_tactReader_left.read();
+    double totalReading = 0;
+
+    for (int i = 8; i < 12; i++)
+      {
+	for (int j=0;j<12;j++)
+	  {
+	    totalReading += points->get(i*12+j).asDouble();
+	  }
+      }
+    cout << "total reading for left arm is " << totalReading << endl;
+    if(totalReading>30){
+      objectStatus = true;
+      cout << "left hand has an object" << endl;
+    }
+  }
+  if(chosen_arm == "right"){
+    Bottle* points = port_tactReader_right.read();
+    double totalReading = 0;
+
+    for (int i = 0; i < 4; i++)
+      {
+	for (int j=0;j<12;j++)
+	  {
+	    totalReading += points->get(i*12+j).asDouble();
+	  }
+      }
+    cout << "total reading for left arm is " << totalReading << endl;
+    if(totalReading>30){
+      objectPalmStatus = true;
       cout << "left hand has an object" << endl;
     }
   }
@@ -1343,21 +1439,27 @@ void BehaviorModule::testHandSequences() {
 
 void BehaviorModule::openHand()
 {
-  std::cout << "Done. Now, opening the hand..." << std::endl;
-  std::string s;
-  Bottle& btout2 = port_grasp_comm_left.prepare();;
-  if (chosen_arm == "left")
-    btout2 = port_grasp_comm_left.prepare();
+  Bottle& btout_right = port_grasp_comm_right.prepare();
+  Bottle& btout_left = port_grasp_comm_left.prepare();
+  btout_right.clear();
+  btout_left.clear();
+  // Do the closing action
+
+  std::cout << "Closing the hand..." << std::endl;
+
+        
+  if(chosen_arm == "left")
+  {
+      std::string s = "oh";
+      btout_left.addString(s.c_str());
+      port_grasp_comm_left.write();
+  }
   else
-    btout2 = port_grasp_comm_right.prepare();
-  btout2.clear();
-  s = "oh";
-  btout2.addString(s.c_str());
-  if (chosen_arm == "left")
-    port_grasp_comm_left.write();
-  else
-    port_grasp_comm_right.write();
-  std::cout << "Done. Have a nice day!" << std::endl;
+  {
+      std::string s = "oh";
+      btout_right.addString(s.c_str());
+      port_grasp_comm_right.write();
+  }
 
 }
 
@@ -1574,27 +1676,33 @@ void BehaviorModule::take()
 {
 	choseArm(-1);
 	Vector point(3);
-	point[0] = -0.12;
-	point[1] = -005;
-	point[2] = 0;
+	point[0] = -0.3;
+	point[1] = -0.2;
+	point[2] = 0.1;
 	release(point, false);
 	
 	Vector hand_orient;
   	Vector current;
-  	action_right->getPose(current, hand_orient);
+  	
   	if(chosen_arm == "right")
   	{
-      		
-			hand_orient = angleXZToVectorAngle(0, PI);
+      		action_right->getPose(current, hand_orient);		
+		hand_orient = angleXZToVectorAngle(0, PI);
+		action_right->pushAction(current, hand_orient);
   	}
   	else
   	{
-      	
-			hand_orient = angleXZToVectorAngle(PI, PI);
+      		action_left->getPose(current, hand_orient);
+		hand_orient = angleXZToVectorAngle(PI, PI);
+		action_left->pushAction(current, hand_orient);
   	}
   
-  	action_right->pushAction(current, hand_orient);
+  	//action_right->pushAction(current, hand_orient);
+  	
+  	
   	Time::delay(2);
+  	checkObjectAtPalm();
+  	while (!objectPalmStatus) checkObjectAtPalm();
   	
   	Bottle& btout_right = port_grasp_comm_right.prepare();
   	Bottle& btout_left = port_grasp_comm_left.prepare();
