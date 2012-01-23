@@ -3,7 +3,7 @@
 
 
 #include "string"
-#include <signal.h> 
+#include <signal.h>
 
 #include "cstdio"
 #include <iostream>
@@ -21,8 +21,6 @@ using namespace std;
 class ReflexModule : public yarp::os::RFModule
 {
 public:
-
-
     virtual bool 	configure(yarp::os::ResourceFinder &rf);
     virtual bool 	close();
     virtual bool 	interruptModule();
@@ -30,15 +28,17 @@ public:
     virtual bool 	respond(const yarp::os::Bottle &command,yarp::os::Bottle &reply);
     virtual double 	getPeriod();
 
-	ReflexModule(int i);
+    ReflexModule(int i);
 
 
 private:
 	yarp::os::BufferedPort<yarp::os::Bottle> _portFeat;
 	yarp::os::BufferedPort<yarp::os::Bottle> _portPC;
+	yarp::os::BufferedPort<yarp::os::Bottle> forcePort;
+
         bool isClosed;
         int isRight;
-	
+
 };
 
-#endif 
+#endif
