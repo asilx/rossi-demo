@@ -140,7 +140,6 @@ CMakeFiles/feature_manager.dir/src/main.o: /opt/ros/electric/stacks/object_manip
 CMakeFiles/feature_manager.dir/src/main.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/feature_manager.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/feature_manager.dir/src/main.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/main.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/feature_manager.dir/src/main.o"
@@ -255,7 +254,6 @@ CMakeFiles/feature_manager.dir/src/featurizer.o: /opt/ros/electric/stacks/object
 CMakeFiles/feature_manager.dir/src/featurizer.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/feature_manager.dir/src/featurizer.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/featurizer.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/feature_manager.dir/src/featurizer.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/featurizer.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/feature_manager.dir/src/featurizer.o"
@@ -370,7 +368,6 @@ CMakeFiles/feature_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/object
 CMakeFiles/feature_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/feature_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/feature_manager.dir/src/DataLogger.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 CMakeFiles/feature_manager.dir/src/DataLogger.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/feature_manager.dir/src/DataLogger.o"

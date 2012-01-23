@@ -145,7 +145,6 @@ CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /opt/ros/electric/stacks/obj
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/al_srvs/srv_gen/generated
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/generated
 CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/srv_gen/generated
@@ -182,6 +181,17 @@ aff_labels_viz_OBJECTS = \
 aff_labels_viz_EXTERNAL_OBJECTS =
 
 bin/aff_labels_viz: CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o
+bin/aff_labels_viz: /usr/lib/libopencv_contrib.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_legacy.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_objdetect.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_calib3d.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_features2d.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_video.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_highgui.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_ml.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_imgproc.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_flann.so.2.3.1
+bin/aff_labels_viz: /usr/lib/libopencv_core.so.2.3.1
 bin/aff_labels_viz: /usr/local/lib/libYARP_OS.a
 bin/aff_labels_viz: /usr/local/lib/libYARP_sig.a
 bin/aff_labels_viz: /usr/local/lib/libYARP_dev.a

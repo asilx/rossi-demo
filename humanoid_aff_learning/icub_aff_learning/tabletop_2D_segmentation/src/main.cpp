@@ -207,7 +207,7 @@ DataLogger 	*imageLogger = new DataLogger("image","./",-1),
 		*imageEffectLogger = new DataLogger("effect_image","./",-1); // TODO: be sure count is of no use or go for something other than -1
 ImageFeatureTuple imgTuple, imgEffectTuple; // TODO delete/add if necessary
 
-// ++Onur: Logging the retrieved information
+// ++Onur: Storing the retrieved information into an ImageFeatureTuple
 void imageLoggingOp(ImageFeatureTuple &imgTuple, int region_id,sensor_msgs::Image::Ptr raw, sensor_msgs::Image::Ptr filtered)
 {		
 		/*
@@ -531,7 +531,7 @@ bool perception2DCallback(
 		cout<<"FACEEEE:"<<willBeSentOld.faceDetected<<endl;
 		std::cout << "T2D@ DO_PERCEPT: Logging started" << std::endl;
 		imageLoggingOp(imgTuple,region_id,raw_ptr, filt_ptr);
-		imageLogger->logSingleData(&imgTuple,region_id);
+		imageLogger->logSingleData(&imgTuple,request.task,request.experimentEpoch);
 		std::cout << "Logging done" << std::endl;
 		
 		// --Onur
@@ -586,7 +586,7 @@ bool perception2DCallback(
 		imageLoggingOp(imgEffectTuple,region_id,raw_ptr, filt_ptr);
 		
 		std::cout << "T2D@ EXTRACT_EFFECT: imageLoggingOp passed." << std::endl;
-		imageLogger->logSingleData(&imgEffectTuple,region_id);
+		//imageLogger->logSingleData(&imgEffectTuple,request.task,request.experimentEpoch);
 		std::cout << "T2D@ EXTRACT_EFFECT: logging..." << std::endl;
 //		if(region_id >= 0)
 //			imageLogger->logSingleData(&imgTuple,region_id);
@@ -600,7 +600,7 @@ bool perception2DCallback(
 		{
 			computeEffect();
 		}
-		imageEffectLogger->logSingleData(&imgEffectTuple,region_id);
+		imageEffectLogger->logSingleData(&imgEffectTuple,request.task,request.experimentEpoch);
 
 		//raw_ptr = 0;
 		//filt_ptr = 0;

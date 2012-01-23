@@ -15,7 +15,6 @@ SET(CMAKE_C_INCLUDE_PATH
   "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/srv_gen/cpp/include"
   "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv_gen/cpp/include"
   "/opt/ros/electric/stacks/vision_opencv/cv_bridge/include"
-  "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/cpp"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/cpp"

@@ -1,9 +1,9 @@
 //ros includes
 #include <ros/ros.h>
 
-#include "aff_msgs/ObjectOfInterest.h"
-#include "aff_msgs/Speech.h"
-#include "aff_msgs/ExperimentState.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ObjectOfInterest.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/Speech.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h"
 #include "feature_manager/Perception.h"
 #include "tabletop_2D_segmentation/Perception2D.h"
 #include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/srv_gen/cpp/include/behavior_manager/Action.h"

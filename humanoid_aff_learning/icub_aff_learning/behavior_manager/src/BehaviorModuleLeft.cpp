@@ -26,7 +26,7 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
 		Vector hand_orient = angleXZToVectorAngle(3 * PI / 2, PI);
 		bool f;
     		//reach_point[2] = bb_dims[2]/2+0.08;
-    		reach_point[1] -= (bb_dims[1]/2 + 0.05);
+    		reach_point[1] -= (bb_dims[1]/2 + 0.02);
     		//reach_point[0] += 0.01;
     		reach_point[2] += 0.05;
     		//reach_point[0] += 0.03;
@@ -315,8 +315,8 @@ void BehaviorModule::reach(Vector bb_center, Vector bb_dims) {
     Vector reach_point = bb_center;
 
     reach_point[2] += bb_dims[2]/2+0.11;
-    reach_point[1] += 0.01;
-    reach_point[0] += 0.03;
+    reach_point[1] += 0.06;
+    reach_point[0] += 0.04;
     std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
     release(reach_point, false);
     reach_point[2] -= 0.11;
@@ -384,6 +384,12 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
     yarp::sig::Vector center(3);
     yarp::sig::Vector size(3);
 
+	cout << "Entered to callback, request task is " << request.task << " checking whether requested object is null" << endl;
+/*	if(request.pushable_object_center == NULL)
+	{
+		cout << "Yes, the object is null." << endl;
+	}*/
+//	experimentEpoch = request.experimentEpoch;
     if (!(request.task == behavior_manager::Action::Request::HOME
 	  || request.task == behavior_manager::Action::Request::TUCK_ARMS
 	  || request.task
@@ -391,13 +397,22 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
 	  || request.task
 	  == behavior_manager::Action::Request::LOOK_AT_FACE)) {
 
+	cout << "Setting the object" << endl;
+	
+	cout << "Object size is " << request.pushable_object_center.size() << endl;
+	
       bb_center_ = request.pushable_object_center;
+      
+      cout << "This is set" << endl;
+      
       center[0] = bb_center_[0];
       center[1] = bb_center_[1];
       center[2] = bb_center_[2];// + 0.15;
 
       if (request.task
 	  != behavior_manager::Action::Request::LOOK_AT_POINT) {
+	  
+	  cout << "bb_dims are being set." << endl;
 	bb_dims_ = request.pushable_object_size;
 	size[0] = bb_dims_[0];
 	size[1] = bb_dims_[1];
@@ -405,7 +420,7 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
       }
     }
 
-    bool logFlag = false;
+    bool logFlag = determineLogState(request.task); // true
     bool restoreState = false;
 
 
@@ -538,8 +553,8 @@ bool BehaviorModule::actionCallback(behavior_manager::Action::Request& request,
 	cout << "Logging final configurations... " << endl;
     	logJointAndForceData(1);
     	experimentEpoch++;
-
-    	cout << "... done. NOTE: experimentEpoch incremented" << endl;
+    	
+    	cout << "... done. Experiment epoch is incremented to "<< experimentEpoch << endl;
     }
 
     // If the state is to be restored, better do it after the joint configurations, etc. are all stored.
@@ -799,7 +814,7 @@ bool BehaviorModule::configure(ResourceFinder &rf) {
   cout << "Data logger setup" << endl;
 
   //						file basename		path to save	featureCount(optional)
-  behaviorModuleDataLogger = new DataLogger(   "force_and_joint"  ,         ".", 	-1			);
+  behaviorModuleDataLogger = new DataLogger(   "force_and_joint"  ,         "./", 	-1			);
   experimentEpoch = 0;
 
   cout << "Data logger setup done" << endl;
@@ -822,6 +837,16 @@ double BehaviorModule::getPeriod() {
 }
 
 void BehaviorModule::init() {
+
+	ifstream myfile;
+
+	myfile.open("/home/asil/expEpoch.txt");
+
+	myfile >> experimentEpoch;
+
+	myfile.close();
+	
+	std::cout << "Experiment epoch retreived as " << experimentEpoch << std::endl;
   port_grasp_comm_left.open("/o:graspCommLeft");
   port_grasp_comm_right.open("/o:graspCommRight");
   port_tactReader_left.open("/i:BehaviorTactileLeft");
@@ -850,6 +875,16 @@ void BehaviorModule::init() {
     ros::spinOnce();
   }
   
+  
+  while (!Network::isConnected("/wholeBodyDynamics/left_arm/endEffectorWrench:o", "/i:BehaviorFTLeft") && nh.ok()) {
+    Network::connect("/wholeBodyDynamics/left_arm/endEffectorWrench:o", "/i:BehaviorFTLeft");
+    ros::spinOnce();
+  }  
+  
+  while (!Network::isConnected("/wholeBodyDynamics/right_arm/endEffectorWrench:o", "/i:BehaviorFTRight") && nh.ok()) {
+    Network::connect("/wholeBodyDynamics/right_arm/endEffectorWrench:o", "/i:BehaviorFTRight");
+    ros::spinOnce();
+  }    
   /*while (!Network::isConnected("/icub/skin/lefthandcomp", "/i:BehaviorFTLeft") && nh.ok()) {
     Network::connect("/icub/skin/lefthandcomp", "/i:BehaviorFTLeft");
     ros::spinOnce();
@@ -1542,9 +1577,11 @@ bool BehaviorModule::determineLogState(int taskId)
 void BehaviorModule::logJointAndForceData(int state)
 {
 	// 1. specify the length of data ==> FIXED; use std::vector to overcome any size determination hassle.
-	// TODO 2. fill in the data to features (joints, torques, impedances), prefarably within this function
+	// 2. fill in the data to features (joints, torques, impedances), prefarably within this function
 	// 3. define an "experimentEpoch" instead of timestamps. DONE: see the comment in DataLogger::logSingleData for more information
-	//double* features;
+	// 4. fill in the tactile information here
+	// port_tactReader_right
+	// port_tactReader_left
 
 	// was not sure whether they are equal.
 	int 	torqueAxesCount 	= 0,
@@ -1553,11 +1590,20 @@ void BehaviorModule::logJointAndForceData(int state)
 
 	double *torqueInfo;
 	double *stiffnessInfo,*dampingInfo;
-
+	double *allInfo;
+	
+	cout << "Setting source pointers" << endl;
+	
 	ITorqueControl *torqueSource = 		(chosen_arm == "left" ? itrq_left : itrq_right);
 	IImpedanceControl * impedanceSource = 	(chosen_arm == "left" ? iimp_left : iimp_right);
 	IEncoders* encodersSource = 		(chosen_arm == "left" ? encoders_left : encoders_right);
 	Vector *encoderReadings =		(chosen_arm == "left" ? &positions_left_enc : &positions_left_enc);
+	
+	// FIXME
+	yarp::os::BufferedPort<yarp::os::Bottle>* tactilePort = (chosen_arm == "left" ? &port_tactReader_left : &port_tactReader_right);
+
+	//yarp::os::BufferedPort<yarp::os::Bottle>* tactilePort = &port_tactReader_left;
+	cout << "All is well up to now" << endl;
 
 	encodersSource->getAxes(&jointAxesCount);
 	encoderReadings->resize(jointAxesCount);
@@ -1571,6 +1617,8 @@ void BehaviorModule::logJointAndForceData(int state)
 	stiffnessInfo = new double[impedanceAxesCount];
 	dampingInfo = new double[impedanceAxesCount];
 
+	
+	cout << "Before filling data" << endl;	
 
 	for(int j = 0; j < impedanceAxesCount; j++)
 	{
@@ -1578,33 +1626,123 @@ void BehaviorModule::logJointAndForceData(int state)
 		impedanceSource->getImpedance(j, &stiffnessInfo[j], &dampingInfo[j]);
 	}
 
-	featuresToLog.resize(torqueAxesCount + 2*impedanceAxesCount + jointAxesCount);
-
+	cout << "Got the impedance" << endl;
+	// There are a total of 12 triangles in iCub's hand; hence 12
+	//featuresToLog.resize(/*13 + */12 + torqueAxesCount + 2*impedanceAxesCount + jointAxesCount);
+	
+	int size = 12 + 6 + torqueAxesCount + 2*impedanceAxesCount + jointAxesCount;
+	allInfo = new double[size];
 	// First torques...
 	for(int i = 0; i < torqueAxesCount; i++)
 	{
-		featuresToLog[i] = torqueInfo[i];
+		allInfo[i] = torqueInfo[i];
 	}
 
+	cout << "Filled the torque info" << endl;
 	// Then stiffness, then damping
 	for(int i = torqueAxesCount; i < (torqueAxesCount + impedanceAxesCount); i++)
 	{
-		featuresToLog[i] = stiffnessInfo[(i-torqueAxesCount)];
-		featuresToLog[i+impedanceAxesCount] = dampingInfo[(i-torqueAxesCount)];
+		allInfo[i] = stiffnessInfo[(i-torqueAxesCount)];
+		allInfo[i+impedanceAxesCount] = dampingInfo[(i-torqueAxesCount)];
 	}
-
-	// Finally, joint encoders
+	
+	cout << "Filled the impedance info" << endl;
+	
+	// Then, joint encoders
 	for(int i = torqueAxesCount + 2*impedanceAxesCount; i < (torqueAxesCount + 2*impedanceAxesCount + jointAxesCount); i++)
 	{
-		featuresToLog[i] = encoderReadings->data()[i - torqueAxesCount + 2*impedanceAxesCount];
+		allInfo[i] = encoderReadings->data()[i - torqueAxesCount + 2*impedanceAxesCount];
 	}
+	cout << "Filled the encoders info" << endl;
+	
+	int offset = torqueAxesCount + 2*impedanceAxesCount + jointAxesCount;
+	
+	// Lastly, tactile information is read.
+	
+	cout << "Time for tactile info" << endl;
+	Bottle *b = tactilePort->read();
+	
+	
+	cout << "Time for tactile info2" << endl;
+	// The first 5*12 taxels are of fingers
+	for (int i = 0; i < 60; i++) 
+	{
+		allInfo[offset + (i % 12)] += 255.0 - b->get(i).asDouble(); //offset + i % 12
+	}
+	
+	// The remaining 7*12 are of palm
+	for (int i = 60; i < 144; i++)
+	{
+		allInfo[offset + (i % 12)] += 255.0 - b->get(i).asDouble(); //5+offset + i % 12
+	}
+	
+	offset += 12;
+	
+	for (int i = 0; i < 12; i++) {
+		//featuresToLog[offset + i] = featuresToLog[offset + i] / 12;
+		//allInfo[1] = allInfo[1] / 12; //
+		//cout << "averaged tactile " << i << endl;
+		//featuresToLog[featuresToLog.size()-1] = featuresToLog[offset + i];
+	}	
+	cout << "Filled the tactile info" << endl;
+	Bottle *forceBottle;
+	if(chosen_arm == "left")
+	{
+	 forceBottle = ft_reader_left.read();
+	}
+	else
+	{
+		forceBottle = ft_reader_right.read();
+	}
+	
+	// 6 doubles: 3 force, 3 torque
+	
+	for(int i = 0; i < 6; i++)
+	{
+		allInfo[offset + i] = forceBottle->get(i).asDouble();
+	}
+	
+	cout << "Filled end effector force" << endl;
+	
+	/*
+	featuresToLog[featuresToLog.size()-1] = featuresToLog[featuresToLog.size()-1]/12;*/
 
-	behaviorModuleDataLogger->logSingleData(featuresToLog,experimentEpoch,state);
+	cout << "into log single data function "<< endl;
+	behaviorModuleDataLogger->logSingleData(allInfo,experimentEpoch,state,size);
 
+	cout << "Data seems to be filled" << endl;
+	b->clear();
+	//featuresToLog.clear();
 	delete [] torqueInfo;
 	delete [] stiffnessInfo;
 	delete [] dampingInfo;
+	delete [] allInfo;
 }
+
+/*
+bool BehaviorModule::determineLogState(int taskId)
+{
+
+	
+	//Other candidates to exclude logging: (Onur: not sure if they will be exclusively called in actionCallback)
+	//	OPEN_EYE_LIDS
+	//	HAPPY
+	//	ANGRY
+	//	SAD
+	//	EVIL
+	//	NEUTRAL	
+	//	CLOSE_EYE_LIDS
+	
+	
+	return (
+		taskId != behavior_manager::Action::Request::HOME &&
+		taskId != behavior_manager::Action::Request::TUCK_ARMS &&
+		taskId != behavior_manager::Action::Request::LOOK_AT_POINT &&
+		taskId != behavior_manager::Action::Request::LOOK_AT_FACE
+		);
+}
+
+*/
 
 //--Onur
 

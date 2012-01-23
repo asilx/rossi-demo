@@ -2,14 +2,15 @@
 import roslib.message
 import struct
 
+import arm_navigation_msgs.msg
 import tabletop_object_detector.msg
-import sensor_msgs.msg
 import geometry_msgs.msg
-import household_objects_database_msgs.msg
+import sensor_msgs.msg
 import std_msgs.msg
+import household_objects_database_msgs.msg
 
 class WorkspaceDetection(roslib.message.Message):
-  _md5sum = "780ef7d01de10730ff3a1a4575dba282"
+  _md5sum = "5a4edbc74d5fc38681b398dd2259bcf2"
   _type = "aff_msgs/WorkspaceDetection"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """# Contains all the information from one run of the tabletop detection node
@@ -61,8 +62,12 @@ float32 x_max
 float32 y_min
 float32 y_max
 
-# There is no guarantee that the table doe NOT extend further than these 
+# There is no guarantee that the table does NOT extend further than these 
 # values; this is just as far as we've observed it.
+
+
+# Newer table definition as triangle mesh of convex hull (relative to pose)
+arm_navigation_msgs/Shape convex_hull
 
 ================================================================================
 MSG: geometry_msgs/PoseStamped
@@ -109,6 +114,41 @@ float64 x
 float64 y
 float64 z
 float64 w
+
+================================================================================
+MSG: arm_navigation_msgs/Shape
+byte SPHERE=0
+byte BOX=1
+byte CYLINDER=2
+byte MESH=3
+
+byte type
+
+
+#### define sphere, box, cylinder ####
+# the origin of each shape is considered at the shape's center
+
+# for sphere
+# radius := dimensions[0]
+
+# for cylinder
+# radius := dimensions[0]
+# length := dimensions[1]
+# the length is along the Z axis
+
+# for box
+# size_x := dimensions[0]
+# size_y := dimensions[1]
+# size_z := dimensions[2]
+float64[] dimensions
+
+
+#### define mesh ####
+
+# list of triangles; triangle k is defined by tre vertices located
+# at indices triangles[3k], triangles[3k+1], triangles[3k+2]
+int32[] triangles
+geometry_msgs/Point[] vertices
 
 ================================================================================
 MSG: sensor_msgs/PointCloud
@@ -184,6 +224,10 @@ geometry_msgs/PoseStamped pose
 
 # a measure of the confidence level in this detection result
 float32 confidence
+
+# the name of the object detector that generated this detection result
+string detector_name
+
 """
   __slots__ = ['tabletop','table']
   _slot_types = ['tabletop_object_detector/TabletopDetectionResult','tabletop_object_detector/Table']
@@ -232,7 +276,20 @@ float32 confidence
       length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_7d4f.pack(_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max))
+      buff.write(_struct_7d4fb.pack(_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max, _x.tabletop.table.convex_hull.type))
+      length = len(self.tabletop.table.convex_hull.dimensions)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.tabletop.table.convex_hull.dimensions))
+      length = len(self.tabletop.table.convex_hull.triangles)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%si'%length
+      buff.write(struct.pack(pattern, *self.tabletop.table.convex_hull.triangles))
+      length = len(self.tabletop.table.convex_hull.vertices)
+      buff.write(_struct_I.pack(length))
+      for val1 in self.tabletop.table.convex_hull.vertices:
+        _x = val1
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
       length = len(self.tabletop.clusters)
       buff.write(_struct_I.pack(length))
       for val1 in self.tabletop.clusters:
@@ -283,6 +340,9 @@ float32 confidence
           _x = _v8
           buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
           buff.write(_struct_f.pack(val2.confidence))
+          _x = val2.detector_name
+          length = len(_x)
+          buff.write(struct.pack('<I%ss'%length, length, _x))
       length = len(self.tabletop.cluster_model_indices)
       buff.write(_struct_I.pack(length))
       pattern = '<%si'%length
@@ -293,7 +353,20 @@ float32 confidence
       length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_7d4f.pack(_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max))
+      buff.write(_struct_7d4fb.pack(_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max, _x.table.convex_hull.type))
+      length = len(self.table.convex_hull.dimensions)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(struct.pack(pattern, *self.table.convex_hull.dimensions))
+      length = len(self.table.convex_hull.triangles)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%si'%length
+      buff.write(struct.pack(pattern, *self.table.convex_hull.triangles))
+      length = len(self.table.convex_hull.vertices)
+      buff.write(_struct_I.pack(length))
+      for val1 in self.table.convex_hull.vertices:
+        _x = val1
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
     except struct.error as se: self._check_types(se)
     except TypeError as te: self._check_types(te)
 
@@ -321,8 +394,33 @@ float32 confidence
       self.tabletop.table.pose.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 72
-      (_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max,) = _struct_7d4f.unpack(str[start:end])
+      end += 73
+      (_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max, _x.tabletop.table.convex_hull.type,) = _struct_7d4fb.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.tabletop.table.convex_hull.dimensions = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%si'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.tabletop.table.convex_hull.triangles = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      self.tabletop.table.convex_hull.vertices = []
+      for i in range(0, length):
+        val1 = geometry_msgs.msg.Point()
+        _x = val1
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        self.tabletop.table.convex_hull.vertices.append(val1)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
@@ -421,6 +519,12 @@ float32 confidence
           start = end
           end += 4
           (val2.confidence,) = _struct_f.unpack(str[start:end])
+          start = end
+          end += 4
+          (length,) = _struct_I.unpack(str[start:end])
+          start = end
+          end += length
+          val2.detector_name = str[start:end]
           val1.model_list.append(val2)
         self.tabletop.models.append(val1)
       start = end
@@ -442,8 +546,33 @@ float32 confidence
       self.table.pose.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 72
-      (_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max,) = _struct_7d4f.unpack(str[start:end])
+      end += 73
+      (_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max, _x.table.convex_hull.type,) = _struct_7d4fb.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.table.convex_hull.dimensions = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%si'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.table.convex_hull.triangles = struct.unpack(pattern, str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      self.table.convex_hull.vertices = []
+      for i in range(0, length):
+        val1 = geometry_msgs.msg.Point()
+        _x = val1
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        self.table.convex_hull.vertices.append(val1)
       return self
     except struct.error as e:
       raise roslib.message.DeserializationError(e) #most likely buffer underfill
@@ -464,7 +593,20 @@ float32 confidence
       length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_7d4f.pack(_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max))
+      buff.write(_struct_7d4fb.pack(_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max, _x.tabletop.table.convex_hull.type))
+      length = len(self.tabletop.table.convex_hull.dimensions)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.tabletop.table.convex_hull.dimensions.tostring())
+      length = len(self.tabletop.table.convex_hull.triangles)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%si'%length
+      buff.write(self.tabletop.table.convex_hull.triangles.tostring())
+      length = len(self.tabletop.table.convex_hull.vertices)
+      buff.write(_struct_I.pack(length))
+      for val1 in self.tabletop.table.convex_hull.vertices:
+        _x = val1
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
       length = len(self.tabletop.clusters)
       buff.write(_struct_I.pack(length))
       for val1 in self.tabletop.clusters:
@@ -515,6 +657,9 @@ float32 confidence
           _x = _v24
           buff.write(_struct_4d.pack(_x.x, _x.y, _x.z, _x.w))
           buff.write(_struct_f.pack(val2.confidence))
+          _x = val2.detector_name
+          length = len(_x)
+          buff.write(struct.pack('<I%ss'%length, length, _x))
       length = len(self.tabletop.cluster_model_indices)
       buff.write(_struct_I.pack(length))
       pattern = '<%si'%length
@@ -525,7 +670,20 @@ float32 confidence
       length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_struct_7d4f.pack(_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max))
+      buff.write(_struct_7d4fb.pack(_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max, _x.table.convex_hull.type))
+      length = len(self.table.convex_hull.dimensions)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%sd'%length
+      buff.write(self.table.convex_hull.dimensions.tostring())
+      length = len(self.table.convex_hull.triangles)
+      buff.write(_struct_I.pack(length))
+      pattern = '<%si'%length
+      buff.write(self.table.convex_hull.triangles.tostring())
+      length = len(self.table.convex_hull.vertices)
+      buff.write(_struct_I.pack(length))
+      for val1 in self.table.convex_hull.vertices:
+        _x = val1
+        buff.write(_struct_3d.pack(_x.x, _x.y, _x.z))
     except struct.error as se: self._check_types(se)
     except TypeError as te: self._check_types(te)
 
@@ -555,8 +713,33 @@ float32 confidence
       self.tabletop.table.pose.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 72
-      (_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max,) = _struct_7d4f.unpack(str[start:end])
+      end += 73
+      (_x.tabletop.table.pose.pose.position.x, _x.tabletop.table.pose.pose.position.y, _x.tabletop.table.pose.pose.position.z, _x.tabletop.table.pose.pose.orientation.x, _x.tabletop.table.pose.pose.orientation.y, _x.tabletop.table.pose.pose.orientation.z, _x.tabletop.table.pose.pose.orientation.w, _x.tabletop.table.x_min, _x.tabletop.table.x_max, _x.tabletop.table.y_min, _x.tabletop.table.y_max, _x.tabletop.table.convex_hull.type,) = _struct_7d4fb.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.tabletop.table.convex_hull.dimensions = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%si'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.tabletop.table.convex_hull.triangles = numpy.frombuffer(str[start:end], dtype=numpy.int32, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      self.tabletop.table.convex_hull.vertices = []
+      for i in range(0, length):
+        val1 = geometry_msgs.msg.Point()
+        _x = val1
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        self.tabletop.table.convex_hull.vertices.append(val1)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
@@ -655,6 +838,12 @@ float32 confidence
           start = end
           end += 4
           (val2.confidence,) = _struct_f.unpack(str[start:end])
+          start = end
+          end += 4
+          (length,) = _struct_I.unpack(str[start:end])
+          start = end
+          end += length
+          val2.detector_name = str[start:end]
           val1.model_list.append(val2)
         self.tabletop.models.append(val1)
       start = end
@@ -676,16 +865,41 @@ float32 confidence
       self.table.pose.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 72
-      (_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max,) = _struct_7d4f.unpack(str[start:end])
+      end += 73
+      (_x.table.pose.pose.position.x, _x.table.pose.pose.position.y, _x.table.pose.pose.position.z, _x.table.pose.pose.orientation.x, _x.table.pose.pose.orientation.y, _x.table.pose.pose.orientation.z, _x.table.pose.pose.orientation.w, _x.table.x_min, _x.table.x_max, _x.table.y_min, _x.table.y_max, _x.table.convex_hull.type,) = _struct_7d4fb.unpack(str[start:end])
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%sd'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.table.convex_hull.dimensions = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      pattern = '<%si'%length
+      start = end
+      end += struct.calcsize(pattern)
+      self.table.convex_hull.triangles = numpy.frombuffer(str[start:end], dtype=numpy.int32, count=length)
+      start = end
+      end += 4
+      (length,) = _struct_I.unpack(str[start:end])
+      self.table.convex_hull.vertices = []
+      for i in range(0, length):
+        val1 = geometry_msgs.msg.Point()
+        _x = val1
+        start = end
+        end += 24
+        (_x.x, _x.y, _x.z,) = _struct_3d.unpack(str[start:end])
+        self.table.convex_hull.vertices.append(val1)
       return self
     except struct.error as e:
       raise roslib.message.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = roslib.message.struct_I
-_struct_7d4f = struct.Struct("<7d4f")
 _struct_f = struct.Struct("<f")
 _struct_i3I = struct.Struct("<i3I")
+_struct_7d4fb = struct.Struct("<7d4fb")
 _struct_2I = struct.Struct("<2I")
 _struct_i = struct.Struct("<i")
 _struct_3I = struct.Struct("<3I")

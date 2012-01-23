@@ -151,19 +151,6 @@ ROSBUILD_gensrv_lisp/fast:
 .PHONY : ROSBUILD_gensrv_lisp/fast
 
 #=============================================================================
-# Target rules for targets named aff_labels_viz
-
-# Build rule for target.
-aff_labels_viz: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 aff_labels_viz
-.PHONY : aff_labels_viz
-
-# fast build rule for target.
-aff_labels_viz/fast:
-	$(MAKE) -f CMakeFiles/aff_labels_viz.dir/build.make CMakeFiles/aff_labels_viz.dir/build
-.PHONY : aff_labels_viz/fast
-
-#=============================================================================
 # Target rules for targets named clean-test-results
 
 # Build rule for target.
@@ -175,19 +162,6 @@ clean-test-results: cmake_check_build_system
 clean-test-results/fast:
 	$(MAKE) -f CMakeFiles/clean-test-results.dir/build.make CMakeFiles/clean-test-results.dir/build
 .PHONY : clean-test-results/fast
-
-#=============================================================================
-# Target rules for targets named experiment_manager
-
-# Build rule for target.
-experiment_manager: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 experiment_manager
-.PHONY : experiment_manager
-
-# fast build rule for target.
-experiment_manager/fast:
-	$(MAKE) -f CMakeFiles/experiment_manager.dir/build.make CMakeFiles/experiment_manager.dir/build
-.PHONY : experiment_manager/fast
 
 #=============================================================================
 # Target rules for targets named rosbuild_precompile
@@ -307,19 +281,6 @@ test-results-run/fast:
 .PHONY : test-results-run/fast
 
 #=============================================================================
-# Target rules for targets named test_look
-
-# Build rule for target.
-test_look: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_look
-.PHONY : test_look
-
-# fast build rule for target.
-test_look/fast:
-	$(MAKE) -f CMakeFiles/test_look.dir/build.make CMakeFiles/test_look.dir/build
-.PHONY : test_look/fast
-
-#=============================================================================
 # Target rules for targets named test_perceptors
 
 # Build rule for target.
@@ -346,51 +307,6 @@ tests/fast:
 .PHONY : tests/fast
 
 # target to build an object file
-src/aff_labels_viz.o:
-	$(MAKE) -f CMakeFiles/aff_labels_viz.dir/build.make CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.o
-.PHONY : src/aff_labels_viz.o
-
-# target to preprocess a source file
-src/aff_labels_viz.i:
-	$(MAKE) -f CMakeFiles/aff_labels_viz.dir/build.make CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.i
-.PHONY : src/aff_labels_viz.i
-
-# target to generate assembly for a file
-src/aff_labels_viz.s:
-	$(MAKE) -f CMakeFiles/aff_labels_viz.dir/build.make CMakeFiles/aff_labels_viz.dir/src/aff_labels_viz.s
-.PHONY : src/aff_labels_viz.s
-
-# target to build an object file
-src/main2.o:
-	$(MAKE) -f CMakeFiles/experiment_manager.dir/build.make CMakeFiles/experiment_manager.dir/src/main2.o
-.PHONY : src/main2.o
-
-# target to preprocess a source file
-src/main2.i:
-	$(MAKE) -f CMakeFiles/experiment_manager.dir/build.make CMakeFiles/experiment_manager.dir/src/main2.i
-.PHONY : src/main2.i
-
-# target to generate assembly for a file
-src/main2.s:
-	$(MAKE) -f CMakeFiles/experiment_manager.dir/build.make CMakeFiles/experiment_manager.dir/src/main2.s
-.PHONY : src/main2.s
-
-# target to build an object file
-src/test_look.o:
-	$(MAKE) -f CMakeFiles/test_look.dir/build.make CMakeFiles/test_look.dir/src/test_look.o
-.PHONY : src/test_look.o
-
-# target to preprocess a source file
-src/test_look.i:
-	$(MAKE) -f CMakeFiles/test_look.dir/build.make CMakeFiles/test_look.dir/src/test_look.i
-.PHONY : src/test_look.i
-
-# target to generate assembly for a file
-src/test_look.s:
-	$(MAKE) -f CMakeFiles/test_look.dir/build.make CMakeFiles/test_look.dir/src/test_look.s
-.PHONY : src/test_look.s
-
-# target to build an object file
 src/test_perceptors.o:
 	$(MAKE) -f CMakeFiles/test_perceptors.dir/build.make CMakeFiles/test_perceptors.dir/src/test_perceptors.o
 .PHONY : src/test_perceptors.o
@@ -415,10 +331,8 @@ help:
 	@echo "... ROSBUILD_genmsg_lisp"
 	@echo "... ROSBUILD_gensrv_cpp"
 	@echo "... ROSBUILD_gensrv_lisp"
-	@echo "... aff_labels_viz"
 	@echo "... clean-test-results"
 	@echo "... edit_cache"
-	@echo "... experiment_manager"
 	@echo "... rebuild_cache"
 	@echo "... rosbuild_precompile"
 	@echo "... rosbuild_premsgsrvgen"
@@ -429,18 +343,8 @@ help:
 	@echo "... test-future"
 	@echo "... test-results"
 	@echo "... test-results-run"
-	@echo "... test_look"
 	@echo "... test_perceptors"
 	@echo "... tests"
-	@echo "... src/aff_labels_viz.o"
-	@echo "... src/aff_labels_viz.i"
-	@echo "... src/aff_labels_viz.s"
-	@echo "... src/main2.o"
-	@echo "... src/main2.i"
-	@echo "... src/main2.s"
-	@echo "... src/test_look.o"
-	@echo "... src/test_look.i"
-	@echo "... src/test_look.s"
 	@echo "... src/test_perceptors.o"
 	@echo "... src/test_perceptors.i"
 	@echo "... src/test_perceptors.s"

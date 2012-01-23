@@ -21,6 +21,11 @@
     :reader arg2
     :initarg :arg2
     :type cl:fixnum
+    :initform 0)
+   (experimentEpoch
+    :reader experimentEpoch
+    :initarg :experimentEpoch
+    :type cl:fixnum
     :initform 0))
 )
 
@@ -46,6 +51,11 @@
 (cl:defmethod arg2-val ((m <Perception2D-request>))
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader tabletop_2D_segmentation-srv:arg2-val is deprecated.  Use tabletop_2D_segmentation-srv:arg2 instead.")
   (arg2 m))
+
+(cl:ensure-generic-function 'experimentEpoch-val :lambda-list '(m))
+(cl:defmethod experimentEpoch-val ((m <Perception2D-request>))
+  (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader tabletop_2D_segmentation-srv:experimentEpoch-val is deprecated.  Use tabletop_2D_segmentation-srv:experimentEpoch instead.")
+  (experimentEpoch m))
 (cl:defmethod roslisp-msg-protocol:symbol-codes ((msg-type (cl:eql '<Perception2D-request>)))
     "Constants for message type '<Perception2D-request>"
   '((:DO_PERCEPT . 0)
@@ -65,6 +75,7 @@
   (cl:let* ((signed (cl:slot-value msg 'arg2)) (unsigned (cl:if (cl:< signed 0) (cl:+ signed 256) signed)))
     (cl:write-byte (cl:ldb (cl:byte 8 0) unsigned) ostream)
     )
+  (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'experimentEpoch)) ostream)
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <Perception2D-request>) istream)
   "Deserializes a message object of type '<Perception2D-request>"
@@ -75,6 +86,7 @@
     (cl:let ((unsigned 0))
       (cl:setf (cl:ldb (cl:byte 8 0) unsigned) (cl:read-byte istream))
       (cl:setf (cl:slot-value msg 'arg2) (cl:if (cl:< unsigned 128) unsigned (cl:- unsigned 256))))
+    (cl:setf (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'experimentEpoch)) (cl:read-byte istream))
   msg
 )
 (cl:defmethod roslisp-msg-protocol:ros-datatype ((msg (cl:eql '<Perception2D-request>)))
@@ -85,18 +97,19 @@
   "tabletop_2D_segmentation/Perception2DRequest")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Perception2D-request>)))
   "Returns md5sum for a message object of type '<Perception2D-request>"
-  "c91eca1764ec7ae012d5310b49c26139")
+  "b967eca97a24f16bdd63c4e02f1eca2d")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Perception2D-request)))
   "Returns md5sum for a message object of type 'Perception2D-request"
-  "c91eca1764ec7ae012d5310b49c26139")
+  "b967eca97a24f16bdd63c4e02f1eca2d")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Perception2D-request>)))
   "Returns full string definition for message of type '<Perception2D-request>"
-  (cl:format cl:nil "uint8 DO_PERCEPT = 0~%uint8 EXTRACT_EFFECT = 1~%uint8 task~%int8 arg~%int8 arg2~%~%~%"))
+  (cl:format cl:nil "uint8 DO_PERCEPT = 0~%uint8 EXTRACT_EFFECT = 1~%uint8 task~%int8 arg~%int8 arg2~%uint8 experimentEpoch~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Perception2D-request)))
   "Returns full string definition for message of type 'Perception2D-request"
-  (cl:format cl:nil "uint8 DO_PERCEPT = 0~%uint8 EXTRACT_EFFECT = 1~%uint8 task~%int8 arg~%int8 arg2~%~%~%"))
+  (cl:format cl:nil "uint8 DO_PERCEPT = 0~%uint8 EXTRACT_EFFECT = 1~%uint8 task~%int8 arg~%int8 arg2~%uint8 experimentEpoch~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Perception2D-request>))
   (cl:+ 0
+     1
      1
      1
      1
@@ -107,6 +120,7 @@
     (cl:cons ':task (task msg))
     (cl:cons ':arg (arg msg))
     (cl:cons ':arg2 (arg2 msg))
+    (cl:cons ':experimentEpoch (experimentEpoch msg))
 ))
 ;//! \htmlinclude Perception2D-response.msg.html
 
@@ -306,16 +320,16 @@
   "tabletop_2D_segmentation/Perception2DResponse")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Perception2D-response>)))
   "Returns md5sum for a message object of type '<Perception2D-response>"
-  "c91eca1764ec7ae012d5310b49c26139")
+  "b967eca97a24f16bdd63c4e02f1eca2d")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Perception2D-response)))
   "Returns md5sum for a message object of type 'Perception2D-response"
-  "c91eca1764ec7ae012d5310b49c26139")
+  "b967eca97a24f16bdd63c4e02f1eca2d")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Perception2D-response>)))
   "Returns full string definition for message of type '<Perception2D-response>"
-  (cl:format cl:nil "~%~%~%sensor_msgs/Image raw_image~%sensor_msgs/Image filtered_image~%sensor_msgs/RegionOfInterest[] rois~%bool face_detected~%int16 ooi_area~%int8[] ooi_color_r_hist~%int8[] ooi_color_g_hist~%int8[] ooi_color_b_hist~%~%================================================================================~%MSG: sensor_msgs/Image~%# This message contains an uncompressed image~%# (0, 0) is at top-left corner of image~%#~%~%Header header        # Header timestamp should be acquisition time of image~%                     # Header frame_id should be optical frame of camera~%                     # origin of frame should be optical center of cameara~%                     # +x should point to the right in the image~%                     # +y should point down in the image~%                     # +z should point into to plane of the image~%                     # If the frame_id here and the frame_id of the CameraInfo~%                     # message associated with the image conflict~%                     # the behavior is undefined~%~%uint32 height         # image height, that is, number of rows~%uint32 width          # image width, that is, number of columns~%~%# The legal values for encoding are in file src/image_encodings.cpp~%# If you want to standardize a new string format, join~%# ros-users@lists.sourceforge.net and send an email proposing a new encoding.~%~%string encoding       # Encoding of pixels -- channel meaning, ordering, size~%                      # taken from the list of strings in src/image_encodings.cpp~%~%uint8 is_bigendian    # is this data bigendian?~%uint32 step           # Full row length in bytes~%uint8[] data          # actual matrix data, size is (step * rows)~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.secs: seconds (stamp_secs) since epoch~%# * stamp.nsecs: nanoseconds since stamp_secs~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%================================================================================~%MSG: sensor_msgs/RegionOfInterest~%# This message is used to specify a region of interest within an image.~%#~%# When used to specify the ROI setting of the camera when the image was~%# taken, the height and width fields should either match the height and~%# width fields for the associated image; or height = width = 0~%# indicates that the full resolution image was captured.~%~%uint32 x_offset  # Leftmost pixel of the ROI~%                 # (0 if the ROI includes the left edge of the image)~%uint32 y_offset  # Topmost pixel of the ROI~%                 # (0 if the ROI includes the top edge of the image)~%uint32 height    # Height of ROI~%uint32 width     # Width of ROI~%~%# True if a distinct rectified ROI should be calculated from the \"raw\"~%# ROI in this message. Typically this should be False if the full image~%# is captured (ROI not used), and True if a subwindow is captured (ROI~%# used).~%bool do_rectify~%~%~%"))
+  (cl:format cl:nil "~%~%~%sensor_msgs/Image raw_image~%sensor_msgs/Image filtered_image~%sensor_msgs/RegionOfInterest[] rois~%bool face_detected~%int16 ooi_area~%int8[] ooi_color_r_hist~%int8[] ooi_color_g_hist~%int8[] ooi_color_b_hist~%~%~%================================================================================~%MSG: sensor_msgs/Image~%# This message contains an uncompressed image~%# (0, 0) is at top-left corner of image~%#~%~%Header header        # Header timestamp should be acquisition time of image~%                     # Header frame_id should be optical frame of camera~%                     # origin of frame should be optical center of cameara~%                     # +x should point to the right in the image~%                     # +y should point down in the image~%                     # +z should point into to plane of the image~%                     # If the frame_id here and the frame_id of the CameraInfo~%                     # message associated with the image conflict~%                     # the behavior is undefined~%~%uint32 height         # image height, that is, number of rows~%uint32 width          # image width, that is, number of columns~%~%# The legal values for encoding are in file src/image_encodings.cpp~%# If you want to standardize a new string format, join~%# ros-users@lists.sourceforge.net and send an email proposing a new encoding.~%~%string encoding       # Encoding of pixels -- channel meaning, ordering, size~%                      # taken from the list of strings in src/image_encodings.cpp~%~%uint8 is_bigendian    # is this data bigendian?~%uint32 step           # Full row length in bytes~%uint8[] data          # actual matrix data, size is (step * rows)~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.secs: seconds (stamp_secs) since epoch~%# * stamp.nsecs: nanoseconds since stamp_secs~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%================================================================================~%MSG: sensor_msgs/RegionOfInterest~%# This message is used to specify a region of interest within an image.~%#~%# When used to specify the ROI setting of the camera when the image was~%# taken, the height and width fields should either match the height and~%# width fields for the associated image; or height = width = 0~%# indicates that the full resolution image was captured.~%~%uint32 x_offset  # Leftmost pixel of the ROI~%                 # (0 if the ROI includes the left edge of the image)~%uint32 y_offset  # Topmost pixel of the ROI~%                 # (0 if the ROI includes the top edge of the image)~%uint32 height    # Height of ROI~%uint32 width     # Width of ROI~%~%# True if a distinct rectified ROI should be calculated from the \"raw\"~%# ROI in this message. Typically this should be False if the full image~%# is captured (ROI not used), and True if a subwindow is captured (ROI~%# used).~%bool do_rectify~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Perception2D-response)))
   "Returns full string definition for message of type 'Perception2D-response"
-  (cl:format cl:nil "~%~%~%sensor_msgs/Image raw_image~%sensor_msgs/Image filtered_image~%sensor_msgs/RegionOfInterest[] rois~%bool face_detected~%int16 ooi_area~%int8[] ooi_color_r_hist~%int8[] ooi_color_g_hist~%int8[] ooi_color_b_hist~%~%================================================================================~%MSG: sensor_msgs/Image~%# This message contains an uncompressed image~%# (0, 0) is at top-left corner of image~%#~%~%Header header        # Header timestamp should be acquisition time of image~%                     # Header frame_id should be optical frame of camera~%                     # origin of frame should be optical center of cameara~%                     # +x should point to the right in the image~%                     # +y should point down in the image~%                     # +z should point into to plane of the image~%                     # If the frame_id here and the frame_id of the CameraInfo~%                     # message associated with the image conflict~%                     # the behavior is undefined~%~%uint32 height         # image height, that is, number of rows~%uint32 width          # image width, that is, number of columns~%~%# The legal values for encoding are in file src/image_encodings.cpp~%# If you want to standardize a new string format, join~%# ros-users@lists.sourceforge.net and send an email proposing a new encoding.~%~%string encoding       # Encoding of pixels -- channel meaning, ordering, size~%                      # taken from the list of strings in src/image_encodings.cpp~%~%uint8 is_bigendian    # is this data bigendian?~%uint32 step           # Full row length in bytes~%uint8[] data          # actual matrix data, size is (step * rows)~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.secs: seconds (stamp_secs) since epoch~%# * stamp.nsecs: nanoseconds since stamp_secs~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%================================================================================~%MSG: sensor_msgs/RegionOfInterest~%# This message is used to specify a region of interest within an image.~%#~%# When used to specify the ROI setting of the camera when the image was~%# taken, the height and width fields should either match the height and~%# width fields for the associated image; or height = width = 0~%# indicates that the full resolution image was captured.~%~%uint32 x_offset  # Leftmost pixel of the ROI~%                 # (0 if the ROI includes the left edge of the image)~%uint32 y_offset  # Topmost pixel of the ROI~%                 # (0 if the ROI includes the top edge of the image)~%uint32 height    # Height of ROI~%uint32 width     # Width of ROI~%~%# True if a distinct rectified ROI should be calculated from the \"raw\"~%# ROI in this message. Typically this should be False if the full image~%# is captured (ROI not used), and True if a subwindow is captured (ROI~%# used).~%bool do_rectify~%~%~%"))
+  (cl:format cl:nil "~%~%~%sensor_msgs/Image raw_image~%sensor_msgs/Image filtered_image~%sensor_msgs/RegionOfInterest[] rois~%bool face_detected~%int16 ooi_area~%int8[] ooi_color_r_hist~%int8[] ooi_color_g_hist~%int8[] ooi_color_b_hist~%~%~%================================================================================~%MSG: sensor_msgs/Image~%# This message contains an uncompressed image~%# (0, 0) is at top-left corner of image~%#~%~%Header header        # Header timestamp should be acquisition time of image~%                     # Header frame_id should be optical frame of camera~%                     # origin of frame should be optical center of cameara~%                     # +x should point to the right in the image~%                     # +y should point down in the image~%                     # +z should point into to plane of the image~%                     # If the frame_id here and the frame_id of the CameraInfo~%                     # message associated with the image conflict~%                     # the behavior is undefined~%~%uint32 height         # image height, that is, number of rows~%uint32 width          # image width, that is, number of columns~%~%# The legal values for encoding are in file src/image_encodings.cpp~%# If you want to standardize a new string format, join~%# ros-users@lists.sourceforge.net and send an email proposing a new encoding.~%~%string encoding       # Encoding of pixels -- channel meaning, ordering, size~%                      # taken from the list of strings in src/image_encodings.cpp~%~%uint8 is_bigendian    # is this data bigendian?~%uint32 step           # Full row length in bytes~%uint8[] data          # actual matrix data, size is (step * rows)~%~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.secs: seconds (stamp_secs) since epoch~%# * stamp.nsecs: nanoseconds since stamp_secs~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%================================================================================~%MSG: sensor_msgs/RegionOfInterest~%# This message is used to specify a region of interest within an image.~%#~%# When used to specify the ROI setting of the camera when the image was~%# taken, the height and width fields should either match the height and~%# width fields for the associated image; or height = width = 0~%# indicates that the full resolution image was captured.~%~%uint32 x_offset  # Leftmost pixel of the ROI~%                 # (0 if the ROI includes the left edge of the image)~%uint32 y_offset  # Topmost pixel of the ROI~%                 # (0 if the ROI includes the top edge of the image)~%uint32 height    # Height of ROI~%uint32 width     # Width of ROI~%~%# True if a distinct rectified ROI should be calculated from the \"raw\"~%# ROI in this message. Typically this should be False if the full image~%# is captured (ROI not used), and True if a subwindow is captured (ROI~%# used).~%bool do_rectify~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Perception2D-response>))
   (cl:+ 0
      (roslisp-msg-protocol:serialization-length (cl:slot-value msg 'raw_image))

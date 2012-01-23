@@ -34,16 +34,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
 
-rosbuild_add_executable(${PROJECT_NAME} src/main2.cpp)
-target_link_libraries(${PROJECT_NAME} ${YARP_LIBRARIES})
-
 rosbuild_add_executable(test_perceptors src/test_perceptors.cpp)
 target_link_libraries(test_perceptors ${YARP_LIBRARIES})
 
-rosbuild_add_executable(test_look src/test_look.cpp)
-target_link_libraries(test_look ${YARP_LIBRARIES})
-
-rosbuild_add_executable(aff_labels_viz src/aff_labels_viz.cpp)
-target_link_libraries(aff_labels_viz ${YARP_LIBRARIES})
 
 #target_link_libraries(example ${PROJECT_NAME})

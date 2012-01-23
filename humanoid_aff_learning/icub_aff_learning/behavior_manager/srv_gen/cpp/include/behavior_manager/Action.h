@@ -30,6 +30,7 @@ struct ActionRequest_ {
   , arg(0)
   , pushable_object_center()
   , pushable_object_size()
+  , experimentEpoch(0)
   {
   }
 
@@ -38,6 +39,7 @@ struct ActionRequest_ {
   , arg(0)
   , pushable_object_center(_alloc)
   , pushable_object_size(_alloc)
+  , experimentEpoch(0)
   {
   }
 
@@ -52,6 +54,9 @@ struct ActionRequest_ {
 
   typedef std::vector<float, typename ContainerAllocator::template rebind<float>::other >  _pushable_object_size_type;
   std::vector<float, typename ContainerAllocator::template rebind<float>::other >  pushable_object_size;
+
+  typedef uint8_t _experimentEpoch_type;
+  uint8_t experimentEpoch;
 
   enum { DONT_ACT = -1 };
   enum { PUSH_RIGHT = 0 };
@@ -99,14 +104,14 @@ public:
   ROS_DEPRECATED const std::string __getDataType() const { return __s_getDataType_(); }
 
 private:
-  static const char* __s_getMD5Sum_() { return "c42f6c8ce285f5d0e5bfbd8203510d87"; }
+  static const char* __s_getMD5Sum_() { return "ddc8d05569ef3b27a14579c2b5cc4e70"; }
 public:
   ROS_DEPRECATED static const std::string __s_getMD5Sum() { return __s_getMD5Sum_(); }
 
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "15273ca2a759dcd8367407dc29b863d9"; }
+  static const char* __s_getServerMD5Sum_() { return "ac065fe0178768b8f4c4d0241aa49c96"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -146,6 +151,7 @@ int8 task\n\
 int8 arg\n\
 float32[] pushable_object_center\n\
 float32[] pushable_object_size\n\
+uint8 experimentEpoch\n\
 \n\
 "; }
 public:
@@ -160,6 +166,7 @@ public:
     ros::serialization::serialize(stream, arg);
     ros::serialization::serialize(stream, pushable_object_center);
     ros::serialization::serialize(stream, pushable_object_size);
+    ros::serialization::serialize(stream, experimentEpoch);
     return stream.getData();
   }
 
@@ -170,6 +177,7 @@ public:
     ros::serialization::deserialize(stream, arg);
     ros::serialization::deserialize(stream, pushable_object_center);
     ros::serialization::deserialize(stream, pushable_object_size);
+    ros::serialization::deserialize(stream, experimentEpoch);
     return stream.getData();
   }
 
@@ -180,6 +188,7 @@ public:
     size += ros::serialization::serializationLength(arg);
     size += ros::serialization::serializationLength(pushable_object_center);
     size += ros::serialization::serializationLength(pushable_object_size);
+    size += ros::serialization::serializationLength(experimentEpoch);
     return size;
   }
 
@@ -227,7 +236,7 @@ public:
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "15273ca2a759dcd8367407dc29b863d9"; }
+  static const char* __s_getServerMD5Sum_() { return "ac065fe0178768b8f4c4d0241aa49c96"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -298,12 +307,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::behavior_manager::ActionRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "c42f6c8ce285f5d0e5bfbd8203510d87";
+    return "ddc8d05569ef3b27a14579c2b5cc4e70";
   }
 
   static const char* value(const  ::behavior_manager::ActionRequest_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0xc42f6c8ce285f5d0ULL;
-  static const uint64_t static_value2 = 0xe5bfbd8203510d87ULL;
+  static const uint64_t static_value1 = 0xddc8d05569ef3b27ULL;
+  static const uint64_t static_value2 = 0xa14579c2b5cc4e70ULL;
 };
 
 template<class ContainerAllocator>
@@ -353,6 +362,7 @@ int8 task\n\
 int8 arg\n\
 float32[] pushable_object_center\n\
 float32[] pushable_object_size\n\
+uint8 experimentEpoch\n\
 \n\
 ";
   }
@@ -424,6 +434,7 @@ template<class ContainerAllocator> struct Serializer< ::behavior_manager::Action
     stream.next(m.arg);
     stream.next(m.pushable_object_center);
     stream.next(m.pushable_object_size);
+    stream.next(m.experimentEpoch);
   }
 
   ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -457,7 +468,7 @@ template<>
 struct MD5Sum<behavior_manager::Action> {
   static const char* value() 
   {
-    return "15273ca2a759dcd8367407dc29b863d9";
+    return "ac065fe0178768b8f4c4d0241aa49c96";
   }
 
   static const char* value(const behavior_manager::Action&) { return value(); } 
@@ -477,7 +488,7 @@ template<class ContainerAllocator>
 struct MD5Sum<behavior_manager::ActionRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "15273ca2a759dcd8367407dc29b863d9";
+    return "ac065fe0178768b8f4c4d0241aa49c96";
   }
 
   static const char* value(const behavior_manager::ActionRequest_<ContainerAllocator> &) { return value(); } 
@@ -497,7 +508,7 @@ template<class ContainerAllocator>
 struct MD5Sum<behavior_manager::ActionResponse_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "15273ca2a759dcd8367407dc29b863d9";
+    return "ac065fe0178768b8f4c4d0241aa49c96";
   }
 
   static const char* value(const behavior_manager::ActionResponse_<ContainerAllocator> &) { return value(); } 

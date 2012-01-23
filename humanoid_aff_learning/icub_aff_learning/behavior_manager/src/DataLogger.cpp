@@ -23,7 +23,7 @@ void DataLogger::logSingleData(FeatureTuple* singleTuple, int label)
 	//logSingleData(features,0,label);
 }
 
-void DataLogger::logSingleData(std::vector<double> features,int index,int label)
+void DataLogger::logSingleData(double *features,int index,int label,int size)
 {	
 	stringstream fileSS, svm_fileSS;
 	
@@ -50,11 +50,24 @@ void DataLogger::logSingleData(std::vector<double> features,int index,int label)
 		FIXME: The epoch id is best distributed by experiment manager. It is now locally updated in behaviorModule.
 		
 	*/	
+	
+	std::cout << "Feature size is " << size << std::endl; 
 
+	for(int i = 0; i < size;i++)
+	{
+		std::cout << "Feature " << i << " is " << features[i] << std::endl;
+	}
+	
+	
+	//std::cout
 	fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".dat";
 	svm_fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".svm.data";
 
 	ofstream rawfile, svmfile;
+	
+	
+	
+	
 	
 	rawfile.open ((fileSS.str()).c_str());
 	svmfile.open((svm_fileSS.str()).c_str());
@@ -73,7 +86,9 @@ void DataLogger::logSingleData(std::vector<double> features,int index,int label)
 		svmfile << languageTag; 
 	*/
 	
-	for(int f = 0; f < features.size(); f++)
+	std::cout << "Printing the message" << std::endl;
+	
+	for(int f = 0; f < size; f++)
 	{
 	
 		rawfile << " " << features[f];

@@ -502,12 +502,8 @@ CMakeFiles/as.dir/src/featurizer.o
  /usr/local/MATLAB/R2011a/extern/include/tmwtypes.h
  include/DataLogger.h
  include/featurizer.h
- include/featurizer/DataLogger.h
  include/featurizer/NormalHistogram.hpp
 CMakeFiles/as.dir/src/main2.o
- /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h
- /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/Features.h
- /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ModuleStates.h
  /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/main2.cpp
  /opt/ros/electric/stacks/arm_navigation/arm_navigation_msgs/msg_gen/cpp/include/arm_navigation_msgs/Shape.h
  /opt/ros/electric/stacks/bond_core/bond/msg_gen/cpp/include/bond/Constants.h
@@ -1042,6 +1038,5 @@ CMakeFiles/as.dir/src/main2.o
  /usr/local/MATLAB/R2011a/extern/include/tmwtypes.h
  include/DataLogger.h
  include/featurizer.h
- include/featurizer/DataLogger.h
  include/featurizer/NormalHistogram.hpp
  srv_gen/cpp/include/feature_manager/Perception.h

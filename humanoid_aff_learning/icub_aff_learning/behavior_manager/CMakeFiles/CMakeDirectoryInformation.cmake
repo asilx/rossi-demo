@@ -11,7 +11,6 @@ SET(CMAKE_FORCE_UNIX_PATHS 1)
 # The C and CXX include file search paths:
 SET(CMAKE_C_INCLUDE_PATH
   "include"
-  "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/cpp"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/cpp"

@@ -8,9 +8,9 @@
 //ros includes
 #include <ros/ros.h>
 
-#include "aff_msgs/ObjectOfInterest.h"
-#include "aff_msgs/Speech.h"
-#include "aff_msgs/ExperimentState.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ObjectOfInterest.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/Speech.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h"
 //#include "feature_manager/Perception.h"
 #include "al_srvs/Perception.h"
 #include "tabletop_2D_segmentation/Perception2D.h"
@@ -107,6 +107,9 @@ sensor_msgs::CvBridge* bridge_;
 
 bool new_speech_cmd_rcvd_ = false;
 
+
+int experimentEpoch = 0; // is updated at every step.
+
 class DataPort : public BufferedPort<Bottle>
 {
   virtual void
@@ -146,6 +149,14 @@ class DataPort : public BufferedPort<Bottle>
 
 DataPort port_in_ext_motion_det;
 DataPort port_in_int_motion_det;
+
+
+void incrementExperimentEpoch()
+{
+	experimentEpoch++;
+	ROS_INFO("Experiment epoch raised");
+	std::cout << "New epoch id: " << experimentEpoch << std::endl;
+}
 
 void
 nullDeleter (void*)
@@ -311,6 +322,7 @@ run ()
 			ros::service::call ("/action", srv_action.request, srv_action.response);
 			ROS_INFO("finished -tuck_arms- action");
 		}
+
   		
   		if(in_x == 1)
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::REACH;
@@ -346,7 +358,10 @@ run ()
   			exp_state_ = aff_msgs::ExperimentState::ACTION;
   			msg_speech_in.speech_cmd = behavior_manager::Action::Request::DETECT_TOUCH;
   		}
-  		msg_speech_in.speech_arg = 0;
+  		cout << "object id?" << endl;
+  		int id;
+  		cin >> id;
+  		msg_speech_in.speech_arg = id;
   		firstRun = false;
   		
   		publishExpState ();
@@ -400,6 +415,7 @@ run ()
           {
             //now call tuck arms and look at face to register face if any exists, and clear limbs from the table
             //TODO:
+           // srv_action.request.experimentEpoch = experimentEpoch;
             srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_FACE;
             std::cout << "calling look at face action service" << std::endl;
             ros::service::call ("/action", srv_action.request, srv_action.response);
@@ -446,21 +462,31 @@ run ()
         ROS_INFO("calling perception 3D service");
         srv_perception.request.task = al_srvs::Perception::Request::DO_PERCEPT;
         srv_perception.request.arg = msg_speech_in.speech_arg;//label of the object of interest
+        //srv_perception.request.experimentEpoch = 0;
         object_id_ = srv_perception.request.arg;
-        ros::service::call ("/perception", srv_perception.request, srv_perception.response);
-        ROS_INFO ("finished perception 3D");
+        if( ros::service::call ("/perception", srv_perception.request, srv_perception.response))
+        	ROS_INFO ("finished perception 3D");
+        else
+        	ROS_WARN ("cukko");
+        cout << "Hello kayseri" << endl;
         pushable_object_center_ = srv_perception.response.pushable_object_center;
+        cout << "Hello edirne" << endl;
 
         //now fixate to the object if any object interaction is commanded
         //an object interaction behavior is requested, hence 3D perception is forced to return an object-of-interest
         srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_POINT;
+        cout << "Hello malatya" << endl;
+        //srv_action.request.experimentEpoch = experimentEpoch;
         srv_action.request.pushable_object_center = srv_perception.response.pushable_object_center;
+        cout << "Hello trabzon" << endl;
         std::cout << "calling look at point with" << srv_action.request.pushable_object_center[0] << " "
             << srv_action.request.pushable_object_center[1] << " " << srv_action.request.pushable_object_center[2]
             << std::endl;
+        cout << "Hello mersin" << endl;
         ros::service::call ("/action", srv_action.request, srv_action.response);
 
         ROS_INFO("calling perception 2D service");
+        srv_perception_2D.request.experimentEpoch = experimentEpoch;
         srv_perception_2D.request.task = tabletop_2D_segmentation::Perception2D::Request::DO_PERCEPT;
         getObjectRegionIndices (srv_perception.response.pushable_object_center, region_row, region_col);
         srv_perception_2D.request.arg = (int8_t)region_row;
@@ -546,6 +572,7 @@ run ()
       }
 
       ROS_INFO ( "calling action service");
+      srv_action.request.experimentEpoch = experimentEpoch;
       ros::service::call ("/action", srv_action.request, srv_action.response);
       ROS_INFO ("finished action");
       yarp::os::Network::connect("/o:ReflexCommand", "/tactGraspRight/rpc:i");
@@ -562,9 +589,19 @@ run ()
     {
     
 	firstRun = true;
-	continue;
+	//continue;
 
+	int effect;
+	
+	std::cout << "What is the produced effect? (0: None, 1: Reached, 2: Push_Right, 3: Push_Left, 4: Push_Forward, 5: Pulled, 6: Disappeared, 7: Grasped, 8: Taken, 9: Given, 10: Rotated, 11: Dropped, {NEGATIVE}: Not thought about it yet)" << std::endl;
+		
+	std::cin >> effect;
+	
+	effect_asked_for = true;
+	new_speech_cmd_rcvd_ = true;
       //      ROS_INFO ("*** ASK FOR EFFECT ! ***");
+      
+      /*
       if (!effect_asked_for)
       {
         t1 = ros::Time::now ();
@@ -583,28 +620,31 @@ run ()
           effect_asked_for = false;
           effect_asked_for_first = false;
         }
-      }
+      }*/
       if (new_speech_cmd_rcvd_)
       {
         new_speech_cmd_rcvd_ = false;
-        if (aff_msgs::Speech::MAX_ACTION_INDEX < msg_speech_in.speech_cmd && msg_speech_in.speech_cmd
-            < aff_msgs::Speech::MAX_EFFECT_INDEX)
-        {
+        //if (aff_msgs::Speech::MAX_ACTION_INDEX < msg_speech_in.speech_cmd && msg_speech_in.speech_cmd
+        //    < aff_msgs::Speech::MAX_EFFECT_INDEX)
+        //{
           //effect speech command is received, now percept the environment
           effect_asked_for = false;//clear the flag
 
           //now call tuck arms and look at face to register face if any exists, and clear limbs from the table
           //TODO:
+          //srv_action.request.experimentEpoch = experimentEpoch;
+          /*
           if (srv_action.request.task == behavior_manager::Action::Request::TAKE)
           {
             //first drop the object
             ROS_INFO("dropping the object");
+            
             srv_action.request.task = behavior_manager::Action::Request::RELEASE_DOWNWARD;
             srv_action.request.pushable_object_center = pushable_object_center_;
             srv_action.request.pushable_object_center[2] += 0.20;
             ros::service::call ("/action", srv_action.request, srv_action.response);
             ROS_INFO("finished -tuck_arms- action");
-          }
+          }*/
 
           ROS_INFO("calling -tuck_arms- action service");
           srv_action.request.task = behavior_manager::Action::Request::TUCK_ARMS;
@@ -630,7 +670,7 @@ run ()
 
           exp_state_ = aff_msgs::ExperimentState::EFFECT;
           publishExpState ();
-        }
+        //}
       }
     }
     else if (exp_state_ == aff_msgs::ExperimentState::EFFECT)
@@ -644,7 +684,10 @@ run ()
 
       if (callVisualPerceptors)
       {
+
+      	//srv_perception.request.experimentEpoch = experimentEpoch;
         srv_perception.request.task = al_srvs::Perception::Request::EXTRACT_EFFECT;
+
         if (msg_speech_in.speech_cmd != aff_msgs::Speech::DISAPPEARED)
           srv_perception.request.arg = object_id_;//label of the object
         else
@@ -658,10 +701,12 @@ run ()
 
         //finished 3d perception task, now do it with 2D sensors. But first, look at the object of
         //interest if it is still on the table
+        srv_perception_2D.request.experimentEpoch = experimentEpoch;
         srv_perception_2D.request.task = tabletop_2D_segmentation::Perception2D::Request::EXTRACT_EFFECT;
         if (msg_speech_in.speech_cmd != aff_msgs::Speech::DISAPPEARED)
         {
           //look at the object
+          srv_action.request.experimentEpoch = experimentEpoch;
           srv_action.request.task = behavior_manager::Action::Request::LOOK_AT_POINT;
           std::cout << srv_perception.response.pushable_object_center[0] << " "
               << srv_perception.response.pushable_object_center[1] << " "
@@ -681,8 +726,8 @@ run ()
         }
 
         ROS_INFO("calling perception 2D service");
-        std::cout << (int)srv_perception_2D.request.arg << " " << (int)srv_perception_2D.request.arg2 << std::endl;
-        ros::service::call (WORKSPACE_2D_SEGMENTATION_SRV_NAME, srv_perception_2D.request, srv_perception_2D.response);
+        /*std::cout << (int)srv_perception_2D.request.arg << " " << (int)srv_perception_2D.request.arg2 << std::endl;
+        ros::service::call (WORKSPACE_2D_SEGMENTATION_SRV_NAME, srv_perception_2D.request, srv_perception_2D.response);*/
       }
       action_asked_for_first = false;
       effect_asked_for_first = false;
@@ -695,6 +740,10 @@ run ()
       // ++Onur
       callVisualPerceptors = true;
       ROS_INFO("Visual perception callbacks are re-enabled");
+      
+      
+      	// This is where the experiment epoch should normally increase. For testing purposes, 
+      	incrementExperimentEpoch();
       // --Onur
     }
     ros::spinOnce ();

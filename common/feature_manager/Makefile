@@ -164,19 +164,6 @@ ROSBUILD_gensrv_py/fast:
 .PHONY : ROSBUILD_gensrv_py/fast
 
 #=============================================================================
-# Target rules for targets named as
-
-# Build rule for target.
-as: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 as
-.PHONY : as
-
-# fast build rule for target.
-as/fast:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/build
-.PHONY : as/fast
-
-#=============================================================================
 # Target rules for targets named clean-test-results
 
 # Build rule for target.
@@ -347,37 +334,31 @@ tests/fast:
 
 # target to build an object file
 src/DataLogger.o:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/DataLogger.o
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/DataLogger.o
 .PHONY : src/DataLogger.o
 
 # target to preprocess a source file
 src/DataLogger.i:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/DataLogger.i
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/DataLogger.i
 .PHONY : src/DataLogger.i
 
 # target to generate assembly for a file
 src/DataLogger.s:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/DataLogger.s
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/DataLogger.s
 .PHONY : src/DataLogger.s
 
 # target to build an object file
 src/featurizer.o:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/featurizer.o
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/featurizer.o
 .PHONY : src/featurizer.o
 
 # target to preprocess a source file
 src/featurizer.i:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/featurizer.i
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/featurizer.i
 .PHONY : src/featurizer.i
 
 # target to generate assembly for a file
 src/featurizer.s:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/featurizer.s
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/featurizer.s
 .PHONY : src/featurizer.s
 
@@ -396,21 +377,6 @@ src/main.s:
 	$(MAKE) -f CMakeFiles/feature_manager.dir/build.make CMakeFiles/feature_manager.dir/src/main.s
 .PHONY : src/main.s
 
-# target to build an object file
-src/main2.o:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/main2.o
-.PHONY : src/main2.o
-
-# target to preprocess a source file
-src/main2.i:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/main2.i
-.PHONY : src/main2.i
-
-# target to generate assembly for a file
-src/main2.s:
-	$(MAKE) -f CMakeFiles/as.dir/build.make CMakeFiles/as.dir/src/main2.s
-.PHONY : src/main2.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -422,7 +388,6 @@ help:
 	@echo "... ROSBUILD_gensrv_cpp"
 	@echo "... ROSBUILD_gensrv_lisp"
 	@echo "... ROSBUILD_gensrv_py"
-	@echo "... as"
 	@echo "... clean-test-results"
 	@echo "... edit_cache"
 	@echo "... feature_manager"
@@ -447,9 +412,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/main2.o"
-	@echo "... src/main2.i"
-	@echo "... src/main2.s"
 .PHONY : help
 
 

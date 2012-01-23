@@ -41,7 +41,7 @@ public:
 	~DataLogger();
 	
 	
-	void logSingleData(std::vector<double> features,int index, int label = -1);
+	void logSingleData(double *features,int index, int label, int size);
 	void logSingleData(FeatureTuple* singleTuple, int label = -1);
 	
 	void logAllData(double**items, int itemCount);

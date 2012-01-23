@@ -29,9 +29,9 @@
 
 //aff_learning includes
 //#include "aff_msgs/WorkspaceDetection.h"
-#include "aff_msgs/ModuleStates.h"
-#include "aff_msgs/ExperimentState.h"
-#include "aff_msgs/Features.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ModuleStates.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h"
+#include "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/Features.h"
 #include "feature_manager/Perception.h"
 
 #include "featurizer.h"
@@ -49,7 +49,7 @@ const float object_center[] = {-0.3, -0.2, 0.0};
 const float object_dims[] = {0.06, 0.06, 0.06};
 
 bool sr4k_active = true; //false to enable kinect, o.w. sr4k
-
+int experimentEpoch = 0;
 // ++Onur
 
 // ++Asil: Modified by
@@ -1078,7 +1078,10 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
         std::cout << dummy[j] << " ";
       }
 
-     featurize->featureLogger->logSingleData (dummy, i, request.arg); // Hence the ith cluster is stored as the request.arg_th object
+	
+	
+	
+     featurize->featureLogger->logSingleData (dummy, /*request.*/experimentEpoch, request.task); // Hence the ith cluster is stored as the request.arg_th object
 
       /*if (featurize->isFinal ())
       {
@@ -1135,13 +1138,15 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
         }
         
         dummy[featureCount-1] = -1.0;
-        featurize->featureLogger->logSingleData(dummy,1000);
-        featurize->effectLogger->logSingleData(dummy,1000,1000);
+        //featurize->featureLogger->logSingleData(dummy,1000);
+	//dummy, request.experimentEpoch, request.task,request.arg_effect
+        featurize->effectLogger->logSingleData(dummy,/*request.*/experimentEpoch,request.task,request.arg_effect);
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << std::endl;
 
+	
         featurize->setFinal (false);
 
       }
@@ -1163,7 +1168,7 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
           std::cout << dummy[j] << " ";
         }
 	
-        featurize->featureLogger->logSingleData (dummy, i); // store the final vector just in case!
+        //featurize->featureLogger->logSingleData (dummy, i); // store the final vector just in case!
         dummy = featurize->getEffectVector ();
 
 	dummy[featureCount -1 ] = 0.0; // It should be guaranteed that the object presence did not change!
@@ -1173,7 +1178,7 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
           std::cout << dummy[j] << " ";
         }
 //
-        featurize->effectLogger->logSingleData (dummy, i, request.arg_effect); // hence effect for the ith object with label request.arg!
+        featurize->effectLogger->logSingleData (dummy, /*request.*/experimentEpoch, request.task,request.arg_effect);
         featurize->setInitVector (); // just for future use, save the final features as the next initial features
         featurize->setFinal (false);
 ////
@@ -1184,6 +1189,9 @@ perceptionCallback (feature_manager::Perception::Request& request, feature_manag
       std::cout << std::endl;
       std::cout << std::endl;
 
+	experimentEpoch++;
+	
+	std::cout << "Note: experimentEpoch incremented to " << experimentEpoch << std::endl;
     }
     else
     {
@@ -1268,6 +1276,16 @@ init ()
 
   srv_perception = nh->advertiseService ("/perception", perceptionCallback);
   tf_listener = new tf::TransformListener ();
+
+ifstream myfile;
+
+myfile.open("/home/asil/expEpoch.txt");
+
+myfile >> experimentEpoch;
+
+myfile.close();
+
+  std::cout << "retreived experiment epoch as " << experimentEpoch << std::endl;
 
   //wait for first transform to be available
   bool got_tf = false;

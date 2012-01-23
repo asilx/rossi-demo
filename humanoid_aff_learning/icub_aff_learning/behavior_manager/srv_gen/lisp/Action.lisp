@@ -26,7 +26,12 @@
     :reader pushable_object_size
     :initarg :pushable_object_size
     :type (cl:vector cl:float)
-   :initform (cl:make-array 0 :element-type 'cl:float :initial-element 0.0)))
+   :initform (cl:make-array 0 :element-type 'cl:float :initial-element 0.0))
+   (experimentEpoch
+    :reader experimentEpoch
+    :initarg :experimentEpoch
+    :type cl:fixnum
+    :initform 0))
 )
 
 (cl:defclass Action-request (<Action-request>)
@@ -56,6 +61,11 @@
 (cl:defmethod pushable_object_size-val ((m <Action-request>))
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader behavior_manager-srv:pushable_object_size-val is deprecated.  Use behavior_manager-srv:pushable_object_size instead.")
   (pushable_object_size m))
+
+(cl:ensure-generic-function 'experimentEpoch-val :lambda-list '(m))
+(cl:defmethod experimentEpoch-val ((m <Action-request>))
+  (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader behavior_manager-srv:experimentEpoch-val is deprecated.  Use behavior_manager-srv:experimentEpoch instead.")
+  (experimentEpoch m))
 (cl:defmethod roslisp-msg-protocol:symbol-codes ((msg-type (cl:eql '<Action-request>)))
     "Constants for message type '<Action-request>"
   '((:DONT_ACT . -1)
@@ -150,6 +160,7 @@
     (cl:write-byte (cl:ldb (cl:byte 8 16) bits) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 24) bits) ostream)))
    (cl:slot-value msg 'pushable_object_size))
+  (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'experimentEpoch)) ostream)
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <Action-request>) istream)
   "Deserializes a message object of type '<Action-request>"
@@ -187,6 +198,7 @@
       (cl:setf (cl:ldb (cl:byte 8 16) bits) (cl:read-byte istream))
       (cl:setf (cl:ldb (cl:byte 8 24) bits) (cl:read-byte istream))
     (cl:setf (cl:aref vals i) (roslisp-utils:decode-single-float-bits bits))))))
+    (cl:setf (cl:ldb (cl:byte 8 0) (cl:slot-value msg 'experimentEpoch)) (cl:read-byte istream))
   msg
 )
 (cl:defmethod roslisp-msg-protocol:ros-datatype ((msg (cl:eql '<Action-request>)))
@@ -197,22 +209,23 @@
   "behavior_manager/ActionRequest")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Action-request>)))
   "Returns md5sum for a message object of type '<Action-request>"
-  "15273ca2a759dcd8367407dc29b863d9")
+  "ac065fe0178768b8f4c4d0241aa49c96")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Action-request)))
   "Returns md5sum for a message object of type 'Action-request"
-  "15273ca2a759dcd8367407dc29b863d9")
+  "ac065fe0178768b8f4c4d0241aa49c96")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Action-request>)))
   "Returns full string definition for message of type '<Action-request>"
-  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
+  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%uint8 experimentEpoch~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'Action-request)))
   "Returns full string definition for message of type 'Action-request"
-  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%~%~%"))
+  (cl:format cl:nil "int8 DONT_ACT = -1~%int8 PUSH_RIGHT = 0~%int8 PUSH_LEFT =1~%int8 PUSH_RIGHT_UPPER = 24~%int8 PUSH_LEFT_UPPER = 25~%int8 PUSH_FORWARD =2~%int8 PUSH_BACKWARD=3~%int8 LIFT=4~%int8 GRASP=5~%int8 GRASP_UPPER=26~%int8 HOME=6~%int8 POINT=7~%int8 HIDE=8~%int8 CANCEL=9~%int8 STOP=10~%int8 SHOW=11~%int8 TUCK_ARMS=12~%int8 LOOK_AT_REGION=13~%int8 LOOK_AT_POINT=14~%int8 LOOK_AT_FACE=15~%int8 REACH=16~%int8 TAKE=17~%int8 GIVE=18~%int8 RELEASE=19~%int8 RELEASE_UPWARD=20~%int8 RELEASE_DOWNWARD=21~%int8 COVER=22~%int8 DROP=23~%int8 DETECT_TOUCH=27~%int8 task~%int8 arg~%float32[] pushable_object_center~%float32[] pushable_object_size~%uint8 experimentEpoch~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <Action-request>))
   (cl:+ 0
      1
      1
      4 (cl:reduce #'cl:+ (cl:slot-value msg 'pushable_object_center) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ 4)))
      4 (cl:reduce #'cl:+ (cl:slot-value msg 'pushable_object_size) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ 4)))
+     1
 ))
 (cl:defmethod roslisp-msg-protocol:ros-message-to-list ((msg <Action-request>))
   "Converts a ROS message object to a list"
@@ -221,6 +234,7 @@
     (cl:cons ':arg (arg msg))
     (cl:cons ':pushable_object_center (pushable_object_center msg))
     (cl:cons ':pushable_object_size (pushable_object_size msg))
+    (cl:cons ':experimentEpoch (experimentEpoch msg))
 ))
 ;//! \htmlinclude Action-response.msg.html
 
@@ -269,10 +283,10 @@
   "behavior_manager/ActionResponse")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<Action-response>)))
   "Returns md5sum for a message object of type '<Action-response>"
-  "15273ca2a759dcd8367407dc29b863d9")
+  "ac065fe0178768b8f4c4d0241aa49c96")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'Action-response)))
   "Returns md5sum for a message object of type 'Action-response"
-  "15273ca2a759dcd8367407dc29b863d9")
+  "ac065fe0178768b8f4c4d0241aa49c96")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<Action-response>)))
   "Returns full string definition for message of type '<Action-response>"
   (cl:format cl:nil "~%uint8 DONE = 1~%uint8 feedback~%~%~%~%"))

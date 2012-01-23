@@ -18,7 +18,6 @@ SET(CMAKE_C_INCLUDE_PATH
   "/opt/ros/electric/stacks/vision_opencv/cv_bridge/include"
   "/usr/include/opencv-2.3.1/opencv"
   "/usr/include/opencv-2.3.1"
-  "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/cpp"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/cpp"

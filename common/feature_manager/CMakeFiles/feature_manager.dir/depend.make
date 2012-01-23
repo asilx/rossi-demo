@@ -501,7 +501,6 @@ CMakeFiles/feature_manager.dir/src/featurizer.o: /usr/local/MATLAB/R2011a/extern
 CMakeFiles/feature_manager.dir/src/featurizer.o: /usr/local/MATLAB/R2011a/extern/include/tmwtypes.h
 CMakeFiles/feature_manager.dir/src/featurizer.o: include/DataLogger.h
 CMakeFiles/feature_manager.dir/src/featurizer.o: include/featurizer.h
-CMakeFiles/feature_manager.dir/src/featurizer.o: include/featurizer/DataLogger.h
 CMakeFiles/feature_manager.dir/src/featurizer.o: include/featurizer/NormalHistogram.hpp
 
 CMakeFiles/feature_manager.dir/src/main.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ExperimentState.h
@@ -1041,7 +1040,6 @@ CMakeFiles/feature_manager.dir/src/main.o: /usr/local/MATLAB/R2011a/extern/inclu
 CMakeFiles/feature_manager.dir/src/main.o: /usr/local/MATLAB/R2011a/extern/include/tmwtypes.h
 CMakeFiles/feature_manager.dir/src/main.o: include/DataLogger.h
 CMakeFiles/feature_manager.dir/src/main.o: include/featurizer.h
-CMakeFiles/feature_manager.dir/src/main.o: include/featurizer/DataLogger.h
 CMakeFiles/feature_manager.dir/src/main.o: include/featurizer/NormalHistogram.hpp
 CMakeFiles/feature_manager.dir/src/main.o: srv_gen/cpp/include/feature_manager/Perception.h
 

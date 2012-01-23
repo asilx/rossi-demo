@@ -22,24 +22,62 @@ void DataLogger::logSingleData(FeatureTuple* singleTuple)
 	logSingleData(features,0);
 }
 
-void DataLogger::logSingleData(double* features,int index,int label)
-{	
+// Data is stored WITH the effectId
+void DataLogger::logSingleData(double* features,int index,int label,int effectId)
+{
 	stringstream fileSS, svm_fileSS;
 	
-	int languageTag = (label > 0) ? label : 1;
+	//int languageTag = (label > 0) ? label : 1;
 	
 	time(&timeReading);
 	
-	fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".dat";
-	svm_fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".svm.data";
+	fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".dat";
+	svm_fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".svm.data";
 	
 	ofstream rawfile, svmfile;
 	
 	rawfile.open ((fileSS.str()).c_str());
 	svmfile.open((svm_fileSS.str()).c_str());
 	
-	rawfile << languageTag;
-	svmfile << languageTag;
+	rawfile << effectId;
+	svmfile << effectId;
+	
+	for(int f = 0; f < featureCount; f++)
+	{
+	
+		rawfile << " " << features[f];
+		svmfile << " " << (f+1) << ":" << features[f] << " "; 
+	
+	}
+	
+	rawfile << "\n";
+	svmfile << "\n";
+	
+	rawfile.close();
+	svmfile.close();
+	
+	//itemId ++;	
+}
+
+// Data is stored WITHOUT effectId
+void DataLogger::logSingleData(double* features,int index,int label)
+{	
+	stringstream fileSS, svm_fileSS;
+	
+	//int languageTag = (label > 0) ? label : 1;
+	
+	time(&timeReading);
+	
+	fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".dat";
+	svm_fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".svm.data";
+	
+	ofstream rawfile, svmfile;
+	
+	rawfile.open ((fileSS.str()).c_str());
+	svmfile.open((svm_fileSS.str()).c_str());
+	
+	//rawfile << languageTag;
+	//svmfile << languageTag;
 	
 	for(int f = 0; f < featureCount; f++)
 	{

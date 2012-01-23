@@ -136,7 +136,6 @@ CMakeFiles/behavior_manager.dir/src/main.o: /opt/ros/electric/stacks/object_mani
 CMakeFiles/behavior_manager.dir/src/main.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/behavior_manager.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/behavior_manager.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/behavior_manager.dir/src/main.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/behavior_manager.dir/src/main.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -DBT_USE_DOUBLE_PRECISION -DBT_EULER_DEFAULT_ZYX -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/behavior_manager.dir/src/main.o -c /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/main.cpp
@@ -246,7 +245,6 @@ CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o: /opt/ros/electric/stac
 CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -DBT_USE_DOUBLE_PRECISION -DBT_EULER_DEFAULT_ZYX -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o -c /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/BehaviorModuleLeft.cpp
@@ -356,7 +354,6 @@ CMakeFiles/behavior_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/objec
 CMakeFiles/behavior_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/behavior_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/behavior_manager.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/behavior_manager.dir/src/DataLogger.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/behavior_manager.dir/src/DataLogger.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -DBT_USE_DOUBLE_PRECISION -DBT_EULER_DEFAULT_ZYX -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/behavior_manager.dir/src/DataLogger.o -c /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/DataLogger.cpp
@@ -392,14 +389,11 @@ bin/behavior_manager: CMakeFiles/behavior_manager.dir/src/main.o
 bin/behavior_manager: CMakeFiles/behavior_manager.dir/src/BehaviorModuleLeft.o
 bin/behavior_manager: CMakeFiles/behavior_manager.dir/src/DataLogger.o
 bin/behavior_manager: /usr/local/lib/libactionPrimitives.a
-bin/behavior_manager: /usr/local/lib/libYARP_OS.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_sig.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_math.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_dev.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libyarpmod.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libyarpcar.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_name.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_init.so.2.3.14
+bin/behavior_manager: /usr/local/lib/libYARP_OS.a
+bin/behavior_manager: /usr/local/lib/libYARP_sig.a
+bin/behavior_manager: /usr/local/lib/libYARP_dev.a
+bin/behavior_manager: /usr/local/lib/libYARP_name.a
+bin/behavior_manager: /usr/local/lib/libYARP_init.a
 bin/behavior_manager: /usr/local/lib/libperceptiveModels.a
 bin/behavior_manager: /usr/local/lib/liblearningMachine.a
 bin/behavior_manager: /usr/local/lib/libiDyn.a
@@ -409,21 +403,17 @@ bin/behavior_manager: /usr/local/lib/libcartesiancontrollerserver.a
 bin/behavior_manager: /usr/local/lib/libcartesiancontrollerclient.a
 bin/behavior_manager: /usr/local/lib/libiKin.a
 bin/behavior_manager: /usr/local/lib/libctrlLib.a
+bin/behavior_manager: /usr/lib/libgsl.so
+bin/behavior_manager: /usr/lib/libgslcblas.so
 bin/behavior_manager: /home/asil/Ipopt-3.10.0/build/lib/libipopt.so
 bin/behavior_manager: /home/asil/Ipopt-3.10.0/build/lib/libcoinhsl.so
 bin/behavior_manager: /usr/local/lib/libgazecontrollerclient.a
-bin/behavior_manager: /usr/local/lib/libYARP_init.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libyarpcar.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libyarpmod.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_math.so.2.3.14
-bin/behavior_manager: /usr/lib/atlas-base/libptcblas.a
-bin/behavior_manager: /usr/lib/libatlas.so
-bin/behavior_manager: /usr/lib/libgsl.so
-bin/behavior_manager: /usr/lib/libgslcblas.so
-bin/behavior_manager: /usr/local/lib/libYARP_dev.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_sig.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_name.so.2.3.14
-bin/behavior_manager: /usr/local/lib/libYARP_OS.so.2.3.14
+bin/behavior_manager: /usr/local/lib/libYARP_init.a
+bin/behavior_manager: /usr/local/lib/libYARP_dev.a
+bin/behavior_manager: /usr/local/lib/libYARP_sig.a
+bin/behavior_manager: /usr/local/lib/libYARP_name.a
+bin/behavior_manager: /usr/local/lib/libYARP_OS.a
+bin/behavior_manager: /usr/lib/libACE.so
 bin/behavior_manager: CMakeFiles/behavior_manager.dir/build.make
 bin/behavior_manager: CMakeFiles/behavior_manager.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable bin/behavior_manager"

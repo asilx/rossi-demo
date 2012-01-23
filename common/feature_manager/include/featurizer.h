@@ -31,7 +31,7 @@
 #include "featurizer/NormalHistogram.hpp"
 #include <pcl/visualization/histogram_visualizer.h>
 #include "engine.h"
-#include "featurizer/DataLogger.h"
+#include "DataLogger.h" // featurizer/
 
 // 47th feature is the object presence
 #define featureCount 47
