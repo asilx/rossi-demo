@@ -50,6 +50,10 @@ ros/macros.h
 ros/assert.h
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ros/assert.h
 
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/src/DataLogger.cpp
+tabletop_2D_segmentation/DataLogger.h
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/src/tabletop_2D_segmentation/DataLogger.h
+
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/src/main.cpp
 stdio.h
 -

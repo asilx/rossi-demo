@@ -72,6 +72,16 @@ ros/macros.h
 ros/assert.h
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include/aff_msgs/ros/assert.h
 
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/DataLogger.cpp
+DataLogger.h
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/DataLogger.h
+
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/featurizer.cpp
+featurizer.h
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/featurizer.h
+DataLogger.h
+/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/DataLogger.h
+
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/main.cpp
 iostream
 /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/feature_manager/src/iostream

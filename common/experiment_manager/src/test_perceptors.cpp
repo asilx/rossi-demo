@@ -486,7 +486,7 @@ run ()
         ros::service::call ("/action", srv_action.request, srv_action.response);
 
         ROS_INFO("calling perception 2D service");
-        srv_perception_2D.request.experimentEpoch = experimentEpoch;
+        //srv_perception_2D.request.experimentEpoch = experimentEpoch;
         srv_perception_2D.request.task = tabletop_2D_segmentation::Perception2D::Request::DO_PERCEPT;
         getObjectRegionIndices (srv_perception.response.pushable_object_center, region_row, region_col);
         srv_perception_2D.request.arg = (int8_t)region_row;
@@ -542,7 +542,7 @@ run ()
       //****************************************************
 
       //Debug mode: action will not be applied if the below is used.
-      ros::Duration (1).sleep ();
+      //ros::Duration (1).sleep ();
 
       //Experiment mode: action will be applied if the below is used
       srv_action.request.task = msg_speech_in.speech_cmd;
@@ -701,7 +701,7 @@ run ()
 
         //finished 3d perception task, now do it with 2D sensors. But first, look at the object of
         //interest if it is still on the table
-        srv_perception_2D.request.experimentEpoch = experimentEpoch;
+        //srv_perception_2D.request.experimentEpoch = experimentEpoch;
         srv_perception_2D.request.task = tabletop_2D_segmentation::Perception2D::Request::EXTRACT_EFFECT;
         if (msg_speech_in.speech_cmd != aff_msgs::Speech::DISAPPEARED)
         {
