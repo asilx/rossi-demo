@@ -27,7 +27,7 @@ void DataLogger::logSingleData(FeatureTuple* singleTuple, int label)
 
 
 // A very ugly implementation of image feature logging. Might be error-prone.
-void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label, int index)
+void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label)
 {
 	int i;
 	stringstream rawS, filS, otherS;
@@ -35,13 +35,13 @@ void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label, int
 	
 	time(&timeReading);
 	
-	rawS << savePath <<  logType <<"_raw@" << index << "_" << label << ".dat";
-	filS << savePath << logType <<"_filtered@" << index << "@" << label << ".dat";
-	otherS << savePath << logType <<"_general@" << index << "@" << label << ".dat";
+	rawS << savePath <<  logType <<"_raw_" << label << "@" << timeReading << ".dat";
+	filS << savePath << logType <<"_filtered_" << label << "@" << timeReading << ".dat";
+	otherS << savePath << logType <<"_general_" << label << "@" << timeReading << ".dat";
 	 
 	
 	
-	/*// Save raw image as a separate file
+	// Save raw image as a separate file
 	rawf.open(rawS.str().c_str());	
 
 	// Singular fields in image information
@@ -82,7 +82,6 @@ void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label, int
 	
 	filf.close();
 	cout << "Logger @ " << timeReading << ": Filtered image stored" << endl;
-	*/
 	
 	// Save the remaining information
 	
@@ -115,7 +114,7 @@ void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label, int
 		
 	otherf.close();
 	
-	cout << "Logger @ " << timeReading << ": Information stored" << endl;
+	cout << "Logger @ " << timeReading << ": Remaining information stored" << endl;
 }
 
 
@@ -123,20 +122,20 @@ void DataLogger::logSingleData(double* features,int index,int label)
 {	
 	stringstream fileSS, svm_fileSS;
 	
-	//int languageTag = (label > 0) ? label : 1;
+	int languageTag = (label > 0) ? label : 1;
 	
 	time(&timeReading);
 	
-	fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".dat";
-	svm_fileSS << savePath << logType.c_str() << "@" << index << "_" << label << ".svm.data";
+	fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".dat";
+	svm_fileSS << savePath << logType.c_str() << "_" << index << "@" << timeReading << ".svm.data";
 	
 	ofstream rawfile, svmfile;
 	
 	rawfile.open ((fileSS.str()).c_str());
 	svmfile.open((svm_fileSS.str()).c_str());
 	
-	//rawfile << languageTag;
-	//svmfile << languageTag;
+	rawfile << languageTag;
+	svmfile << languageTag;
 	
 	for(int f = 0; f < featureCount; f++)
 	{
@@ -152,8 +151,6 @@ void DataLogger::logSingleData(double* features,int index,int label)
 	rawfile.close();
 	svmfile.close();
 	
-	
-	cout << "Logger @ " << timeReading << ": Information stored" << endl;
 	//itemId ++;
 	
 }

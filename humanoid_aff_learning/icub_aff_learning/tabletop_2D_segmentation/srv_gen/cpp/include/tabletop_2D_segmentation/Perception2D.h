@@ -32,7 +32,6 @@ struct Perception2DRequest_ {
   : task(0)
   , arg(0)
   , arg2(0)
-  , experimentEpoch(0)
   {
   }
 
@@ -40,7 +39,6 @@ struct Perception2DRequest_ {
   : task(0)
   , arg(0)
   , arg2(0)
-  , experimentEpoch(0)
   {
   }
 
@@ -53,9 +51,6 @@ struct Perception2DRequest_ {
   typedef int8_t _arg2_type;
   int8_t arg2;
 
-  typedef uint8_t _experimentEpoch_type;
-  uint8_t experimentEpoch;
-
   enum { DO_PERCEPT = 0 };
   enum { EXTRACT_EFFECT = 1 };
 
@@ -67,14 +62,14 @@ public:
   ROS_DEPRECATED const std::string __getDataType() const { return __s_getDataType_(); }
 
 private:
-  static const char* __s_getMD5Sum_() { return "219d39248bdfd6b856612192d2849a69"; }
+  static const char* __s_getMD5Sum_() { return "9135b8f36be2b25d9bf7c242938ee0a0"; }
 public:
   ROS_DEPRECATED static const std::string __s_getMD5Sum() { return __s_getMD5Sum_(); }
 
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "b967eca97a24f16bdd63c4e02f1eca2d"; }
+  static const char* __s_getServerMD5Sum_() { return "1da76ff735fd425703f5cdeb93da420c"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -86,7 +81,6 @@ uint8 EXTRACT_EFFECT = 1\n\
 uint8 task\n\
 int8 arg\n\
 int8 arg2\n\
-uint8 experimentEpoch\n\
 \n\
 "; }
 public:
@@ -100,7 +94,6 @@ public:
     ros::serialization::serialize(stream, task);
     ros::serialization::serialize(stream, arg);
     ros::serialization::serialize(stream, arg2);
-    ros::serialization::serialize(stream, experimentEpoch);
     return stream.getData();
   }
 
@@ -110,7 +103,6 @@ public:
     ros::serialization::deserialize(stream, task);
     ros::serialization::deserialize(stream, arg);
     ros::serialization::deserialize(stream, arg2);
-    ros::serialization::deserialize(stream, experimentEpoch);
     return stream.getData();
   }
 
@@ -120,7 +112,6 @@ public:
     size += ros::serialization::serializationLength(task);
     size += ros::serialization::serializationLength(arg);
     size += ros::serialization::serializationLength(arg2);
-    size += ros::serialization::serializationLength(experimentEpoch);
     return size;
   }
 
@@ -141,7 +132,7 @@ struct Perception2DResponse_ {
   Perception2DResponse_()
   : raw_image()
   , filtered_image()
-  , rois()
+  , roi()
   , face_detected(false)
   , ooi_area(0)
   , ooi_color_r_hist()
@@ -153,7 +144,7 @@ struct Perception2DResponse_ {
   Perception2DResponse_(const ContainerAllocator& _alloc)
   : raw_image(_alloc)
   , filtered_image(_alloc)
-  , rois(_alloc)
+  , roi(_alloc)
   , face_detected(false)
   , ooi_area(0)
   , ooi_color_r_hist(_alloc)
@@ -168,8 +159,8 @@ struct Perception2DResponse_ {
   typedef  ::sensor_msgs::Image_<ContainerAllocator>  _filtered_image_type;
    ::sensor_msgs::Image_<ContainerAllocator>  filtered_image;
 
-  typedef std::vector< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> >::other >  _rois_type;
-  std::vector< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> >::other >  rois;
+  typedef  ::sensor_msgs::RegionOfInterest_<ContainerAllocator>  _roi_type;
+   ::sensor_msgs::RegionOfInterest_<ContainerAllocator>  roi;
 
   typedef uint8_t _face_detected_type;
   uint8_t face_detected;
@@ -187,10 +178,6 @@ struct Perception2DResponse_ {
   std::vector<int8_t, typename ContainerAllocator::template rebind<int8_t>::other >  ooi_color_b_hist;
 
 
-  ROS_DEPRECATED uint32_t get_rois_size() const { return (uint32_t)rois.size(); }
-  ROS_DEPRECATED void set_rois_size(uint32_t size) { rois.resize((size_t)size); }
-  ROS_DEPRECATED void get_rois_vec(std::vector< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> >::other > & vec) const { vec = this->rois; }
-  ROS_DEPRECATED void set_rois_vec(const std::vector< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::sensor_msgs::RegionOfInterest_<ContainerAllocator> >::other > & vec) { this->rois = vec; }
   ROS_DEPRECATED uint32_t get_ooi_color_r_hist_size() const { return (uint32_t)ooi_color_r_hist.size(); }
   ROS_DEPRECATED void set_ooi_color_r_hist_size(uint32_t size) { ooi_color_r_hist.resize((size_t)size); }
   ROS_DEPRECATED void get_ooi_color_r_hist_vec(std::vector<int8_t, typename ContainerAllocator::template rebind<int8_t>::other > & vec) const { vec = this->ooi_color_r_hist; }
@@ -211,14 +198,14 @@ public:
   ROS_DEPRECATED const std::string __getDataType() const { return __s_getDataType_(); }
 
 private:
-  static const char* __s_getMD5Sum_() { return "7b8d1e09f28e82a30370c520355741db"; }
+  static const char* __s_getMD5Sum_() { return "91f80513e8b2f01e9a78a80e67ba125c"; }
 public:
   ROS_DEPRECATED static const std::string __s_getMD5Sum() { return __s_getMD5Sum_(); }
 
   ROS_DEPRECATED const std::string __getMD5Sum() const { return __s_getMD5Sum_(); }
 
 private:
-  static const char* __s_getServerMD5Sum_() { return "b967eca97a24f16bdd63c4e02f1eca2d"; }
+  static const char* __s_getServerMD5Sum_() { return "1da76ff735fd425703f5cdeb93da420c"; }
 public:
   ROS_DEPRECATED static const std::string __s_getServerMD5Sum() { return __s_getServerMD5Sum_(); }
 
@@ -230,7 +217,7 @@ private:
 \n\
 sensor_msgs/Image raw_image\n\
 sensor_msgs/Image filtered_image\n\
-sensor_msgs/RegionOfInterest[] rois\n\
+sensor_msgs/RegionOfInterest roi\n\
 bool face_detected\n\
 int16 ooi_area\n\
 int8[] ooi_color_r_hist\n\
@@ -319,7 +306,7 @@ public:
     ros::serialization::OStream stream(write_ptr, 1000000000);
     ros::serialization::serialize(stream, raw_image);
     ros::serialization::serialize(stream, filtered_image);
-    ros::serialization::serialize(stream, rois);
+    ros::serialization::serialize(stream, roi);
     ros::serialization::serialize(stream, face_detected);
     ros::serialization::serialize(stream, ooi_area);
     ros::serialization::serialize(stream, ooi_color_r_hist);
@@ -333,7 +320,7 @@ public:
     ros::serialization::IStream stream(read_ptr, 1000000000);
     ros::serialization::deserialize(stream, raw_image);
     ros::serialization::deserialize(stream, filtered_image);
-    ros::serialization::deserialize(stream, rois);
+    ros::serialization::deserialize(stream, roi);
     ros::serialization::deserialize(stream, face_detected);
     ros::serialization::deserialize(stream, ooi_area);
     ros::serialization::deserialize(stream, ooi_color_r_hist);
@@ -347,7 +334,7 @@ public:
     uint32_t size = 0;
     size += ros::serialization::serializationLength(raw_image);
     size += ros::serialization::serializationLength(filtered_image);
-    size += ros::serialization::serializationLength(rois);
+    size += ros::serialization::serializationLength(roi);
     size += ros::serialization::serializationLength(face_detected);
     size += ros::serialization::serializationLength(ooi_area);
     size += ros::serialization::serializationLength(ooi_color_r_hist);
@@ -388,12 +375,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::tabletop_2D_segmentation::Perception2DRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "219d39248bdfd6b856612192d2849a69";
+    return "9135b8f36be2b25d9bf7c242938ee0a0";
   }
 
   static const char* value(const  ::tabletop_2D_segmentation::Perception2DRequest_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0x219d39248bdfd6b8ULL;
-  static const uint64_t static_value2 = 0x56612192d2849a69ULL;
+  static const uint64_t static_value1 = 0x9135b8f36be2b25dULL;
+  static const uint64_t static_value2 = 0x9bf7c242938ee0a0ULL;
 };
 
 template<class ContainerAllocator>
@@ -415,7 +402,6 @@ uint8 EXTRACT_EFFECT = 1\n\
 uint8 task\n\
 int8 arg\n\
 int8 arg2\n\
-uint8 experimentEpoch\n\
 \n\
 ";
   }
@@ -438,12 +424,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::tabletop_2D_segmentation::Perception2DResponse_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "7b8d1e09f28e82a30370c520355741db";
+    return "91f80513e8b2f01e9a78a80e67ba125c";
   }
 
   static const char* value(const  ::tabletop_2D_segmentation::Perception2DResponse_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0x7b8d1e09f28e82a3ULL;
-  static const uint64_t static_value2 = 0x0370c520355741dbULL;
+  static const uint64_t static_value1 = 0x91f80513e8b2f01eULL;
+  static const uint64_t static_value2 = 0x9a78a80e67ba125cULL;
 };
 
 template<class ContainerAllocator>
@@ -465,7 +451,7 @@ struct Definition< ::tabletop_2D_segmentation::Perception2DResponse_<ContainerAl
 \n\
 sensor_msgs/Image raw_image\n\
 sensor_msgs/Image filtered_image\n\
-sensor_msgs/RegionOfInterest[] rois\n\
+sensor_msgs/RegionOfInterest roi\n\
 bool face_detected\n\
 int16 ooi_area\n\
 int8[] ooi_color_r_hist\n\
@@ -564,7 +550,6 @@ template<class ContainerAllocator> struct Serializer< ::tabletop_2D_segmentation
     stream.next(m.task);
     stream.next(m.arg);
     stream.next(m.arg2);
-    stream.next(m.experimentEpoch);
   }
 
   ROS_DECLARE_ALLINONE_SERIALIZER;
@@ -584,7 +569,7 @@ template<class ContainerAllocator> struct Serializer< ::tabletop_2D_segmentation
   {
     stream.next(m.raw_image);
     stream.next(m.filtered_image);
-    stream.next(m.rois);
+    stream.next(m.roi);
     stream.next(m.face_detected);
     stream.next(m.ooi_area);
     stream.next(m.ooi_color_r_hist);
@@ -605,7 +590,7 @@ template<>
 struct MD5Sum<tabletop_2D_segmentation::Perception2D> {
   static const char* value() 
   {
-    return "b967eca97a24f16bdd63c4e02f1eca2d";
+    return "1da76ff735fd425703f5cdeb93da420c";
   }
 
   static const char* value(const tabletop_2D_segmentation::Perception2D&) { return value(); } 
@@ -625,7 +610,7 @@ template<class ContainerAllocator>
 struct MD5Sum<tabletop_2D_segmentation::Perception2DRequest_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "b967eca97a24f16bdd63c4e02f1eca2d";
+    return "1da76ff735fd425703f5cdeb93da420c";
   }
 
   static const char* value(const tabletop_2D_segmentation::Perception2DRequest_<ContainerAllocator> &) { return value(); } 
@@ -645,7 +630,7 @@ template<class ContainerAllocator>
 struct MD5Sum<tabletop_2D_segmentation::Perception2DResponse_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "b967eca97a24f16bdd63c4e02f1eca2d";
+    return "1da76ff735fd425703f5cdeb93da420c";
   }
 
   static const char* value(const tabletop_2D_segmentation::Perception2DResponse_<ContainerAllocator> &) { return value(); } 

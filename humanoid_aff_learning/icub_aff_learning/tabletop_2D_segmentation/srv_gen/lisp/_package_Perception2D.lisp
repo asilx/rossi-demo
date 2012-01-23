@@ -5,14 +5,12 @@
           ARG
           ARG2-VAL
           ARG2
-          EXPERIMENTEPOCH-VAL
-          EXPERIMENTEPOCH
           RAW_IMAGE-VAL
           RAW_IMAGE
           FILTERED_IMAGE-VAL
           FILTERED_IMAGE
-          ROIS-VAL
-          ROIS
+          ROI-VAL
+          ROI
           FACE_DETECTED-VAL
           FACE_DETECTED
           OOI_AREA-VAL

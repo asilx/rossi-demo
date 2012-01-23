@@ -24,7 +24,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 #uncomment if you have defined messages
-#rosbuild_genmsg()
+rosbuild_genmsg()
 #uncomment if you have defined services
 rosbuild_gensrv()
 
@@ -34,4 +34,4 @@ rosbuild_gensrv()
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
 rosbuild_add_executable(${PROJECT_NAME} src/main.cpp src/DataLogger.cpp)
-target_link_libraries(${PROJECT_NAME} -L/usr/lib -lcv -lhighgui icubmod)
+target_link_libraries(${PROJECT_NAME} -L/usr/local/lib -lopencv_ml -lopencv_imgproc -lopencv_highgui -lopencv_core icubmod)

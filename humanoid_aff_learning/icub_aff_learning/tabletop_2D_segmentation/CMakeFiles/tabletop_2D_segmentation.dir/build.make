@@ -138,7 +138,6 @@ CMakeFiles/tabletop_2D_segmentation.dir/src/main.o: /opt/ros/electric/stacks/obj
 CMakeFiles/tabletop_2D_segmentation.dir/src/main.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/tabletop_2D_segmentation.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/tabletop_2D_segmentation.dir/src/main.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/tabletop_2D_segmentation.dir/src/main.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/tabletop_2D_segmentation.dir/src/main.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -DBT_USE_DOUBLE_PRECISION -DBT_EULER_DEFAULT_ZYX -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/tabletop_2D_segmentation.dir/src/main.o -c /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/src/main.cpp
@@ -250,7 +249,6 @@ CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o: /opt/ros/electric/stac
 CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -DBT_USE_DOUBLE_PRECISION -DBT_EULER_DEFAULT_ZYX -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o -c /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/src/DataLogger.cpp
@@ -283,6 +281,17 @@ tabletop_2D_segmentation_EXTERNAL_OBJECTS =
 
 bin/tabletop_2D_segmentation: CMakeFiles/tabletop_2D_segmentation.dir/src/main.o
 bin/tabletop_2D_segmentation: CMakeFiles/tabletop_2D_segmentation.dir/src/DataLogger.o
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_contrib.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_legacy.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_objdetect.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_calib3d.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_features2d.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_video.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_highgui.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_ml.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_imgproc.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_flann.so.2.3.1
+bin/tabletop_2D_segmentation: /usr/lib/libopencv_core.so.2.3.1
 bin/tabletop_2D_segmentation: /usr/local/lib/libicubmod.a
 bin/tabletop_2D_segmentation: /usr/local/lib/libcartesiancontrollerserver.a
 bin/tabletop_2D_segmentation: /usr/local/lib/libcartesiancontrollerclient.a

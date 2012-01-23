@@ -899,6 +899,8 @@ void BehaviorModule::init() {
 
   action_left->enableContactDetection();
   action_right->enableContactDetection();
+  action_left->enableReachingTimeout(5);
+  action_right->enableReachingTimeout(5);
 
 }
 

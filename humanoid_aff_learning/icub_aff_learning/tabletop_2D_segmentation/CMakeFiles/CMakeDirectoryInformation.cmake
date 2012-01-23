@@ -17,7 +17,6 @@ SET(CMAKE_C_INCLUDE_PATH
   "/opt/ros/electric/stacks/common_msgs/sensor_msgs/include"
   "/opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/cpp/include"
   "/opt/ros/electric/stacks/common_msgs/sensor_msgs/srv_gen/cpp/include"
-  "/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/cpp/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/include"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/cpp"
   "/opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/cpp"
@@ -95,6 +94,7 @@ SET(CMAKE_C_INCLUDE_PATH
   "/usr/local/include"
   "/usr/include/opencv"
   "/home/asil/Ipopt-3.10.0/build/include/coin"
+  "msg_gen/cpp/include"
   "srv_gen/cpp/include"
   )
 SET(CMAKE_CXX_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})

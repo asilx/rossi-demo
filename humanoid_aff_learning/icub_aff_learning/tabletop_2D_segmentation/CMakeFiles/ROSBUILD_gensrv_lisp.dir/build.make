@@ -139,7 +139,6 @@ srv_gen/lisp/Perception2D.lisp: /opt/ros/electric/stacks/object_manipulation/hou
 srv_gen/lisp/Perception2D.lisp: /opt/ros/electric/stacks/object_manipulation/household_objects_database_msgs/srv_gen/generated
 srv_gen/lisp/Perception2D.lisp: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/msg_gen/generated
 srv_gen/lisp/Perception2D.lisp: /opt/ros/electric/stacks/pr2_object_manipulation/perception/tabletop_object_detector/srv_gen/generated
-srv_gen/lisp/Perception2D.lisp: /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/common/aff_msgs/msg_gen/generated
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating srv_gen/lisp/Perception2D.lisp, srv_gen/lisp/_package.lisp, srv_gen/lisp/_package_Perception2D.lisp"
 	/opt/ros/electric/stacks/ros_comm/clients/roslisp/scripts/genmsg_lisp.py /home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/tabletop_2D_segmentation/srv/Perception2D.srv
