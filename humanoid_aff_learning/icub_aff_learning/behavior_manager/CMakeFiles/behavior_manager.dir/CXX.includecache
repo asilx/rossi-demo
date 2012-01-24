@@ -60,16 +60,6 @@ fstream
 cmath
 -
 
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/DataLogger.cpp
-BehaviorModule/DataLogger.h
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/BehaviorModule/DataLogger.h
-
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/main.cpp
-BehaviorModule/BehaviorModule.h
-/home/asil/rossi_workspace/metu-ros-pkg/stacks/aff_learning/humanoid_aff_learning/icub_aff_learning/behavior_manager/src/BehaviorModule/BehaviorModule.h
-iostream
--
-
 /opt/ros/electric/stacks/ros_comm/clients/cpp/roscpp/include/ros/advertise_options.h
 ros/forwards.h
 /opt/ros/electric/stacks/ros_comm/clients/cpp/roscpp/include/ros/ros/forwards.h

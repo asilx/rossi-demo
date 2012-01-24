@@ -31,8 +31,10 @@ void BehaviorModule::push_right(Vector bb_center, Vector bb_dims, bool isUpper)
     		reach_point[2] += 0.05;
     		//reach_point[0] += 0.03;
     		std::cout<<reach_point[0]<<" "<<reach_point[1]<<" "<<reach_point[2]<<std::endl;
+    		//action_left->disableReachingTimeout();
     		action_left->pushAction(reach_point, hand_orient);
     		action_left->checkActionsDone(f, true);
+    		//action_left->enableReachingTimeout(7);
     		//release(reach_point, false);
     		reach_point[1] += 0.11;
     		if (isUpper) reach_point[2] += bb_dims[2]/2 - 0.05;

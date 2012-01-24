@@ -27,17 +27,19 @@ void DataLogger::logSingleData(FeatureTuple* singleTuple, int label)
 
 
 // A very ugly implementation of image feature logging. Might be error-prone.
-void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int label)
+// label = 0 ==> init.
+// label = 1 ==> final/effect
+void DataLogger::logSingleData(ImageFeatureTuple *currentImgInfo, int experimentEpoch, int label)
 {
 	int i;
 	stringstream rawS, filS, otherS;
 	ofstream rawf, filf, otherf;
 	
-	time(&timeReading);
+	//time(&timeReading);
 	
-	rawS << savePath <<  logType <<"_raw_" << label << "@" << timeReading << ".dat";
-	filS << savePath << logType <<"_filtered_" << label << "@" << timeReading << ".dat";
-	otherS << savePath << logType <<"_general_" << label << "@" << timeReading << ".dat";
+	rawS << savePath <<  logType <<"_raw_" << experimentEpoch << "@" << label << ".dat";
+	filS << savePath << logType <<"_filtered_" << experimentEpoch << "@" << label << ".dat";
+	otherS << savePath << logType <<"_general_" << experimentEpoch << "@" << label << ".dat";
 	 
 	
 	

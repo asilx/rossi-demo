@@ -248,6 +248,9 @@ IplImage* tempImg,*bgr_frameLeftCopy;
 bool motionDone;
 int perceptTrying;
 
+int experimentEpoch = 0;
+
+
 //++Kadir
 sensor_msgs::CvBridge* bridge_;
 ros::ServiceServer srv_perception_2D;
@@ -294,6 +297,8 @@ bool justForFeatureExtraction = true;
 
 int main(int argc, char** argv) {
 
+	experimentEpoch = atoi(argv[1]);	
+	
 	ros::init(argc, argv, "tabletop_2D_segmentation");
 	nh = new ros::NodeHandle();
 
@@ -3282,7 +3287,7 @@ bool perception2DCallback( tabletop_2D_segmentation::Perception2D::Request& requ
 		cout<<"FACEEEE:"<<willBeSentOld.faceDetected<<endl;
 		std::cout << "T2D@ DO_PERCEPT: Logging started" << std::endl;
 		imageLoggingOp(imgTuple,region_id,raw_ptr, filt_ptr);
-		imageLogger->logSingleData(&imgTuple,region_id);
+		imageLogger->logSingleData(&imgTuple,experimentEpoch,0);
 		std::cout << "Logging done" << std::endl;
 
 		// --Onur
@@ -3331,7 +3336,7 @@ bool perception2DCallback( tabletop_2D_segmentation::Perception2D::Request& requ
 		imageLoggingOp(imgEffectTuple,region_id,raw_ptr, filt_ptr);
 
 		std::cout << "T2D@ EXTRACT_EFFECT: imageLoggingOp passed." << std::endl;
-		imageLogger->logSingleData(&imgEffectTuple,region_id);
+		//imageLogger->logSingleData(&imgEffectTuple,region_id);
 		std::cout << "T2D@ EXTRACT_EFFECT: logging..." << std::endl;
 //		if(region_id >= 0)
 //			imageLogger->logSingleData(&imgTuple,region_id);
@@ -3345,8 +3350,11 @@ bool perception2DCallback( tabletop_2D_segmentation::Perception2D::Request& requ
 		{
 			computeEffect();
 		}
-		imageEffectLogger->logSingleData(&imgEffectTuple,region_id);
+		imageEffectLogger->logSingleData(&imgEffectTuple,experimentEpoch,1);
 
+		experimentEpoch++;
+		
+		std::cout << "Experiment Epoch incremented to " << experimentEpoch << std::endl;
 		//raw_ptr = 0;
 		//filt_ptr = 0;
 		// --Onur

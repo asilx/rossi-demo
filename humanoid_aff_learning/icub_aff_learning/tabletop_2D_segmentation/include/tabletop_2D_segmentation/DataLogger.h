@@ -87,7 +87,7 @@ public:
 	
 	void logSingleData(double* features,int index, int label = -1);
 	void logSingleData(FeatureTuple* singleTuple, int label = -1);
-	void logSingleData(ImageFeatureTuple *currentImgInfo, int label = 0);
+	void logSingleData(ImageFeatureTuple *currentImgInfo, int experimentEpoch, int label);
 	
 	
 	void logAllData(double**items, int itemCount);
